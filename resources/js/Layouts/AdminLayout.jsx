@@ -184,7 +184,11 @@ export default function AdminLayout({ title, activeNav = 'dashboard', children }
                 </aside>
 
                 {/* ── MAIN CONTENT ── */}
-                <div className="flex-1 flex flex-col min-h-screen lg:ml-60">
+                {/* min-w-0 wajib: tanpa ini, flex item ini tidak bisa menyusut di
+                    bawah lebar konten intrinsiknya (mis. tabel admin ber-min-w-[700px]),
+                    sehingga seluruh halaman ikut melebar dan discroll horizontal
+                    di layar sempit alih-alih hanya tabelnya (yang sudah overflow-x-auto). */}
+                <div className="flex-1 flex flex-col min-w-0 min-h-screen lg:ml-60">
 
                     {/* Top bar */}
                     <header className="sticky top-0 z-30 bg-white border-b border-slate-200">
@@ -221,7 +225,7 @@ export default function AdminLayout({ title, activeNav = 'dashboard', children }
                     </header>
 
                     {/* Page content */}
-                    <main className="flex-1 p-4 sm:p-6">
+                    <main className="flex-1 min-w-0 p-4 sm:p-6">
                         {children}
                     </main>
                 </div>
