@@ -170,12 +170,13 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
         window.open(url, '_blank');
     };
 
-    // Reusable Filter Sidebar Content
+    // Reusable Filter Sidebar Content — setiap seksi memakai ritme spacing (py-5)
+    // dan skala tinggi kontrol (py-2.5) yang sama agar proporsional dari atas ke bawah.
     const renderFilterContent = () => (
-        <div className="space-y-6 text-slate-800 text-sm">
+        <div className="text-slate-800 text-sm">
             {/* 1. Search Box */}
-            <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+            <div className="pb-5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">
                     Cari Produk
                 </label>
                 <div className="relative">
@@ -184,14 +185,14 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Nama produk / rasa..."
-                        className="w-full rounded-xl border border-slate-200 bg-white pl-9 pr-8 py-2 text-xs text-slate-800 placeholder-slate-400 focus:border-pertamina-green focus:ring-pertamina-green shadow-2xs"
+                        className="w-full rounded-xl border border-slate-200 bg-white pl-9 pr-8 py-2.5 text-xs text-slate-800 placeholder-slate-400 focus:border-pertamina-green focus:ring-pertamina-green shadow-2xs"
                     />
-                    <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
                     {searchQuery && (
                         <button
                             type="button"
                             onClick={() => setSearchQuery('')}
-                            className="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600"
+                            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                         >
                             <X className="w-3.5 h-3.5" />
                         </button>
@@ -200,10 +201,13 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
             </div>
 
             {/* 2. Kategori Produk */}
-            <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">
-                    Kategori Produk
-                </label>
+            <div className="py-5 border-t border-slate-100">
+                <div className="flex items-center gap-1.5 mb-3">
+                    <Tag className="w-3.5 h-3.5 text-pertamina-green" />
+                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                        Kategori Produk
+                    </label>
+                </div>
                 <div className="space-y-1">
                     {categoriesList.map((cat) => {
                         const isSelected = selectedCategory === cat.slug;
@@ -212,15 +216,18 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                                 key={cat.slug}
                                 type="button"
                                 onClick={() => setSelectedCategory(cat.slug)}
-                                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+                                className={`w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
                                     isSelected
                                         ? 'bg-pertamina-green text-white font-bold shadow-xs'
                                         : 'text-slate-600 hover:bg-slate-100'
                                 }`}
                             >
-                                <span>{cat.name}</span>
+                                <span className="flex items-center gap-1.5 min-w-0">
+                                    {isSelected && <Check className="w-3.5 h-3.5 flex-shrink-0" />}
+                                    <span className="truncate">{cat.name}</span>
+                                </span>
                                 <span
-                                    className={`text-[10px] px-2 py-0.5 rounded-full ${
+                                    className={`flex-shrink-0 text-[10px] px-2 py-0.5 rounded-full ${
                                         isSelected
                                             ? 'bg-white/20 text-white'
                                             : 'bg-slate-100 text-slate-500'
@@ -235,17 +242,20 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
             </div>
 
             {/* 3. Rentang Harga */}
-            <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">
-                    Rentang Harga
-                </label>
-                <div className="space-y-1.5">
+            <div className="py-5 border-t border-slate-100">
+                <div className="flex items-center gap-1.5 mb-3">
+                    <DollarSign className="w-3.5 h-3.5 text-pertamina-green" />
+                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                        Rentang Harga
+                    </label>
+                </div>
+                <div className="space-y-1">
                     {PRICE_RANGES.map((range, idx) => {
                         const isSelected = selectedPriceRangeIndex === idx && customMinPrice === '' && customMaxPrice === '';
                         return (
                             <label
                                 key={idx}
-                                className={`flex items-center gap-2.5 px-3 py-1.5 rounded-xl cursor-pointer text-xs transition-colors ${
+                                className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer text-xs transition-colors ${
                                     isSelected ? 'bg-pertamina-red/10 text-pertamina-red font-bold' : 'text-slate-600 hover:bg-slate-50'
                                 }`}
                             >
@@ -258,7 +268,7 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                                         setCustomMinPrice('');
                                         setCustomMaxPrice('');
                                     }}
-                                    className="text-pertamina-red focus:ring-pertamina-red h-3.5 w-3.5"
+                                    className="text-pertamina-red focus:ring-pertamina-red h-4 w-4 flex-shrink-0"
                                 />
                                 <span>{range.label}</span>
                             </label>
@@ -268,35 +278,38 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
 
                 {/* Custom Min / Max Price Input */}
                 <div className="mt-3 pt-3 border-t border-slate-100">
-                    <p className="text-[11px] font-semibold text-slate-400 mb-1.5">Atau masukkan manual (Rp):</p>
+                    <p className="text-[11px] font-semibold text-slate-400 mb-2">Atau masukkan manual (Rp):</p>
                     <div className="grid grid-cols-2 gap-2">
                         <input
                             type="number"
                             placeholder="Min (Rp)"
                             value={customMinPrice}
                             onChange={(e) => setCustomMinPrice(e.target.value)}
-                            className="w-full rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs placeholder-slate-400 focus:border-pertamina-green focus:ring-pertamina-green"
+                            className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs placeholder-slate-400 focus:border-pertamina-green focus:ring-pertamina-green"
                         />
                         <input
                             type="number"
                             placeholder="Maks (Rp)"
                             value={customMaxPrice}
                             onChange={(e) => setCustomMaxPrice(e.target.value)}
-                            className="w-full rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs placeholder-slate-400 focus:border-pertamina-green focus:ring-pertamina-green"
+                            className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs placeholder-slate-400 focus:border-pertamina-green focus:ring-pertamina-green"
                         />
                     </div>
                 </div>
             </div>
 
             {/* 4. Filter Kecamatan Asal UMKM */}
-            <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
-                    Wilayah Kecamatan di Dumai
-                </label>
+            <div className="py-5 border-t border-slate-100">
+                <div className="flex items-center gap-1.5 mb-3">
+                    <MapPin className="w-3.5 h-3.5 text-pertamina-green" />
+                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                        Wilayah Kecamatan di Dumai
+                    </label>
+                </div>
                 <select
                     value={selectedDistrict}
                     onChange={(e) => setSelectedDistrict(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 focus:border-pertamina-green focus:ring-pertamina-green shadow-2xs"
+                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 focus:border-pertamina-green focus:ring-pertamina-green shadow-2xs"
                 >
                     {DISTRICTS.map((d) => (
                         <option key={d.id} value={d.id}>
@@ -308,14 +321,16 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
 
             {/* Reset Button */}
             {activeFiltersCount > 0 && (
-                <button
-                    type="button"
-                    onClick={handleResetFilters}
-                    className="w-full flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 hover:text-pertamina-red py-2.5 text-xs font-bold transition-all active:scale-98"
-                >
-                    <RotateCcw className="w-3.5 h-3.5" />
-                    <span>Reset Semua Filter ({activeFiltersCount})</span>
-                </button>
+                <div className="pt-5 border-t border-slate-100">
+                    <button
+                        type="button"
+                        onClick={handleResetFilters}
+                        className="w-full flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 hover:text-pertamina-red py-2.5 text-xs font-bold transition-all active:scale-98"
+                    >
+                        <RotateCcw className="w-3.5 h-3.5" />
+                        <span>Reset Semua Filter ({activeFiltersCount})</span>
+                    </button>
+                </div>
             )}
         </div>
     );
@@ -385,7 +400,7 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                     {/* 1. SIDEBAR FILTER KIRI (Desktop Sticky)                        */}
                     {/* ============================================================== */}
                     <aside className="hidden lg:block w-72 flex-shrink-0 sticky top-28 bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs">
-                        <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+                        <div className="flex items-center justify-between pb-5 mb-5 border-b border-slate-100">
                             <div className="flex items-center gap-2 font-bold text-slate-900 text-sm">
                                 <SlidersHorizontal className="w-4 h-4 text-pertamina-green" />
                                 <span>Filter Katalog</span>
@@ -409,13 +424,13 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                     {/* ============================================================== */}
                     <main className="flex-1 min-w-0 w-full">
                         {/* Control Bar: Total ditemukan, Mobile Filter Button, Sorting */}
-                        <div className="bg-white rounded-2xl border border-slate-200/90 p-3 sm:p-4 mb-6 shadow-xs flex flex-wrap items-center justify-between gap-3">
+                        <div className="bg-white rounded-2xl border border-slate-200/90 p-3 sm:p-4 mb-6 shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                             {/* Kiri: Total produk & Tombol Filter Mobile */}
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-3 flex-wrap">
                                 <button
                                     type="button"
                                     onClick={() => setMobileFilterOpen(true)}
-                                    className="lg:hidden inline-flex items-center gap-2 rounded-xl bg-pertamina-green text-white px-3.5 py-2 text-xs font-bold shadow-xs active:scale-95"
+                                    className="lg:hidden inline-flex items-center gap-2 rounded-xl bg-pertamina-green text-white px-3.5 py-2 text-xs font-bold shadow-xs active:scale-95 flex-shrink-0"
                                 >
                                     <Filter className="w-3.5 h-3.5" />
                                     <span>Filter &amp; Kategori</span>
@@ -432,16 +447,16 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                                 </span>
                             </div>
 
-                            {/* Kanan: Sorting Dropdown */}
-                            <div className="flex items-center gap-2 ml-auto">
-                                <label htmlFor="sortSelect" className="text-xs text-slate-400 font-semibold whitespace-nowrap hidden sm:inline">
+                            {/* Kanan: Sorting Dropdown — baris penuh tersendiri di mobile, sejajar kanan mulai sm */}
+                            <div className="flex items-center gap-2 sm:flex-shrink-0">
+                                <label htmlFor="sortSelect" className="text-xs text-slate-400 font-semibold whitespace-nowrap flex-shrink-0">
                                     Urutkan:
                                 </label>
                                 <select
                                     id="sortSelect"
                                     value={sortBy}
                                     onChange={(e) => setSortBy(e.target.value)}
-                                    className="rounded-xl border border-slate-200 bg-slate-50/80 px-3 py-1.5 text-xs text-slate-700 font-medium focus:border-pertamina-green focus:ring-pertamina-green"
+                                    className="flex-1 sm:flex-none rounded-xl border border-slate-200 bg-slate-50/80 px-3 py-2 text-xs text-slate-700 font-medium focus:border-pertamina-green focus:ring-pertamina-green"
                                 >
                                     <option value="recommended">Paling Sesuai / Rekomendasi</option>
                                     <option value="price-asc">Harga: Terendah ke Tertinggi</option>
