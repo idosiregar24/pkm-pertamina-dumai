@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+﻿import { useState, useRef } from 'react';
 import { Link, useForm } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import { ChevronLeft, Upload, X, MapPin } from 'lucide-react';
@@ -82,7 +82,7 @@ export default function UmkmCreate() {
                                         onChange={(e) => setData('name', e.target.value)}
                                         placeholder="Contoh: Kelompok Tani Nanas Maju Mandiri"
                                         className={`w-full px-3.5 py-2.5 rounded-xl border text-sm bg-slate-50 text-slate-900 outline-none transition-all
-                                            ${errors.name ? 'border-red-400 ring-1 ring-red-100' : 'border-slate-200 focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white'}`}
+                                            ${errors.name ? 'border-red-400 ring-1 ring-red-100' : 'border-slate-200 focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white'}`}
                                     />
                                     {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
                                 </div>
@@ -98,7 +98,7 @@ export default function UmkmCreate() {
                                             onChange={(e) => setData('owner_name', e.target.value)}
                                             placeholder="Ibu / Bapak ..."
                                             className={`w-full px-3.5 py-2.5 rounded-xl border text-sm bg-slate-50 text-slate-900 outline-none transition-all
-                                                ${errors.owner_name ? 'border-red-400' : 'border-slate-200 focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white'}`}
+                                                ${errors.owner_name ? 'border-red-400' : 'border-slate-200 focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white'}`}
                                         />
                                         {errors.owner_name && <p className="mt-1 text-xs text-red-600">{errors.owner_name}</p>}
                                     </div>
@@ -111,7 +111,7 @@ export default function UmkmCreate() {
                                             value={data.phone}
                                             onChange={(e) => setData('phone', e.target.value)}
                                             placeholder="08xxxxxxxxxx"
-                                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white transition-all"
+                                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white transition-all"
                                         />
                                     </div>
                                 </div>
@@ -126,7 +126,7 @@ export default function UmkmCreate() {
                                             value={data.district}
                                             onChange={(e) => setData('district', e.target.value)}
                                             className={`w-full pl-9 pr-3.5 py-2.5 rounded-xl border text-sm bg-slate-50 text-slate-900 outline-none transition-all
-                                                ${errors.district ? 'border-red-400' : 'border-slate-200 focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white'}`}
+                                                ${errors.district ? 'border-red-400' : 'border-slate-200 focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white'}`}
                                         >
                                             <option value="">— Pilih Kecamatan —</option>
                                             {DISTRICTS.map((d) => <option key={d} value={d}>{d}</option>)}
@@ -145,7 +145,7 @@ export default function UmkmCreate() {
                                             value={data.established_year}
                                             onChange={(e) => setData('established_year', e.target.value)}
                                             placeholder="2018"
-                                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white transition-all"
+                                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white transition-all"
                                         />
                                     </div>
                                     <div>
@@ -157,7 +157,7 @@ export default function UmkmCreate() {
                                             value={data.csr_batch_year}
                                             onChange={(e) => setData('csr_batch_year', e.target.value)}
                                             placeholder="2021"
-                                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white transition-all"
+                                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white transition-all"
                                         />
                                     </div>
                                     <div>
@@ -169,7 +169,7 @@ export default function UmkmCreate() {
                                             value={data.members_count}
                                             onChange={(e) => setData('members_count', e.target.value)}
                                             placeholder="24"
-                                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white transition-all"
+                                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white transition-all"
                                         />
                                     </div>
                                 </div>
@@ -183,7 +183,7 @@ export default function UmkmCreate() {
                                         value={data.certification}
                                         onChange={(e) => setData('certification', e.target.value)}
                                         placeholder="P-IRT, Halal MUI, Ecolabel, ..."
-                                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white transition-all"
+                                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white transition-all"
                                     />
                                 </div>
 
@@ -196,7 +196,7 @@ export default function UmkmCreate() {
                                         value={data.shopee_shop_url}
                                         onChange={(e) => setData('shopee_shop_url', e.target.value)}
                                         placeholder="https://shopee.co.id/..."
-                                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white transition-all"
+                                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white transition-all"
                                     />
                                 </div>
 
@@ -209,7 +209,7 @@ export default function UmkmCreate() {
                                         value={data.description}
                                         onChange={(e) => setData('description', e.target.value)}
                                         placeholder="Ceritakan profil singkat, keunikan produk, dan cerita pemberdayaan kelompok usaha ini..."
-                                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white transition-all resize-y"
+                                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white transition-all resize-y"
                                     />
                                 </div>
                             </div>
@@ -226,7 +226,7 @@ export default function UmkmCreate() {
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="px-6 py-2.5 rounded-xl bg-[#005BAC] hover:bg-[#004994] active:scale-[0.98] text-white font-bold text-sm shadow-sm hover:shadow transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                                className="px-6 py-2.5 rounded-xl bg-[#9DC228] hover:bg-[#7A9A1E] active:scale-[0.98] text-white font-bold text-sm shadow-sm hover:shadow transition-all disabled:opacity-60 disabled:cursor-not-allowed"
                             >
                                 {processing ? 'Menyimpan...' : 'Simpan Data UMKM'}
                             </button>
@@ -240,7 +240,7 @@ export default function UmkmCreate() {
                         <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
                             <h3 className="text-sm font-bold text-slate-800 mb-3">Foto Banner</h3>
                             <div
-                                className={`border-2 border-dashed rounded-xl overflow-hidden cursor-pointer transition-colors ${bannerPreview ? 'border-slate-200' : 'border-slate-200 hover:border-[#005BAC] hover:bg-blue-50/30'}`}
+                                className={`border-2 border-dashed rounded-xl overflow-hidden cursor-pointer transition-colors ${bannerPreview ? 'border-slate-200' : 'border-slate-200 hover:border-[#9DC228] hover:bg-blue-50/30'}`}
                                 onClick={() => !bannerPreview && bannerRef.current?.click()}
                             >
                                 {bannerPreview ? (
@@ -275,7 +275,7 @@ export default function UmkmCreate() {
                         <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
                             <h3 className="text-sm font-bold text-slate-800 mb-3">Logo / Foto Produk Utama</h3>
                             <div
-                                className={`border-2 border-dashed rounded-xl overflow-hidden cursor-pointer transition-colors ${logoPreview ? 'border-slate-200' : 'border-slate-200 hover:border-[#005BAC] hover:bg-blue-50/30'}`}
+                                className={`border-2 border-dashed rounded-xl overflow-hidden cursor-pointer transition-colors ${logoPreview ? 'border-slate-200' : 'border-slate-200 hover:border-[#9DC228] hover:bg-blue-50/30'}`}
                                 onClick={() => !logoPreview && logoRef.current?.click()}
                             >
                                 {logoPreview ? (
@@ -309,8 +309,8 @@ export default function UmkmCreate() {
                         {/* Info card */}
                         <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4">
                             <div className="flex items-center gap-1.5 mb-1.5">
-                                <span className="w-2 h-2 rounded-full bg-[#005BAC] animate-pulse" />
-                                <p className="text-xs font-bold text-[#005BAC]">Binaan CSR Pertamina Patra Niaga Unit Dumai</p>
+                                <span className="w-2 h-2 rounded-full bg-[#9DC228] animate-pulse" />
+                                <p className="text-xs font-bold text-[#9DC228]">Binaan CSR Pertamina Patra Niaga Unit Dumai</p>
                             </div>
                             <p className="text-[11px] text-slate-500 leading-relaxed">
                                 Data UMKM yang disimpan akan tampil pada halaman Direktori dan Katalog Publik portal ini.

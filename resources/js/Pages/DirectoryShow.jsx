@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Head, Link } from '@inertiajs/react';
 import {
     ArrowLeft,
@@ -73,7 +73,7 @@ export default function DirectoryShow({ umkm, products = [] }) {
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
                                     <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
                                         <div className="flex items-center gap-2 text-slate-500 text-[11px] font-semibold uppercase tracking-wider">
-                                            <Users className="w-3.5 h-3.5 text-pertamina-blue" />
+                                            <Users className="w-3.5 h-3.5 text-pertamina-green" />
                                             Pengelola
                                         </div>
                                         <div className="mt-2 text-sm font-bold text-slate-900">{umkm?.owner_name}</div>
@@ -81,7 +81,7 @@ export default function DirectoryShow({ umkm, products = [] }) {
 
                                     <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
                                         <div className="flex items-center gap-2 text-slate-500 text-[11px] font-semibold uppercase tracking-wider">
-                                            <Calendar className="w-3.5 h-3.5 text-pertamina-blue" />
+                                            <Calendar className="w-3.5 h-3.5 text-pertamina-green" />
                                             Berdiri
                                         </div>
                                         <div className="mt-2 text-sm font-bold text-slate-900">{umkm?.established_year}</div>
@@ -89,7 +89,7 @@ export default function DirectoryShow({ umkm, products = [] }) {
 
                                     <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
                                         <div className="flex items-center gap-2 text-slate-500 text-[11px] font-semibold uppercase tracking-wider">
-                                            <Package className="w-3.5 h-3.5 text-pertamina-blue" />
+                                            <Package className="w-3.5 h-3.5 text-pertamina-green" />
                                             Produk
                                         </div>
                                         <div className="mt-2 text-sm font-bold text-slate-900">{showcaseProducts.length} item</div>
@@ -161,15 +161,15 @@ export default function DirectoryShow({ umkm, products = [] }) {
                                     </h3>
                                     <ul className="space-y-2 text-sm text-slate-600">
                                         <li className="flex items-start gap-2">
-                                            <span className="mt-1 h-1.5 w-1.5 rounded-full bg-pertamina-blue" />
+                                            <span className="mt-1 h-1.5 w-1.5 rounded-full bg-pertamina-green" />
                                             <span>Nama pemilik: <strong className="text-slate-800">{umkm?.owner_name}</strong></span>
                                         </li>
                                         <li className="flex items-start gap-2">
-                                            <span className="mt-1 h-1.5 w-1.5 rounded-full bg-pertamina-blue" />
+                                            <span className="mt-1 h-1.5 w-1.5 rounded-full bg-pertamina-green" />
                                             <span>Jumlah anggota: <strong className="text-slate-800">{umkm?.members_count || 0} orang</strong></span>
                                         </li>
                                         <li className="flex items-start gap-2">
-                                            <span className="mt-1 h-1.5 w-1.5 rounded-full bg-pertamina-blue" />
+                                            <span className="mt-1 h-1.5 w-1.5 rounded-full bg-pertamina-green" />
                                             <span>Nomor WhatsApp: <strong className="text-slate-800">{umkm?.phone || '-'}</strong></span>
                                         </li>
                                     </ul>
@@ -182,7 +182,7 @@ export default function DirectoryShow({ umkm, products = [] }) {
                 <section className="mt-10">
                     <div className="flex items-center justify-between gap-3 mb-5">
                         <div>
-                            <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-pertamina-blue">
+                            <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-pertamina-green">
                                 Produk Unggulan
                             </p>
                             <h2 className="text-2xl font-extrabold text-slate-900">Produk dari {umkm?.name}</h2>

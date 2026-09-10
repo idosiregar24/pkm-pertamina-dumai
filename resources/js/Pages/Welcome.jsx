@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import {
     ShoppingBag,
@@ -61,95 +61,96 @@ export default function Welcome({ featuredProducts: dbFeaturedProducts = [], tot
     };
 
     return (
-        <PublicLayout title="Beranda" activeMenu="home">
+        <PublicLayout title="Beranda" activeMenu="home" transparentNav={true}>
             {/* ========================================================================= */}
-            {/* 1. HERO SECTION (Pertamina Corporate Clean Style)                          */}
+            {/* 1. HERO SECTION — Full-Screen Background Kilang Pertamina RU II Dumai     */}
             {/* ========================================================================= */}
-            <section className="relative overflow-hidden bg-white pt-10 pb-16 lg:pt-16 lg:pb-24 border-b border-slate-100">
-                {/* Background Pattern Lembut */}
-                <div className="absolute inset-0 pointer-events-none opacity-40">
-                    <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-pertamina-blue/5 blur-3xl" />
-                    <div className="absolute top-1/2 -left-24 w-96 h-96 rounded-full bg-pertamina-red/5 blur-3xl" />
-                </div>
+            <section
+                className="relative flex items-center justify-center min-h-screen overflow-hidden"
+                style={{
+                    backgroundImage: `url('/asset/logo/Bg/Kilang_Minyak_Pertamina_RU_II_Dumai.jpg')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                }}
+            >
+                {/* Overlay gelap agar teks tetap terbaca */}
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-900/75 via-slate-900/60 to-slate-900/80" />
 
-                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                        {/* Kolom Teks Hero (7 Kolom di Desktop) */}
-                        <div className="lg:col-span-7 space-y-6">
-                            <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] xl:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.18]">
-                                Pusat Informasi &amp; Direktori{' '}
-                                <span className="text-pertamina-blue">UMKM Mitra Binaan TJSL</span>{' '}
-                                <span className="text-pertamina-red">PT Pertamina Patra Niaga Refinery Unit Dumai</span>
-                            </h1>
+                {/* Konten Hero — Center */}
+                <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-32 flex flex-col items-center text-center">
 
-                            <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl font-normal">
-                                Platform resmi program pemberdayaan kelompok usaha lokal Kota Dumai yang didukung oleh PT Pertamina Patra Niaga Refinery Unit Dumai melalui literasi digital, standardisasi mutu kemasan, e-katalog produk terpadu, dan pemesanan instan langsung ke WhatsApp pemilik UMKM.
-                            </p>
+                    <h1 className="text-xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-wide text-white leading-[1.25] mb-5">
+                        Pusat Informasi &amp; Direktori{' '}
+                        <span className="text-white">UMKM Mitra Binaan TJSL</span>{' '}
+                        <span className="text-white">PT Pertamina Patra Niaga Refinery Unit Dumai</span>
+                    </h1>
 
-                            {/* Dual Call to Action Buttons */}
-                            <div className="pt-2 flex flex-wrap items-center gap-4">
-                                <Link
-                                    href="/katalog"
-                                    className="inline-flex items-center justify-center gap-2.5 rounded-xl bg-pertamina-red hover:bg-pertamina-red-dark text-white font-bold px-6 py-3.5 text-sm shadow-xs hover:shadow active:scale-[0.98] transition-all"
-                                >
-                                    <ShoppingBag className="w-4 h-4" />
-                                    <span>Buka E-Katalog Produk (Filter Lengkap)</span>
-                                </Link>
+                    <p className="text-sm sm:text-base text-white/80 leading-relaxed max-w-2xl mb-8">
+                        Platform resmi program pemberdayaan kelompok usaha lokal Kota Dumai yang didukung oleh PT Pertamina Patra Niaga Refinery Unit Dumai melalui literasi digital, standardisasi mutu kemasan, e-katalog produk terpadu, dan pemesanan instan langsung ke WhatsApp pemilik UMKM.
+                    </p>
 
-                                <Link
-                                    href="/direktori"
-                                    className="inline-flex items-center justify-center gap-2.5 rounded-xl border border-pertamina-blue bg-white hover:bg-pertamina-blue-light text-pertamina-blue font-bold px-6 py-3.5 text-sm active:scale-[0.98] transition-all"
-                                >
-                                    <Store className="w-4 h-4" />
-                                    <span>Lihat Direktori UMKM</span>
-                                </Link>
-                            </div>
+                    {/* Dual Call to Action Buttons — stacked di mobile, row di desktop */}
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 w-full sm:w-auto mb-8">
+                        <Link
+                            href="/katalog"
+                            className="inline-flex items-center justify-center gap-2.5 rounded-xl bg-pertamina-red hover:bg-pertamina-red-dark text-white font-bold px-7 py-3.5 text-sm shadow-lg hover:shadow-xl active:scale-[0.98] transition-all"
+                        >
+                            <ShoppingBag className="w-4 h-4 flex-shrink-0" />
+                            <span>Buka E-Katalog Produk</span>
+                        </Link>
 
-                            {/* Key Value Point Highlight */}
-                            <div className="pt-4 flex flex-wrap items-center gap-6 text-xs font-semibold text-slate-500">
-                                <div className="flex items-center gap-2">
-                                    <CheckCircle2 className="w-4 h-4 text-pertamina-green" />
-                                    <span>100% Produk Asli Dumai</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <CheckCircle2 className="w-4 h-4 text-pertamina-green" />
-                                    <span>Direct WhatsApp Tanpa Potongan</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <CheckCircle2 className="w-4 h-4 text-pertamina-green" />
-                                    <span>Toko Resmi Shopee Terverifikasi</span>
-                                </div>
-                            </div>
+                        <Link
+                            href="/direktori"
+                            className="inline-flex items-center justify-center gap-2.5 rounded-xl border border-white/50 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-bold px-7 py-3.5 text-sm active:scale-[0.98] transition-all"
+                        >
+                            <Store className="w-4 h-4 flex-shrink-0" />
+                            <span>Lihat Direktori UMKM</span>
+                        </Link>
+                    </div>
+
+                    {/* Key Value Point Highlight */}
+                    <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs font-semibold text-white">
+                        <div className="flex items-center gap-2">
+                            <CheckCircle2 className="w-4 h-4 text-white flex-shrink-0" />
+                            <span>100% Produk Asli Dumai</span>
                         </div>
-
+                        <div className="flex items-center gap-2">
+                            <CheckCircle2 className="w-4 h-4 text-white flex-shrink-0" />
+                            <span>Direct WhatsApp Tanpa Potongan</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <CheckCircle2 className="w-4 h-4 text-white flex-shrink-0" />
+                            <span>Toko Resmi Shopee Terverifikasi</span>
+                        </div>
                     </div>
                 </div>
 
-                {/* Strip Statistik Pencapaian CSR */}
-                <div className="mt-16 border-y border-slate-100 bg-slate-50/60 py-8">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Strip Statistik — di bawah hero, sticky ke bottom section */}
+                <div className="absolute bottom-0 left-0 right-0 bg-white/10 backdrop-blur-md border-t border-white/10">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                             <div>
-                                <div className="text-2xl sm:text-3xl font-extrabold text-pertamina-red">15+</div>
-                                <div className="text-xs sm:text-sm font-semibold text-slate-600 mt-1">
+                                <div className="text-2xl sm:text-3xl font-extrabold text-white">15+</div>
+                                <div className="text-[11px] sm:text-xs font-semibold text-white/70 mt-0.5">
                                     Kelompok Binaan Aktif
                                 </div>
                             </div>
                             <div>
-                                <div className="text-2xl sm:text-3xl font-extrabold text-pertamina-blue">50+</div>
-                                <div className="text-xs sm:text-sm font-semibold text-slate-600 mt-1">
+                                <div className="text-2xl sm:text-3xl font-extrabold text-white">50+</div>
+                                <div className="text-[11px] sm:text-xs font-semibold text-white/70 mt-0.5">
                                     Produk Khas Dumai
                                 </div>
                             </div>
                             <div>
-                                <div className="text-2xl sm:text-3xl font-extrabold text-pertamina-green">7</div>
-                                <div className="text-xs sm:text-sm font-semibold text-slate-600 mt-1">
+                                <div className="text-2xl sm:text-3xl font-extrabold text-white">7</div>
+                                <div className="text-[11px] sm:text-xs font-semibold text-white/70 mt-0.5">
                                     Kecamatan Binaan di Dumai
                                 </div>
                             </div>
                             <div>
-                                <div className="text-2xl sm:text-3xl font-extrabold text-slate-900">100%</div>
-                                <div className="text-xs sm:text-sm font-semibold text-slate-600 mt-1">
+                                <div className="text-2xl sm:text-3xl font-extrabold text-white">100%</div>
+                                <div className="text-[11px] sm:text-xs font-semibold text-white/70 mt-0.5">
                                     Produk Lokal Otentik
                                 </div>
                             </div>
@@ -165,7 +166,7 @@ export default function Welcome({ featuredProducts: dbFeaturedProducts = [], tot
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
                         <div>
-                            <span className="text-xs font-extrabold uppercase tracking-wider text-pertamina-blue">
+                            <span className="text-xs font-extrabold uppercase tracking-wider text-pertamina-green">
                                 Program Pemberdayaan CSR
                             </span>
                             <h2 className="mt-1 text-2xl sm:text-3xl font-bold text-slate-900">
@@ -177,7 +178,7 @@ export default function Welcome({ featuredProducts: dbFeaturedProducts = [], tot
                         </div>
                         <Link
                             href="/program-csr"
-                            className="inline-flex items-center gap-1.5 text-xs font-bold text-pertamina-blue hover:text-pertamina-blue-dark transition-colors self-start md:self-end"
+                            className="inline-flex items-center gap-1.5 text-xs font-bold text-pertamina-green hover:text-pertamina-green-dark transition-colors self-start md:self-end"
                         >
                             <span>Pelajari Selengkapnya</span>
                             <ArrowRight className="w-4 h-4" />
@@ -186,7 +187,7 @@ export default function Welcome({ featuredProducts: dbFeaturedProducts = [], tot
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs hover:shadow-md transition-all">
-                            <div className="w-12 h-12 rounded-xl bg-pertamina-blue/10 text-pertamina-blue flex items-center justify-center mb-5">
+                            <div className="w-12 h-12 rounded-xl bg-pertamina-green/10 text-pertamina-green flex items-center justify-center mb-5">
                                 <Smartphone className="w-6 h-6" />
                             </div>
                             <h3 className="text-base font-bold text-slate-900 mb-2">
@@ -244,7 +245,7 @@ export default function Welcome({ featuredProducts: dbFeaturedProducts = [], tot
 
                         <Link
                             href="/katalog"
-                            className="inline-flex items-center gap-2 rounded-xl bg-pertamina-blue hover:bg-pertamina-blue-dark text-white font-bold px-5 py-2.5 text-xs shadow-xs active:scale-95 transition-all self-start md:self-end"
+                            className="inline-flex items-center gap-2 rounded-xl bg-pertamina-green hover:bg-pertamina-green-dark text-white font-bold px-5 py-2.5 text-xs shadow-xs active:scale-95 transition-all self-start md:self-end"
                         >
                             <span>Buka E-Katalog Lengkap (Filter di Kiri)</span>
                             <ArrowRight className="w-3.5 h-3.5" />
@@ -271,7 +272,7 @@ export default function Welcome({ featuredProducts: dbFeaturedProducts = [], tot
                             className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 px-6 py-3.5 text-xs font-bold text-slate-700 shadow-xs hover:border-slate-300 transition-all"
                         >
                             <span>Lihat Semua {countAllProducts} Produk di Halaman E-Katalog</span>
-                            <ArrowRight className="w-4 h-4 text-pertamina-blue" />
+                            <ArrowRight className="w-4 h-4 text-pertamina-green" />
                         </Link>
                     </div>
                 </div>
@@ -305,7 +306,7 @@ export default function Welcome({ featuredProducts: dbFeaturedProducts = [], tot
 
                             <div className="space-y-4">
                                 <div>
-                                    <span className="inline-block px-2.5 py-1 rounded-lg bg-pertamina-blue-light text-pertamina-blue text-[11px] font-bold">
+                                    <span className="inline-block px-2.5 py-1 rounded-lg bg-pertamina-green-light text-pertamina-green text-[11px] font-bold">
                                         {typeof selectedProduct.category === 'object' ? selectedProduct.category?.name : selectedProduct.category}
                                     </span>
                                     <h2 className="text-xl font-extrabold text-slate-900 mt-2 leading-snug">
@@ -326,7 +327,7 @@ export default function Welcome({ featuredProducts: dbFeaturedProducts = [], tot
                                 {selectedProduct.umkm && (
                                     <div className="rounded-xl border border-slate-200 bg-slate-50/80 p-3 text-xs space-y-1">
                                         <div className="flex items-center gap-1.5 font-bold text-slate-800">
-                                            <Store className="w-3.5 h-3.5 text-pertamina-blue" />
+                                            <Store className="w-3.5 h-3.5 text-pertamina-green" />
                                             <span>{selectedProduct.umkm.name}</span>
                                         </div>
                                         <p className="text-slate-500 text-[11px]">

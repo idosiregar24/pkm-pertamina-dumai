@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { ShoppingBag, ShoppingCart, ExternalLink } from 'lucide-react';
 import { useCart } from '@/Contexts/CartContext';
 import { formatRupiah } from '@/Utils/phone';
@@ -33,7 +33,7 @@ export default function ProductCard({ product, onSelectProduct, compact = false 
                     {/* Badges Container (Category & District) */}
                     <div className={`absolute ${compact ? 'top-2 inset-x-2' : 'top-2.5 inset-x-2.5'} flex items-start justify-between gap-1.5 pointer-events-none z-10`}>
                         {product.category && (
-                            <span className="rounded-lg bg-pertamina-blue-light px-2 py-0.5 text-[10px] sm:text-[11px] font-semibold text-pertamina-blue shadow-sm backdrop-blur-xs border border-pertamina-blue/10 truncate max-w-[62%]">
+                            <span className="rounded-lg bg-pertamina-green-light px-2 py-0.5 text-[10px] sm:text-[11px] font-semibold text-pertamina-green shadow-sm backdrop-blur-xs border border-pertamina-green/10 truncate max-w-[62%]">
                                 {typeof product.category === 'object' ? product.category.name : product.category}
                             </span>
                         )}
@@ -49,12 +49,12 @@ export default function ProductCard({ product, onSelectProduct, compact = false 
                 {/* Konten Produk */}
                 <div className={`${compact ? 'mt-2.5' : 'mt-3.5'}`}>
                     <div className={`flex items-center gap-1.5 ${compact ? 'text-[10px]' : 'text-xs'} text-slate-500`}>
-                        <span className="font-medium text-pertamina-blue truncate">
+                        <span className="font-medium text-pertamina-green truncate">
                             {product.umkm?.name || 'UMKM Binaan Pertamina'}
                         </span>
                     </div>
 
-                    <h3 className={`mt-1 ${compact ? 'text-sm' : 'text-[15px]'} font-bold text-slate-900 line-clamp-2 leading-snug group-hover:text-pertamina-blue transition-colors`}>
+                    <h3 className={`mt-1 ${compact ? 'text-sm' : 'text-[15px]'} font-bold text-slate-900 line-clamp-2 leading-snug group-hover:text-pertamina-green transition-colors`}>
                         {product.name}
                     </h3>
 

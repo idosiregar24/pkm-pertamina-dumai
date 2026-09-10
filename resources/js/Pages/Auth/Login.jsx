@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Eye, EyeOff, LogIn, Lock } from 'lucide-react';
 import { getAssetUrl } from '@/Utils/phone';
@@ -44,7 +44,7 @@ export default function Login({ status, canResetPassword }) {
                             <h1 className="text-3xl xl:text-4xl font-extrabold text-slate-900 leading-[1.2] tracking-tight mb-4">
                                 Kelola Portal<br />
                                 <span className="text-pertamina-red">UMKM</span> Binaan<br />
-                                <span className="text-pertamina-blue">CSR Pertamina</span>
+                                <span className="text-pertamina-green">CSR Pertamina</span>
                             </h1>
 
                             <p className="text-sm text-slate-600 leading-relaxed max-w-sm">
@@ -57,7 +57,7 @@ export default function Login({ status, canResetPassword }) {
                             {[
                                 { label: 'Tambah & edit produk UMKM binaan', dot: 'bg-pertamina-red' },
                                 { label: 'Kelola foto & profil kelompok usaha', dot: 'bg-pertamina-green' },
-                                { label: 'Pantau statistik & data program CSR', dot: 'bg-pertamina-blue' },
+                                { label: 'Pantau statistik & data program CSR', dot: 'bg-pertamina-green' },
                             ].map((f) => (
                                 <div key={f.label} className="flex items-center gap-3">
                                     <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${f.dot}`} />
@@ -88,8 +88,8 @@ export default function Login({ status, canResetPassword }) {
 
                         {/* Header */}
                         <div className="mb-8">
-                            <div className="w-11 h-11 bg-pertamina-blue/10 rounded-2xl flex items-center justify-center mb-4 border border-pertamina-blue/15">
-                                <Lock className="w-5 h-5 text-pertamina-blue" />
+                            <div className="w-11 h-11 bg-pertamina-green/10 rounded-2xl flex items-center justify-center mb-4 border border-pertamina-green/15">
+                                <Lock className="w-5 h-5 text-pertamina-green" />
                             </div>
                             <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
                                 Masuk ke Panel Admin
@@ -130,7 +130,7 @@ export default function Login({ status, canResetPassword }) {
                                     className={`w-full px-4 py-3 rounded-xl border text-sm text-slate-900 bg-white placeholder-slate-400 outline-none transition-all
                                         ${errors.email
                                             ? 'border-red-400 ring-1 ring-red-200'
-                                            : 'border-slate-300 focus:border-pertamina-blue focus:ring-2 focus:ring-pertamina-blue/15'
+                                            : 'border-slate-300 focus:border-pertamina-green focus:ring-2 focus:ring-pertamina-green/15'
                                         }`}
                                 />
                                 {errors.email && (
@@ -158,7 +158,7 @@ export default function Login({ status, canResetPassword }) {
                                         className={`w-full px-4 py-3 pr-11 rounded-xl border text-sm text-slate-900 bg-white placeholder-slate-400 outline-none transition-all
                                             ${errors.password
                                                 ? 'border-red-400 ring-1 ring-red-200'
-                                                : 'border-slate-300 focus:border-pertamina-blue focus:ring-2 focus:ring-pertamina-blue/15'
+                                                : 'border-slate-300 focus:border-pertamina-green focus:ring-2 focus:ring-pertamina-green/15'
                                             }`}
                                     />
                                     <button
@@ -183,14 +183,14 @@ export default function Login({ status, canResetPassword }) {
                                         name="remember"
                                         checked={data.remember}
                                         onChange={(e) => setData('remember', e.target.checked)}
-                                        className="w-4 h-4 rounded border-slate-300 text-pertamina-blue focus:ring-pertamina-blue cursor-pointer"
+                                        className="w-4 h-4 rounded border-slate-300 text-pertamina-green focus:ring-pertamina-green cursor-pointer"
                                     />
                                     <span className="text-sm text-slate-600">Ingat perangkat ini</span>
                                 </label>
                                 {canResetPassword && (
                                     <Link
                                         href={route('password.request')}
-                                        className="text-sm font-semibold text-pertamina-blue hover:text-pertamina-blue-dark transition-colors"
+                                        className="text-sm font-semibold text-pertamina-green hover:text-pertamina-green-dark transition-colors"
                                     >
                                         Lupa sandi?
                                     </Link>

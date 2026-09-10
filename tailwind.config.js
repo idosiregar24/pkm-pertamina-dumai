@@ -33,9 +33,9 @@ export default {
                     blue: '#005BAC',
                     'blue-dark': '#004785',
                     'blue-light': '#EBF4FC',
-                    green: '#00A651',
-                    'green-dark': '#008F45',
-                    'green-light': '#E8F7EE',
+                    green: '#9DC228',
+                    'green-dark': '#7A9A1E',
+                    'green-light': '#F4F8E1',
                 },
                 shopee: {
                     DEFAULT: '#EE4D2D',

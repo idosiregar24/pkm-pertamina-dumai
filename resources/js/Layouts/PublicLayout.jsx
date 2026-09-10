@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import { ShoppingBag, Menu, X, MapPin, Phone, Mail, Award, ExternalLink, LogIn } from 'lucide-react';
 import { CartProvider, useCart } from '@/Contexts/CartContext';
@@ -6,11 +6,24 @@ import CartDrawer from '@/Components/CartDrawer';
 import BadgeCsr from '@/Components/BadgeCsr';
 import { getAssetUrl } from '@/Utils/phone';
 
-function NavbarContent({ activeMenu }) {
+function NavbarContent({ activeMenu, transparentNav = false }) {
     const { totalCount, setIsCartOpen } = useCart();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
 
-    const logoSrc = getAssetUrl('/asset/logo/logo-pertamina-patra-niaga.png');
+    useEffect(() => {
+        if (!transparentNav) return;
+        const handleScroll = () => setScrolled(window.scrollY > 60);
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [transparentNav]);
+
+    // Tentukan apakah navbar sedang dalam mode transparan (di atas hero, belum di-scroll)
+    const isTransparent = transparentNav && !scrolled;
+
+    const logoSrc = isTransparent
+        ? getAssetUrl('/asset/logo/logo%20pertamina%20putih.svg')
+        : getAssetUrl('/asset/logo/logo-pertamina-patra-niaga.png');
 
     const navLinks = [
         { label: 'Beranda', href: '/', id: 'home' },
@@ -20,7 +33,17 @@ function NavbarContent({ activeMenu }) {
     ];
 
     return (
-        <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs transition-all">
+        <header
+            className={`z-40 transition-all duration-300 ${
+                transparentNav
+                    ? 'fixed top-0 left-0 right-0' // fixed hanya untuk hero page
+                    : 'sticky top-0'               // sticky untuk halaman lain (no layout jump)
+            } ${
+                isTransparent
+                    ? 'bg-transparent border-b border-transparent shadow-none'
+                    : 'bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs'
+            }`}
+        >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
                     {/* Logo & Identitas Korporasi */}
@@ -31,11 +54,17 @@ function NavbarContent({ activeMenu }) {
                                 alt="Logo Pertamina Patra Niaga"
                                 className="h-10 sm:h-12 w-auto object-contain transition-transform group-hover:scale-102"
                             />
-                            <div className="hidden sm:block border-l border-slate-200 pl-3">
-                                <span className="block text-[11px] font-extrabold uppercase tracking-wider text-pertamina-blue">
+                            <div className={`hidden sm:block border-l pl-3 ${
+                                isTransparent ? 'border-white/40' : 'border-slate-200'
+                            }`}>
+                                <span className={`block text-[11px] font-extrabold uppercase tracking-wider ${
+                                    isTransparent ? 'text-white' : 'text-pertamina-green'
+                                }`}>
                                     Unit Dumai
                                 </span>
-                                <span className="block text-xs font-semibold text-slate-700">
+                                <span className={`block text-xs font-semibold ${
+                                    isTransparent ? 'text-white/80' : 'text-slate-700'
+                                }`}>
                                     Kelompok Binaan CSR
                                 </span>
                             </div>
@@ -51,14 +80,18 @@ function NavbarContent({ activeMenu }) {
                                     key={link.id}
                                     href={link.href}
                                     className={`relative text-sm font-semibold transition-all py-1.5 ${
-                                        isActive
+                                        isTransparent
+                                            ? isActive
+                                                ? 'text-white font-bold'
+                                                : 'text-white/85 hover:text-white'
+                                            : isActive
                                             ? 'text-pertamina-red font-bold'
-                                            : 'text-slate-600 hover:text-pertamina-blue'
+                                            : 'text-slate-600 hover:text-pertamina-green'
                                     }`}
                                 >
                                     {link.label}
                                     {isActive && (
-                                        <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-pertamina-red rounded-full" />
+                                        <span className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full ${isTransparent ? 'bg-white' : 'bg-pertamina-red'}`} />
                                     )}
                                 </Link>
                             );
@@ -71,11 +104,15 @@ function NavbarContent({ activeMenu }) {
                         <button
                             type="button"
                             onClick={() => setIsCartOpen(true)}
-                            className="relative flex items-center gap-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/90 px-3.5 py-2 text-slate-700 transition-all active:scale-95 shadow-xs"
+                            className={`relative flex items-center gap-2 px-2 py-1.5 transition-all active:scale-95 ${
+                                isTransparent
+                                    ? 'text-white hover:text-white/75'
+                                    : 'text-slate-700 hover:text-slate-900'
+                            }`}
                             aria-label="Buka Keranjang Belanja"
                         >
-                            <ShoppingBag className="w-5 h-5 text-pertamina-red" />
-                            <span className="hidden sm:inline text-xs font-bold text-slate-800">
+                            <ShoppingBag className={`w-5 h-5 ${isTransparent ? 'text-white' : 'text-pertamina-red'}`} />
+                            <span className={`hidden sm:inline text-xs font-bold ${isTransparent ? 'text-white' : 'text-slate-800'}`}>
                                 Keranjang
                             </span>
                             {totalCount > 0 && (
@@ -88,11 +125,15 @@ function NavbarContent({ activeMenu }) {
                         {/* Tombol Login (di sebelah kanan) */}
                         <Link
                             href="/login"
-                            className="hidden sm:inline-flex items-center gap-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/90 px-3.5 py-2 text-slate-700 transition-all active:scale-95 shadow-xs text-xs font-bold"
+                            className={`hidden sm:inline-flex items-center gap-2 px-2 py-1.5 transition-all active:scale-95 text-xs font-bold ${
+                                isTransparent
+                                    ? 'text-white hover:text-white/75'
+                                    : 'text-slate-700 hover:text-slate-900'
+                            }`}
                             aria-label="Masuk ke Akun / Panel Admin"
                         >
-                            <LogIn className="w-5 h-5 text-pertamina-blue" />
-                            <span className="text-xs font-bold text-slate-800">
+                            <LogIn className={`w-5 h-5 ${isTransparent ? 'text-white' : 'text-pertamina-green'}`} />
+                            <span className={`text-xs font-bold ${isTransparent ? 'text-white' : 'text-slate-800'}`}>
                                 Login
                             </span>
                         </Link>
@@ -101,7 +142,11 @@ function NavbarContent({ activeMenu }) {
                         <button
                             type="button"
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="md:hidden p-2 rounded-xl border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                            className={`md:hidden p-2 rounded-xl border transition-all ${
+                                isTransparent
+                                    ? 'border-white/30 text-white hover:bg-white/20'
+                                    : 'border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                            }`}
                         >
                             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                         </button>
@@ -136,7 +181,7 @@ function NavbarContent({ activeMenu }) {
                             onClick={() => setMobileMenuOpen(false)}
                             className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 transition-colors"
                         >
-                            <LogIn className="w-4 h-4 text-pertamina-blue" />
+                            <LogIn className="w-4 h-4 text-pertamina-green" />
                             <span>Login</span>
                         </Link>
                     </div>
@@ -153,11 +198,11 @@ function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-slate-800">
                     {/* Kolom 1: Profil Portal & CSR */}
                     <div className="md:col-span-2 space-y-4">
-                        <div className="inline-block bg-white p-2.5 rounded-xl shadow-xs">
+                        <div className="inline-block">
                             <img
-                                src={getAssetUrl('/asset/logo/logo-pertamina-patra-niaga.png')}
+                                src={getAssetUrl('/asset/logo/logo%20pertamina%20putih.svg')}
                                 alt="Pertamina Patra Niaga"
-                                className="h-10 w-auto object-contain"
+                                className="h-12 w-auto object-contain"
                             />
                         </div>
 
@@ -172,7 +217,7 @@ function Footer() {
 
                         <div className="pt-2">
                             <div className="inline-flex items-center gap-2 rounded-full bg-slate-800/80 border border-slate-700 px-3 py-1 text-xs text-slate-300">
-                                <Award className="w-3.5 h-3.5 text-pertamina-blue" />
+                                <Award className="w-3.5 h-3.5 text-pertamina-green" />
                                 <span>Mitra CSR: Fuel Terminal Dumai / Unit Dumai</span>
                             </div>
                         </div>
@@ -200,7 +245,7 @@ function Footer() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/login" className="hover:text-pertamina-blue transition-colors">
+                                <Link href="/login" className="hover:text-pertamina-green transition-colors">
                                     Panel Pengelola / Admin
                                 </Link>
                             </li>
@@ -222,7 +267,7 @@ function Footer() {
                                 <span>Kontak Binaan CSR Dumai</span>
                             </li>
                             <li className="flex items-center gap-2">
-                                <Mail className="w-4 h-4 text-pertamina-blue flex-shrink-0" />
+                                <Mail className="w-4 h-4 text-pertamina-green flex-shrink-0" />
                                 <span>csr.patraniaga.dumai@pertamina.com</span>
                             </li>
                         </ul>
@@ -240,16 +285,16 @@ function Footer() {
     );
 }
 
-export default function PublicLayout({ title, activeMenu = 'home', children }) {
+export default function PublicLayout({ title, activeMenu = 'home', transparentNav = false, children }) {
     return (
         <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans">
             <Head title={title ? `${title} — UMKM Binaan CSR Pertamina Dumai` : 'Portal UMKM Binaan CSR Pertamina Patra Niaga Unit Dumai'} />
 
             {/* Top Navbar */}
-            <NavbarContent activeMenu={activeMenu} />
+            <NavbarContent activeMenu={activeMenu} transparentNav={transparentNav} />
 
-            {/* Main Content */}
-            <main className="flex-1">{children}</main>
+            {/* Main Content — pt-20 hanya saat navbar fixed (transparentNav=true) */}
+            <main className={`flex-1 ${transparentNav ? 'pt-0' : ''}`}>{children}</main>
 
             {/* Slide-over Cart Drawer */}
             <CartDrawer />

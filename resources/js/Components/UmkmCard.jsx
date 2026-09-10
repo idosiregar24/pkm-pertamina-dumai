@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Link } from '@inertiajs/react';
 import { MapPin, User, ArrowRight, MessageCircle, ExternalLink, Package } from 'lucide-react';
 import BadgeCsr from '@/Components/BadgeCsr';
@@ -15,7 +15,7 @@ export default function UmkmCard({ umkm, onSelectUmkm }) {
         <Link
             href={route('directory.show', umkm.id)}
             className={`group flex flex-col justify-between rounded-2xl border p-5 shadow-subtle transition-all duration-300 hover:border-slate-300 hover:shadow-subtle-hover cursor-pointer ${
-                umkm.is_highlighted ? 'border-pertamina-blue bg-blue-50/40 ring-1 ring-pertamina-blue/20' : 'border-slate-200/90 bg-white'
+                umkm.is_highlighted ? 'border-pertamina-green bg-blue-50/40 ring-1 ring-pertamina-green/20' : 'border-slate-200/90 bg-white'
             }`}
         >
             <div>
@@ -68,7 +68,7 @@ export default function UmkmCard({ umkm, onSelectUmkm }) {
 
                 {/* Info Profil */}
                 <div className="mt-4">
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-pertamina-blue transition-colors leading-tight">
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-pertamina-green transition-colors leading-tight">
                         {umkm.name}
                     </h3>
 
@@ -117,7 +117,7 @@ export default function UmkmCard({ umkm, onSelectUmkm }) {
                     )}
                 </div>
 
-                <span className="inline-flex items-center gap-1 text-xs font-semibold text-pertamina-blue group-hover:translate-x-0.5 transition-transform">
+                <span className="inline-flex items-center gap-1 text-xs font-semibold text-pertamina-green group-hover:translate-x-0.5 transition-transform">
                     <span>Lihat Profil</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                 </span>

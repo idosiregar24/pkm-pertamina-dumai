@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Head, Link } from '@inertiajs/react';
 import {
     Award,
@@ -23,40 +23,54 @@ import { DISTRICTS, CSR_PILLARS } from '@/data/mockData';
 
 export default function CsrProgram() {
     return (
-        <PublicLayout title="Program Pemberdayaan CSR" activeMenu="csr">
-            {/* Header Banner */}
-            <div className="relative overflow-hidden bg-slate-50 border-b border-slate-200/80 py-12 lg:py-16">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <PublicLayout title="Program Pemberdayaan CSR" activeMenu="csr" transparentNav={true}>
+            {/* Header Banner — Background Kilang */}
+            <div
+                className="relative overflow-hidden pt-32 pb-16 lg:pt-40 lg:pb-24"
+                style={{
+                    backgroundImage: `url('/asset/logo/Bg/Kilang_Minyak_Pertamina_RU_II_Dumai.jpg')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                }}
+            >
+                {/* Overlay gelap */}
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-900/80 via-slate-900/65 to-slate-900/80" />
+
+                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Breadcrumbs */}
-                    <nav className="flex items-center gap-2 text-xs text-slate-400 mb-4">
-                        <Link href="/" className="hover:text-pertamina-blue transition-colors">
+                    <nav className="flex items-center gap-2 text-xs text-white/60 mb-4">
+                        <Link href="/" className="hover:text-white transition-colors">
                             Beranda
                         </Link>
                         <ChevronRight className="w-3.5 h-3.5" />
-                        <span className="font-semibold text-slate-700">Program CSR &amp; TJSL</span>
+                        <span className="font-semibold text-white/90">Program CSR &amp; TJSL</span>
                     </nav>
 
                     <div className="max-w-3xl">
-                        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mt-3 leading-tight">
+                        <span className="text-[11px] font-extrabold uppercase tracking-widest text-pertamina-green">
+                            Tanggung Jawab Sosial &amp; Lingkungan (TJSL)
+                        </span>
+                        <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-white tracking-wide mt-2 leading-tight">
                             Pemberdayaan Berkelanjutan Menuju Kemandirian UMKM Kota Dumai
                         </h1>
-                        <p className="text-sm sm:text-base text-slate-600 mt-4 leading-relaxed">
+                        <p className="text-sm sm:text-base text-white/75 mt-4 leading-relaxed">
                             Program Tanggung Jawab Sosial dan Lingkungan (TJSL) PT Pertamina Patra Niaga Regional Dumai / Fuel Terminal Dumai hadir mendampingi kelompok usaha lokal dari hulu ke hilir: mulai dari mutu bahan baku, perizinan edar, hingga akses pasar modern.
                         </p>
 
-                        <div className="mt-6 flex flex-wrap items-center gap-4">
+                        <div className="mt-7 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3">
                             <Link
                                 href="/katalog"
-                                className="inline-flex items-center justify-center gap-2 rounded-xl bg-pertamina-red hover:bg-pertamina-red-dark text-white font-bold px-6 py-3 text-xs shadow-xs transition-all"
+                                className="inline-flex items-center justify-center gap-2 rounded-xl bg-pertamina-red hover:bg-pertamina-red-dark text-white font-bold px-6 py-3 text-xs shadow-lg transition-all active:scale-[0.98]"
                             >
-                                <ShoppingBag className="w-4 h-4" />
+                                <ShoppingBag className="w-4 h-4 flex-shrink-0" />
                                 <span>Lihat Produk Hasil Binaan</span>
                             </Link>
                             <Link
                                 href="/direktori"
-                                className="inline-flex items-center justify-center gap-2 rounded-xl border border-pertamina-blue bg-white hover:bg-pertamina-blue-light text-pertamina-blue font-bold px-6 py-3 text-xs transition-all"
+                                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/40 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-bold px-6 py-3 text-xs transition-all active:scale-[0.98]"
                             >
-                                <Store className="w-4 h-4" />
+                                <Store className="w-4 h-4 flex-shrink-0" />
                                 <span>Daftar Kelompok Binaan</span>
                             </Link>
                         </div>
@@ -75,7 +89,7 @@ export default function CsrProgram() {
                             </span>
                         </div>
                         <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                            <span className="block text-3xl sm:text-4xl font-black text-pertamina-blue">50+</span>
+                            <span className="block text-3xl sm:text-4xl font-black text-pertamina-green">50+</span>
                             <span className="text-xs font-semibold text-slate-600 mt-1 block">
                                 Produk Lokal Terstandarisasi
                             </span>
@@ -99,7 +113,7 @@ export default function CsrProgram() {
             {/* Section 1: 3 Pilar Utama Program CSR */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
                 <div className="text-center max-w-3xl mx-auto mb-14">
-                    <span className="text-xs font-extrabold uppercase tracking-widest text-pertamina-blue">
+                    <span className="text-xs font-extrabold uppercase tracking-widest text-pertamina-green">
                         Fokus Strategis CSR
                     </span>
                     <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mt-2">
@@ -114,7 +128,7 @@ export default function CsrProgram() {
                     {/* Pilar 1 */}
                     <div className="rounded-3xl border border-slate-200/90 bg-white p-7 shadow-xs hover:border-slate-300 hover:shadow-md transition-all flex flex-col justify-between">
                         <div>
-                            <div className="w-12 h-12 rounded-2xl bg-pertamina-blue/10 text-pertamina-blue flex items-center justify-center mb-6">
+                            <div className="w-12 h-12 rounded-2xl bg-pertamina-green/10 text-pertamina-green flex items-center justify-center mb-6">
                                 <Smartphone className="w-6 h-6" />
                             </div>
                             <h3 className="text-lg font-bold text-slate-900 mb-2">
@@ -219,18 +233,18 @@ export default function CsrProgram() {
                         {DISTRICTS.filter((d) => d.id !== 'all').map((dist, idx) => (
                             <div
                                 key={dist.id}
-                                className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs hover:border-pertamina-blue/50 transition-all"
+                                className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs hover:border-pertamina-green/50 transition-all"
                             >
                                 <div className="flex items-center gap-2 mb-2">
                                     <MapPin className="w-4 h-4 text-pertamina-red" />
                                     <h4 className="text-sm font-bold text-slate-900">{dist.name}</h4>
                                 </div>
-                                <p className="text-xs text-pertamina-blue font-semibold">
+                                <p className="text-xs text-pertamina-green font-semibold">
                                     {dist.commodity}
                                 </p>
                                 <Link
                                     href="/direktori"
-                                    className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-400 hover:text-pertamina-blue mt-4 transition-colors"
+                                    className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-400 hover:text-pertamina-green mt-4 transition-colors"
                                 >
                                     <span>Lihat Mitra di Wilayah Ini</span>
                                     <ArrowRight className="w-3 h-3" />
@@ -243,9 +257,9 @@ export default function CsrProgram() {
 
             {/* Section 3: Kontak & Unit Pelaksana TJSL */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                <div className="rounded-3xl bg-gradient-to-br from-slate-900 to-pertamina-blue-dark text-white p-8 sm:p-12 shadow-xl flex flex-col md:flex-row items-center justify-between gap-8">
+                <div className="rounded-3xl bg-gradient-to-br from-slate-900 to-pertamina-green-dark text-white p-8 sm:p-12 shadow-xl flex flex-col md:flex-row items-center justify-between gap-8">
                     <div className="max-w-xl space-y-3">
-                        <span className="inline-block px-3 py-1 rounded-lg bg-white/10 text-xs font-bold text-pertamina-blue-light border border-white/10">
+                        <span className="inline-block px-3 py-1 rounded-lg bg-white/10 text-xs font-bold text-pertamina-green-light border border-white/10">
                             Unit Pelaksana CSR Dumai
                         </span>
                         <h3 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight">

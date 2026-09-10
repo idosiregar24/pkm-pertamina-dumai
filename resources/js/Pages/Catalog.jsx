@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+﻿import React, { useState, useMemo } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import {
     Search,
@@ -184,7 +184,7 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Nama produk / rasa..."
-                        className="w-full rounded-xl border border-slate-200 bg-white pl-9 pr-8 py-2 text-xs text-slate-800 placeholder-slate-400 focus:border-pertamina-blue focus:ring-pertamina-blue shadow-2xs"
+                        className="w-full rounded-xl border border-slate-200 bg-white pl-9 pr-8 py-2 text-xs text-slate-800 placeholder-slate-400 focus:border-pertamina-green focus:ring-pertamina-green shadow-2xs"
                     />
                     <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400" />
                     {searchQuery && (
@@ -214,7 +214,7 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                                 onClick={() => setSelectedCategory(cat.slug)}
                                 className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all ${
                                     isSelected
-                                        ? 'bg-pertamina-blue text-white font-bold shadow-xs'
+                                        ? 'bg-pertamina-green text-white font-bold shadow-xs'
                                         : 'text-slate-600 hover:bg-slate-100'
                                 }`}
                             >
@@ -275,14 +275,14 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                             placeholder="Min (Rp)"
                             value={customMinPrice}
                             onChange={(e) => setCustomMinPrice(e.target.value)}
-                            className="w-full rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs placeholder-slate-400 focus:border-pertamina-blue focus:ring-pertamina-blue"
+                            className="w-full rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs placeholder-slate-400 focus:border-pertamina-green focus:ring-pertamina-green"
                         />
                         <input
                             type="number"
                             placeholder="Maks (Rp)"
                             value={customMaxPrice}
                             onChange={(e) => setCustomMaxPrice(e.target.value)}
-                            className="w-full rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs placeholder-slate-400 focus:border-pertamina-blue focus:ring-pertamina-blue"
+                            className="w-full rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs placeholder-slate-400 focus:border-pertamina-green focus:ring-pertamina-green"
                         />
                     </div>
                 </div>
@@ -296,7 +296,7 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                 <select
                     value={selectedDistrict}
                     onChange={(e) => setSelectedDistrict(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 focus:border-pertamina-blue focus:ring-pertamina-blue shadow-2xs"
+                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 focus:border-pertamina-green focus:ring-pertamina-green shadow-2xs"
                 >
                     {DISTRICTS.map((d) => (
                         <option key={d.id} value={d.id}>
@@ -321,46 +321,57 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
     );
 
     return (
-        <PublicLayout title="E-Katalog Produk Binaan" activeMenu="catalog">
-            {/* Banner Header Halaman Katalog */}
-            <div className="bg-slate-50 border-b border-slate-200/80 py-8 lg:py-10">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <PublicLayout title="E-Katalog Produk Binaan" activeMenu="catalog" transparentNav={true}>
+            {/* Banner Header Halaman Katalog — Background Kilang */}
+            <div
+                className="relative overflow-hidden pt-36 pb-20 lg:pt-40 lg:pb-24"
+                style={{
+                    backgroundImage: `url('/asset/logo/Bg/Kilang_Minyak_Pertamina_RU_II_Dumai.jpg')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                }}
+            >
+                {/* Overlay gelap */}
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-900/80 via-slate-900/65 to-slate-900/80" />
+
+                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Breadcrumbs */}
-                    <nav className="flex items-center gap-2 text-xs text-slate-400 mb-3">
-                        <Link href="/" className="hover:text-pertamina-blue transition-colors">
+                    <nav className="flex items-center gap-2 text-xs text-white/60 mb-4">
+                        <Link href="/" className="hover:text-white transition-colors">
                             Beranda
                         </Link>
                         <ChevronRight className="w-3.5 h-3.5" />
-                        <span className="font-semibold text-slate-700">Katalog Produk E-Commerce</span>
+                        <span className="font-semibold text-white/90">Katalog Produk E-Commerce</span>
                     </nav>
 
-                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                         <div>
-                            <span className="text-[11px] font-extrabold uppercase tracking-widest text-pertamina-red">
+                            <span className="text-[11px] font-extrabold uppercase tracking-widest text-pertamina-green">
                                 E-Katalog Resmi Mitra Binaan CSR Pertamina
                             </span>
-                            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 mt-1">
+                            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mt-1 tracking-wide">
                                 Belanja Produk Otentik Kota Dumai
                             </h1>
-                            <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl">
+                            <p className="text-xs sm:text-sm text-white/75 mt-2 max-w-2xl leading-relaxed">
                                 Dapatkan produk olahan nanas gambut, madu sialang murni, songket khas Dumai, dan kerajinan serat mangrove langsung dari kelompok tani &amp; pengrajin lokal tanpa biaya perantara.
                             </p>
                         </div>
 
                         {/* Statistik Singkat */}
-                        <div className="flex items-center gap-3 bg-white border border-slate-200/80 rounded-2xl p-2.5 sm:p-3 shadow-xs">
-                            <div className="text-center px-2">
-                                <span className="block text-base sm:text-lg font-black text-pertamina-blue">
+                        <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-3 flex-shrink-0">
+                            <div className="text-center px-3">
+                                <span className="block text-lg font-black text-white">
                                     {baseProducts.length}
                                 </span>
-                                <span className="text-[10px] text-slate-400 font-semibold uppercase">Total Produk</span>
+                                <span className="text-[10px] text-white/60 font-semibold uppercase">Total Produk</span>
                             </div>
-                            <div className="h-7 w-px bg-slate-200" />
-                            <div className="text-center px-2">
-                                <span className="block text-base sm:text-lg font-black text-pertamina-green">
+                            <div className="h-7 w-px bg-white/20" />
+                            <div className="text-center px-3">
+                                <span className="block text-lg font-black text-white">
                                     100%
                                 </span>
-                                <span className="text-[10px] text-slate-400 font-semibold uppercase">Binaan TJSL</span>
+                                <span className="text-[10px] text-white/60 font-semibold uppercase">Binaan TJSL</span>
                             </div>
                         </div>
                     </div>
@@ -376,7 +387,7 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                     <aside className="hidden lg:block w-72 flex-shrink-0 sticky top-28 bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs">
                         <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
                             <div className="flex items-center gap-2 font-bold text-slate-900 text-sm">
-                                <SlidersHorizontal className="w-4 h-4 text-pertamina-blue" />
+                                <SlidersHorizontal className="w-4 h-4 text-pertamina-green" />
                                 <span>Filter Katalog</span>
                             </div>
                             {activeFiltersCount > 0 && (
@@ -404,7 +415,7 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                                 <button
                                     type="button"
                                     onClick={() => setMobileFilterOpen(true)}
-                                    className="lg:hidden inline-flex items-center gap-2 rounded-xl bg-pertamina-blue text-white px-3.5 py-2 text-xs font-bold shadow-xs active:scale-95"
+                                    className="lg:hidden inline-flex items-center gap-2 rounded-xl bg-pertamina-green text-white px-3.5 py-2 text-xs font-bold shadow-xs active:scale-95"
                                 >
                                     <Filter className="w-3.5 h-3.5" />
                                     <span>Filter &amp; Kategori</span>
@@ -430,7 +441,7 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                                     id="sortSelect"
                                     value={sortBy}
                                     onChange={(e) => setSortBy(e.target.value)}
-                                    className="rounded-xl border border-slate-200 bg-slate-50/80 px-3 py-1.5 text-xs text-slate-700 font-medium focus:border-pertamina-blue focus:ring-pertamina-blue"
+                                    className="rounded-xl border border-slate-200 bg-slate-50/80 px-3 py-1.5 text-xs text-slate-700 font-medium focus:border-pertamina-green focus:ring-pertamina-green"
                                 >
                                     <option value="recommended">Paling Sesuai / Rekomendasi</option>
                                     <option value="price-asc">Harga: Terendah ke Tertinggi</option>
@@ -456,7 +467,7 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                                 )}
 
                                 {selectedCategory !== 'all' && (
-                                    <span className="inline-flex items-center gap-1.5 rounded-lg bg-pertamina-blue-light border border-pertamina-blue/20 px-2.5 py-1 text-xs text-pertamina-blue font-semibold">
+                                    <span className="inline-flex items-center gap-1.5 rounded-lg bg-pertamina-green-light border border-pertamina-green/20 px-2.5 py-1 text-xs text-pertamina-green font-semibold">
                                         <span>Kategori: {categoriesList.find((c) => c.slug === selectedCategory)?.name || selectedCategory}</span>
                                         <button type="button" onClick={() => setSelectedCategory('all')} className="hover:text-pertamina-red">
                                             <X className="w-3 h-3" />
@@ -522,7 +533,7 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                                 <button
                                     type="button"
                                     onClick={handleResetFilters}
-                                    className="mt-4 inline-flex items-center gap-2 rounded-xl bg-pertamina-blue hover:bg-pertamina-blue-dark text-white text-xs font-bold px-4 py-2.5 shadow-xs transition-all"
+                                    className="mt-4 inline-flex items-center gap-2 rounded-xl bg-pertamina-green hover:bg-pertamina-green-dark text-white text-xs font-bold px-4 py-2.5 shadow-xs transition-all"
                                 >
                                     <RotateCcw className="w-3.5 h-3.5" />
                                     <span>Reset Semua Filter</span>
@@ -562,7 +573,7 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                         {/* Drawer Header */}
                         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
                             <div className="flex items-center gap-2 font-bold text-slate-900 text-sm">
-                                <SlidersHorizontal className="w-4 h-4 text-pertamina-blue" />
+                                <SlidersHorizontal className="w-4 h-4 text-pertamina-green" />
                                 <span>Filter Produk</span>
                             </div>
                             <button
@@ -591,7 +602,7 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                             <button
                                 type="button"
                                 onClick={() => setMobileFilterOpen(false)}
-                                className="flex-1 py-2.5 rounded-xl bg-pertamina-blue text-white text-xs font-bold shadow-xs active:scale-95"
+                                className="flex-1 py-2.5 rounded-xl bg-pertamina-green text-white text-xs font-bold shadow-xs active:scale-95"
                             >
                                 Terapkan ({filteredProducts.length})
                             </button>
@@ -632,7 +643,7 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                             {/* Info Produk Modal */}
                             <div className="space-y-4">
                                 <div>
-                                    <span className="inline-block px-2.5 py-1 rounded-lg bg-pertamina-blue-light text-pertamina-blue text-[11px] font-bold">
+                                    <span className="inline-block px-2.5 py-1 rounded-lg bg-pertamina-green-light text-pertamina-green text-[11px] font-bold">
                                         {typeof selectedProduct.category === 'object' ? selectedProduct.category?.name : selectedProduct.category}
                                     </span>
                                     <h2 className="text-xl font-extrabold text-slate-900 mt-2 leading-snug">
@@ -655,7 +666,7 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                                 {selectedProduct.umkm && (
                                     <div className="rounded-xl border border-slate-200 bg-slate-50/80 p-3 text-xs space-y-1">
                                         <div className="flex items-center gap-1.5 font-bold text-slate-800">
-                                            <Store className="w-3.5 h-3.5 text-pertamina-blue" />
+                                            <Store className="w-3.5 h-3.5 text-pertamina-green" />
                                             <span>{selectedProduct.umkm.name}</span>
                                         </div>
                                         <p className="text-slate-500 text-[11px]">

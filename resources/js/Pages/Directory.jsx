@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+﻿import React, { useState, useMemo } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import {
     Search,
@@ -69,47 +69,58 @@ export default function Directory({ umkms: dbUmkms = [], products: dbProducts = 
     }, [selectedUmkm, baseProducts]);
 
     return (
-        <PublicLayout title="Direktori Mitra Binaan UMKM" activeMenu="directory">
-            {/* Header Banner Direktori */}
-            <div className="bg-slate-50 border-b border-slate-200/80 py-8 lg:py-10">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <PublicLayout title="Direktori Mitra Binaan UMKM" activeMenu="directory" transparentNav={true}>
+            {/* Header Banner Direktori — Background Kilang */}
+            <div
+                className="relative overflow-hidden pt-32 pb-16 lg:pt-36 lg:pb-20"
+                style={{
+                    backgroundImage: `url('/asset/logo/Bg/Kilang_Minyak_Pertamina_RU_II_Dumai.jpg')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                }}
+            >
+                {/* Overlay gelap */}
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-900/80 via-slate-900/65 to-slate-900/85" />
+
+                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Breadcrumbs */}
-                    <nav className="flex items-center gap-2 text-xs text-slate-400 mb-3">
-                        <Link href="/" className="hover:text-pertamina-blue transition-colors">
+                    <nav className="flex items-center gap-2 text-xs text-white/60 mb-4">
+                        <Link href="/" className="hover:text-white transition-colors">
                             Beranda
                         </Link>
                         <ChevronRight className="w-3.5 h-3.5" />
-                        <span className="font-semibold text-slate-700">Direktori UMKM</span>
+                        <span className="font-semibold text-white/90">Direktori UMKM</span>
                     </nav>
 
-                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-5">
                         <div>
-                            <span className="text-[11px] font-extrabold uppercase tracking-widest text-pertamina-blue">
+                            <span className="text-[11px] font-extrabold uppercase tracking-widest text-pertamina-green">
                                 Program TJSL Pertamina Patra Niaga Dumai
                             </span>
-                            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 mt-1">
+                            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mt-1 tracking-wide">
                                 Direktori Kelompok Usaha &amp; Mitra Binaan
                             </h1>
-                            <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl">
+                            <p className="text-xs sm:text-sm text-white/75 mt-2 max-w-2xl leading-relaxed">
                                 Profil lengkap kelompok tani, komunitas pengrajin pesisir, dan produsen pangan olahan binaan CSR Pertamina di 7 kecamatan Kota Dumai.
                             </p>
                         </div>
 
                         {/* Search Bar */}
-                        <div className="relative w-full md:w-80">
+                        <div className="relative w-full md:w-80 flex-shrink-0">
                             <input
                                 type="text"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 placeholder="Cari nama UMKM / pengelola..."
-                                className="w-full rounded-xl border border-slate-200 bg-white pl-9 pr-8 py-2.5 text-xs text-slate-800 placeholder-slate-400 focus:border-pertamina-blue focus:ring-pertamina-blue shadow-2xs"
+                                className="w-full rounded-xl border border-white/30 bg-white/10 backdrop-blur-sm pl-9 pr-8 py-2.5 text-xs text-white placeholder-white/50 focus:border-white/60 focus:ring-0 focus:outline-none"
                             />
-                            <Search className="absolute left-3 top-3 w-3.5 h-3.5 text-slate-400" />
+                            <Search className="absolute left-3 top-3 w-3.5 h-3.5 text-white/50" />
                             {searchQuery && (
                                 <button
                                     type="button"
                                     onClick={() => setSearchQuery('')}
-                                    className="absolute right-2.5 top-3 text-slate-400 hover:text-slate-600"
+                                    className="absolute right-2.5 top-3 text-white/50 hover:text-white"
                                 >
                                     <X className="w-3.5 h-3.5" />
                                 </button>
@@ -118,7 +129,7 @@ export default function Directory({ umkms: dbUmkms = [], products: dbProducts = 
                     </div>
 
                     {/* Filter Kecamatan Pills */}
-                    <div className="flex items-center gap-2 overflow-x-auto pb-2 pt-6 scrollbar-none">
+                    <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-5 scrollbar-none">
                         {DISTRICTS.map((d) => {
                             const isSelected = selectedDistrict === d.id;
                             return (
@@ -128,8 +139,8 @@ export default function Directory({ umkms: dbUmkms = [], products: dbProducts = 
                                     onClick={() => setSelectedDistrict(d.id)}
                                     className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
                                         isSelected
-                                            ? 'bg-pertamina-blue text-white shadow-xs'
-                                            : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200/80'
+                                            ? 'bg-pertamina-green text-white shadow-sm'
+                                            : 'bg-white/10 backdrop-blur-sm text-white/80 hover:bg-white/20 border border-white/20'
                                     }`}
                                 >
                                     {d.name}
@@ -172,7 +183,7 @@ export default function Directory({ umkms: dbUmkms = [], products: dbProducts = 
                                 setSearchQuery('');
                                 setSelectedDistrict('all');
                             }}
-                            className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-pertamina-blue text-white text-xs font-bold shadow-xs"
+                            className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-pertamina-green text-white text-xs font-bold shadow-xs"
                         >
                             Reset Filter
                         </button>
@@ -253,7 +264,7 @@ export default function Directory({ umkms: dbUmkms = [], products: dbProducts = 
                                 {selectedUmkm.description}
                             </p>
                             {selectedUmkm.certification && (
-                                <p className="mt-2 text-xs font-semibold text-pertamina-blue flex items-center gap-1.5">
+                                <p className="mt-2 text-xs font-semibold text-pertamina-green flex items-center gap-1.5">
                                     <CheckCircle2 className="w-4 h-4 text-pertamina-green" />
                                     <span>Legalitas &amp; Sertifikasi: {selectedUmkm.certification}</span>
                                 </p>
@@ -307,7 +318,7 @@ export default function Directory({ umkms: dbUmkms = [], products: dbProducts = 
 
                             <Link
                                 href="/katalog"
-                                className="inline-flex items-center justify-center gap-2 rounded-xl border border-pertamina-blue bg-white hover:bg-pertamina-blue-light text-pertamina-blue font-bold py-3 px-4 text-xs transition-all"
+                                className="inline-flex items-center justify-center gap-2 rounded-xl border border-pertamina-green bg-white hover:bg-pertamina-green-light text-pertamina-green font-bold py-3 px-4 text-xs transition-all"
                             >
                                 <ShoppingBag className="w-4 h-4" />
                                 <span>Buka di Katalog</span>

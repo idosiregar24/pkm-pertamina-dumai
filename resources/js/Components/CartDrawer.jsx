@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { X, Trash2, Plus, Minus, ShoppingBag, MessageCircle, AlertCircle, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useCart } from '@/Contexts/CartContext';
 import { formatRupiah, generateWhatsAppOrderUrl } from '@/Utils/phone';
@@ -127,7 +127,7 @@ export default function CartDrawer() {
                                             className="rounded-xl border border-slate-200/90 bg-white p-3.5 shadow-2xs"
                                         >
                                             <div className="flex items-center justify-between pb-2 mb-3 border-b border-slate-100 text-xs">
-                                                <span className="font-bold text-pertamina-blue">
+                                                <span className="font-bold text-pertamina-green">
                                                     {group.umkm?.name || 'UMKM Binaan Pertamina'}
                                                 </span>
                                                 <span className="text-[11px] text-slate-400">
@@ -177,7 +177,7 @@ export default function CartDrawer() {
                                                                     <button
                                                                         type="button"
                                                                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                                        className="p-1 hover:text-pertamina-blue transition-colors"
+                                                                        className="p-1 hover:text-pertamina-green transition-colors"
                                                                     >
                                                                         <Plus className="w-3 h-3" />
                                                                     </button>
@@ -230,7 +230,7 @@ export default function CartDrawer() {
                                 {/* Form Data Pembeli */}
                                 <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-3.5">
                                     <div className="flex items-center gap-1.5 mb-2.5 text-xs font-bold text-slate-900">
-                                        <CheckCircle2 className="w-4 h-4 text-pertamina-blue" />
+                                        <CheckCircle2 className="w-4 h-4 text-pertamina-green" />
                                         <span>Data Pemesan untuk Pengiriman</span>
                                     </div>
 

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+﻿import { useState, useRef } from 'react';
 import { Link, useForm } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import { ChevronLeft, Upload, X, MapPin } from 'lucide-react';
@@ -72,7 +72,7 @@ export default function UmkmEdit({ umkm }) {
                                 <div>
                                     <label className="block text-xs font-bold text-slate-600 mb-1.5 uppercase tracking-wide">Nama UMKM *</label>
                                     <input type="text" value={data.name} onChange={(e) => setData('name', e.target.value)}
-                                        className={`w-full px-3.5 py-2.5 rounded-xl border text-sm bg-slate-50 text-slate-900 outline-none transition-all ${errors.name ? 'border-red-400' : 'border-slate-200 focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white'}`} />
+                                        className={`w-full px-3.5 py-2.5 rounded-xl border text-sm bg-slate-50 text-slate-900 outline-none transition-all ${errors.name ? 'border-red-400' : 'border-slate-200 focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white'}`} />
                                     {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
                                 </div>
 
@@ -80,13 +80,13 @@ export default function UmkmEdit({ umkm }) {
                                     <div>
                                         <label className="block text-xs font-bold text-slate-600 mb-1.5 uppercase tracking-wide">Nama Pemilik *</label>
                                         <input type="text" value={data.owner_name} onChange={(e) => setData('owner_name', e.target.value)}
-                                            className={`w-full px-3.5 py-2.5 rounded-xl border text-sm bg-slate-50 text-slate-900 outline-none transition-all ${errors.owner_name ? 'border-red-400' : 'border-slate-200 focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white'}`} />
+                                            className={`w-full px-3.5 py-2.5 rounded-xl border text-sm bg-slate-50 text-slate-900 outline-none transition-all ${errors.owner_name ? 'border-red-400' : 'border-slate-200 focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white'}`} />
                                         {errors.owner_name && <p className="mt-1 text-xs text-red-600">{errors.owner_name}</p>}
                                     </div>
                                     <div>
                                         <label className="block text-xs font-bold text-slate-600 mb-1.5 uppercase tracking-wide">No. WhatsApp</label>
                                         <input type="text" value={data.phone} onChange={(e) => setData('phone', e.target.value)} placeholder="08xxxxxxxxxx"
-                                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white transition-all" />
+                                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white transition-all" />
                                     </div>
                                 </div>
 
@@ -95,7 +95,7 @@ export default function UmkmEdit({ umkm }) {
                                     <div className="relative">
                                         <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                                         <select value={data.district} onChange={(e) => setData('district', e.target.value)}
-                                            className={`w-full pl-9 pr-3.5 py-2.5 rounded-xl border text-sm bg-slate-50 text-slate-900 outline-none transition-all ${errors.district ? 'border-red-400' : 'border-slate-200 focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white'}`}>
+                                            className={`w-full pl-9 pr-3.5 py-2.5 rounded-xl border text-sm bg-slate-50 text-slate-900 outline-none transition-all ${errors.district ? 'border-red-400' : 'border-slate-200 focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white'}`}>
                                             <option value="">— Pilih Kecamatan —</option>
                                             {DISTRICTS.map((d) => <option key={d} value={d}>{d}</option>)}
                                         </select>
@@ -107,36 +107,36 @@ export default function UmkmEdit({ umkm }) {
                                     <div>
                                         <label className="block text-xs font-bold text-slate-600 mb-1.5 uppercase tracking-wide">Tahun Berdiri</label>
                                         <input type="number" value={data.established_year} onChange={(e) => setData('established_year', e.target.value)} placeholder="2018"
-                                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white transition-all" />
+                                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white transition-all" />
                                     </div>
                                     <div>
                                         <label className="block text-xs font-bold text-slate-600 mb-1.5 uppercase tracking-wide">Binaan CSR Sejak</label>
                                         <input type="number" value={data.csr_batch_year} onChange={(e) => setData('csr_batch_year', e.target.value)} placeholder="2021"
-                                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white transition-all" />
+                                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white transition-all" />
                                     </div>
                                     <div>
                                         <label className="block text-xs font-bold text-slate-600 mb-1.5 uppercase tracking-wide">Jumlah Anggota</label>
                                         <input type="number" value={data.members_count} onChange={(e) => setData('members_count', e.target.value)} placeholder="24"
-                                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white transition-all" />
+                                            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white transition-all" />
                                     </div>
                                 </div>
 
                                 <div>
                                     <label className="block text-xs font-bold text-slate-600 mb-1.5 uppercase tracking-wide">Sertifikasi & Legalitas</label>
                                     <input type="text" value={data.certification} onChange={(e) => setData('certification', e.target.value)} placeholder="P-IRT, Halal MUI, ..."
-                                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white transition-all" />
+                                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white transition-all" />
                                 </div>
 
                                 <div>
                                     <label className="block text-xs font-bold text-slate-600 mb-1.5 uppercase tracking-wide">Link Toko Shopee</label>
                                     <input type="url" value={data.shopee_shop_url} onChange={(e) => setData('shopee_shop_url', e.target.value)} placeholder="https://shopee.co.id/..."
-                                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white transition-all" />
+                                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white transition-all" />
                                 </div>
 
                                 <div>
                                     <label className="block text-xs font-bold text-slate-600 mb-1.5 uppercase tracking-wide">Deskripsi UMKM</label>
                                     <textarea rows={4} value={data.description} onChange={(e) => setData('description', e.target.value)}
-                                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/10 focus:bg-white transition-all resize-y" />
+                                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-900 outline-none focus:border-[#9DC228] focus:ring-2 focus:ring-[#9DC228]/10 focus:bg-white transition-all resize-y" />
                                 </div>
                             </div>
                         </div>
@@ -146,7 +146,7 @@ export default function UmkmEdit({ umkm }) {
                                 Batal
                             </Link>
                             <button type="submit" disabled={processing}
-                                className="px-6 py-2.5 rounded-xl bg-[#005BAC] hover:bg-[#004994] active:scale-[0.98] text-white font-bold text-sm shadow-sm hover:shadow transition-all disabled:opacity-60 disabled:cursor-not-allowed">
+                                className="px-6 py-2.5 rounded-xl bg-[#9DC228] hover:bg-[#7A9A1E] active:scale-[0.98] text-white font-bold text-sm shadow-sm hover:shadow transition-all disabled:opacity-60 disabled:cursor-not-allowed">
                                 {processing ? 'Menyimpan...' : 'Perbarui Data UMKM'}
                             </button>
                         </div>
@@ -158,7 +158,7 @@ export default function UmkmEdit({ umkm }) {
                         <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
                             <h3 className="text-sm font-bold text-slate-800 mb-3">Foto Banner</h3>
                             <div
-                                className={`border-2 border-dashed rounded-xl overflow-hidden cursor-pointer transition-colors ${currentBanner ? 'border-slate-200' : 'border-slate-200 hover:border-[#005BAC] hover:bg-blue-50/30'}`}
+                                className={`border-2 border-dashed rounded-xl overflow-hidden cursor-pointer transition-colors ${currentBanner ? 'border-slate-200' : 'border-slate-200 hover:border-[#9DC228] hover:bg-blue-50/30'}`}
                                 onClick={() => bannerRef.current?.click()}
                             >
                                 {currentBanner ? (
@@ -188,7 +188,7 @@ export default function UmkmEdit({ umkm }) {
                         <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
                             <h3 className="text-sm font-bold text-slate-800 mb-3">Logo / Thumbnail</h3>
                             <div
-                                className={`border-2 border-dashed rounded-xl overflow-hidden cursor-pointer transition-colors ${currentLogo ? 'border-slate-200' : 'border-slate-200 hover:border-[#005BAC] hover:bg-blue-50/30'}`}
+                                className={`border-2 border-dashed rounded-xl overflow-hidden cursor-pointer transition-colors ${currentLogo ? 'border-slate-200' : 'border-slate-200 hover:border-[#9DC228] hover:bg-blue-50/30'}`}
                                 onClick={() => logoRef.current?.click()}
                             >
                                 {currentLogo ? (
@@ -216,8 +216,8 @@ export default function UmkmEdit({ umkm }) {
 
                         <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4">
                             <div className="flex items-center gap-1.5 mb-1.5">
-                                <span className="w-2 h-2 rounded-full bg-[#005BAC] animate-pulse" />
-                                <p className="text-xs font-bold text-[#005BAC]">Binaan CSR Pertamina Patra Niaga</p>
+                                <span className="w-2 h-2 rounded-full bg-[#9DC228] animate-pulse" />
+                                <p className="text-xs font-bold text-[#9DC228]">Binaan CSR Pertamina Patra Niaga</p>
                             </div>
                             <p className="text-[11px] text-slate-500 leading-relaxed">
                                 Perubahan akan langsung tampil di halaman Direktori dan Katalog publik portal.
