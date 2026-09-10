@@ -47,7 +47,7 @@ class ProductController extends Controller
         // Multipart form mengirim boolean sebagai string — cast manual
         $validated['is_featured'] = filter_var($request->input('is_featured', false), FILTER_VALIDATE_BOOLEAN);
 
-        // Bersihkan URL kosong atau tidak valid
+        // Bersihkan URL Shopee
         $shopeeUrl = trim($request->input('shopee_url', ''));
         $validated['shopee_url'] = ($shopeeUrl && str_starts_with($shopeeUrl, 'https://shopee.co.id/'))
             ? $shopeeUrl
@@ -67,17 +67,21 @@ class ProductController extends Controller
             ->with('success', 'Produk berhasil ditambahkan.');
     }
 
-    public function edit(Product $product)
+    /**
+     * Nama parameter HARUS cocok dengan route parameter {produk}
+     * untuk Laravel implicit route model binding bekerja dengan benar.
+     */
+    public function edit(Product $produk)
     {
         $umkms = Umkm::select('id', 'name', 'district')->orderBy('name')->get();
 
         return Inertia::render('Admin/Products/Edit', [
-            'product' => $product->load('umkm:id,name,district'),
+            'product' => $produk->load('umkm:id,name,district'),
             'umkms'   => $umkms,
         ]);
     }
 
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Product $produk)
     {
         $validated = $request->validate([
             'umkm_id'     => 'required|exists:umkms,id',
@@ -94,42 +98,40 @@ class ProductController extends Controller
         // Cast boolean dari multipart string
         $validated['is_featured'] = filter_var($request->input('is_featured', false), FILTER_VALIDATE_BOOLEAN);
 
-        // Bersihkan URL Shopee
+        // Bersihkan URL Shopee kosong
         $shopeeUrl = trim($request->input('shopee_url', ''));
         $validated['shopee_url'] = ($shopeeUrl && str_starts_with($shopeeUrl, 'https://shopee.co.id/'))
             ? $shopeeUrl
             : null;
 
-        // Update slug kategori
+        // Update category slug
         $validated['category_slug'] = Str::slug($validated['category']);
 
         // Upload foto baru jika ada
         if ($request->hasFile('image')) {
-            // Hapus foto lama dari storage
-            if ($product->image_url) {
-                $storagePath = preg_replace('#^/(?:pkm-pertamina-dumai/public/)?storage/#', '', $product->image_url);
-                Storage::disk('public')->delete($storagePath);
+            // Hapus foto lama
+            if ($produk->image_url && str_starts_with($produk->image_url, '/storage/')) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $produk->image_url));
             }
             $path = $request->file('image')->store('products', 'public');
             $validated['image_url'] = '/storage/' . $path;
         }
 
-        $product->update($validated);
+        $produk->update($validated);
 
         return redirect()->route('admin.produk.index')
-            ->with('success', 'Produk "' . $product->name . '" berhasil diperbarui.');
+            ->with('success', 'Produk "' . $produk->name . '" berhasil diperbarui.');
     }
 
-    public function destroy(Product $product)
+    public function destroy(Product $produk)
     {
-        $name = $product->name;
+        $name = $produk->name;
 
-        if ($product->image_url) {
-            $storagePath = preg_replace('#^/(?:pkm-pertamina-dumai/public/)?storage/#', '', $product->image_url);
-            Storage::disk('public')->delete($storagePath);
+        if ($produk->image_url && str_starts_with($produk->image_url, '/storage/')) {
+            Storage::disk('public')->delete(str_replace('/storage/', '', $produk->image_url));
         }
 
-        $product->delete();
+        $produk->delete();
 
         return redirect()->route('admin.produk.index')
             ->with('success', 'Produk "' . $name . '" berhasil dihapus.');
