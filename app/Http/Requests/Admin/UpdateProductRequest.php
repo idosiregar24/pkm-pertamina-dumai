@@ -21,7 +21,7 @@ class UpdateProductRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'min:0'],
             'unit' => ['required', 'string', 'max:100'],
-            'category' => ['required', 'string', 'max:100'],
+            'category_id' => ['required', 'exists:categories,id'],
             'description' => ['nullable', 'string'],
             'shopee_url' => ['nullable', 'url', new ValidShopeeUrl()],
             'is_featured' => ['sometimes'],

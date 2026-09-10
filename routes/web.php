@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\KelompokAdminController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
@@ -72,7 +73,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         ]);
     });
 
-    // Khusus Admin CSR — mendaftarkan & mengelola akun Admin Kelompok.
+    // Khusus Admin CSR — mendaftarkan & mengelola akun Admin Kelompok, dan
+    // kurasi master kategori produk (dibaca-saja oleh Admin Kelompok lewat
+    // ProductController, bukan lewat route di bawah ini).
     Route::middleware('role:admin_csr')->group(function () {
         Route::resource('kelompok-admin', KelompokAdminController::class)->names([
             'index'   => 'kelompok-admin.index',
@@ -81,6 +84,15 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
             'edit'    => 'kelompok-admin.edit',
             'update'  => 'kelompok-admin.update',
             'destroy' => 'kelompok-admin.destroy',
+        ]);
+
+        Route::resource('kategori', CategoryController::class)->names([
+            'index'   => 'kategori.index',
+            'create'  => 'kategori.create',
+            'store'   => 'kategori.store',
+            'edit'    => 'kategori.edit',
+            'update'  => 'kategori.update',
+            'destroy' => 'kategori.destroy',
         ]);
     });
 });

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Umkm;
 use Illuminate\Database\Seeder;
@@ -11,6 +12,12 @@ class UmkmProductSeeder extends Seeder
 {
     public function run(): void
     {
+        // Kategori WAJIB sudah ada (lihat DatabaseSeeder: CategorySeeder dipanggil
+        // lebih dulu). Peta nama -> id dipakai di bawah, category/category_slug
+        // string ikut disertakan agar produk tetap benar walau Product::booted()
+        // (yang men-sync dari category_id) entah kenapa tidak sempat jalan.
+        $categoryIds = Category::pluck('id', 'name');
+
         $umkms = [
             [
                 'name' => 'Kelompok Tani Nanas Maju Mandiri',
@@ -160,10 +167,14 @@ class UmkmProductSeeder extends Seeder
                     ['slug' => $slug],
                     [
                         'umkm_id' => $umkm->id,
+                        'category_id' => $categoryIds[$productData['category']] ?? null,
                         'name' => $productData['name'],
                         'slug' => $slug,
                         'price' => $productData['price'],
                         'unit' => $productData['unit'],
+                        // Cadangan eksplisit — Product::booted() akan men-sync ulang dari
+                        // category_id begitu category_id berubah, tapi diisi langsung di sini
+                        // supaya insert pertama tetap benar tanpa bergantung urutan event.
                         'category' => $productData['category'],
                         'category_slug' => Str::slug($productData['category']),
                         'description' => $productData['description'],

@@ -15,8 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Data UMKM & produk dulu, supaya akun Admin Kelompok contoh di bawah
-        // punya umkm_id yang valid untuk ditautkan.
+        // Kategori dulu (UmkmProductSeeder butuh category_id-nya), baru UMKM & produk,
+        // supaya akun Admin Kelompok contoh di bawah punya umkm_id yang valid.
+        $this->call(CategorySeeder::class);
         $this->call(UmkmProductSeeder::class);
 
         // Admin CSR — Super Admin, umkm_id selalu null (dijamin oleh User::booted()).

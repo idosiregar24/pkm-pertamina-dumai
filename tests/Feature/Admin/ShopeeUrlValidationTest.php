@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Umkm;
 use App\Models\User;
@@ -24,8 +25,9 @@ class ShopeeUrlValidationTest extends TestCase
     {
         $csr = User::factory()->create();
         $umkm = Umkm::create(['name' => 'K', 'owner_name' => 'O', 'district' => 'D', 'members_count' => 1]);
+        $category = Category::create(['name' => 'Umum', 'slug' => 'umum']);
         $product = Product::create([
-            'umkm_id' => $umkm->id, 'name' => 'Produk Lama', 'price' => 10000, 'unit' => 'pcs',
+            'umkm_id' => $umkm->id, 'category_id' => $category->id, 'name' => 'Produk Lama', 'price' => 10000, 'unit' => 'pcs',
             'category' => 'Umum', 'shopee_url' => 'https://shopee.co.id',
         ]);
 
@@ -35,7 +37,7 @@ class ShopeeUrlValidationTest extends TestCase
             'name' => 'Produk Baru',
             'price' => 12000,
             'unit' => 'pcs',
-            'category' => 'Umum',
+            'category_id' => $category->id,
             'shopee_url' => 'https://shopee.co.id', // field yang tidak disentuh user
         ]);
 
@@ -70,8 +72,9 @@ class ShopeeUrlValidationTest extends TestCase
     {
         $csr = User::factory()->create();
         $umkm = Umkm::create(['name' => 'K', 'owner_name' => 'O', 'district' => 'D', 'members_count' => 1]);
+        $category = Category::create(['name' => 'Umum', 'slug' => 'umum']);
         $product = Product::create([
-            'umkm_id' => $umkm->id, 'name' => 'Produk', 'price' => 10000, 'unit' => 'pcs', 'category' => 'Umum',
+            'umkm_id' => $umkm->id, 'category_id' => $category->id, 'name' => 'Produk', 'price' => 10000, 'unit' => 'pcs', 'category' => 'Umum',
         ]);
 
         $response = $this->actingAs($csr)->post(route('admin.produk.update', $product->id), [
@@ -80,7 +83,7 @@ class ShopeeUrlValidationTest extends TestCase
             'name' => 'Produk',
             'price' => 10000,
             'unit' => 'pcs',
-            'category' => 'Umum',
+            'category_id' => $category->id,
             'shopee_url' => 'https://tokopedia.com/toko-jahat',
         ]);
 

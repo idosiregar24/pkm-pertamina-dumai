@@ -3,21 +3,11 @@ import { Link, useForm, usePage } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import { ChevronLeft, Upload, X, ImageIcon } from 'lucide-react';
 
-const CATEGORIES = [
-    'Olahan Nanas & Kuliner',
-    'Madu Hutan & Herbal',
-    'Kerajinan & Kriya',
-    'Batik & Tenun',
-    'Kuliner Pesisir',
-    'Olahan Kelapa',
-    'Umum',
-];
-
 const fieldBase = 'w-full px-3.5 py-2.5 rounded-xl border text-sm bg-slate-50 text-slate-900 placeholder-slate-400 outline-none transition-all focus:bg-white';
 const fieldNormal = `${fieldBase} border-slate-200 focus:border-slate-400 focus:ring-1 focus:ring-slate-300`;
 const fieldError  = `${fieldBase} border-red-300 ring-1 ring-red-100`;
 
-export default function ProductCreate({ umkms }) {
+export default function ProductCreate({ umkms, categories }) {
     const { auth } = usePage().props;
     const isAdminCsr = auth?.user?.role === 'admin_csr';
 
@@ -29,7 +19,7 @@ export default function ProductCreate({ umkms }) {
         name:        '',
         price:       '',
         unit:        '',
-        category:    '',
+        category_id: '',
         description: '',
         shopee_url:  '',
         is_featured: false,
@@ -114,17 +104,32 @@ export default function ProductCreate({ umkms }) {
                                 {errors.name && <p className="mt-1 text-xs text-slate-600">{errors.name}</p>}
                             </div>
 
-                            {/* Kategori */}
+                            {/* Kategori — dipilih dari tabel categories yang dikurasi Admin CSR
+                                lewat /admin/kategori. Bukan lagi string bebas per-produk, jadi tidak
+                                mungkin lagi "hilang" diam-diam saat form disimpan ulang. */}
                             <div className="mb-4">
-                                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">
-                                    Kategori <span className="text-slate-800">*</span>
-                                </label>
-                                <select value={data.category} onChange={(e) => setData('category', e.target.value)}
-                                    className={errors.category ? fieldError : fieldNormal}>
+                                <div className="flex items-center justify-between mb-1.5">
+                                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                                        Kategori <span className="text-slate-800">*</span>
+                                    </label>
+                                    {isAdminCsr && (
+                                        <Link href={route('admin.kategori.create')} target="_blank"
+                                            className="text-[11px] font-semibold text-[#005BAC] hover:underline">
+                                            + Kategori baru
+                                        </Link>
+                                    )}
+                                </div>
+                                <select value={data.category_id} onChange={(e) => setData('category_id', e.target.value)}
+                                    className={errors.category_id ? fieldError : fieldNormal}>
                                     <option value="">— Pilih Kategori —</option>
-                                    {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                                    {(categories ?? []).map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                                 </select>
-                                {errors.category && <p className="mt-1 text-xs text-slate-600">{errors.category}</p>}
+                                {errors.category_id && <p className="mt-1 text-xs text-slate-600">{errors.category_id}</p>}
+                                {(categories ?? []).length === 0 && (
+                                    <p className="mt-1.5 text-xs text-amber-600">
+                                        Belum ada kategori. {isAdminCsr ? 'Buat kategori baru dulu lewat tombol di atas.' : 'Hubungi Admin CSR untuk menambahkan kategori.'}
+                                    </p>
+                                )}
                             </div>
 
                             {/* Harga + Satuan */}

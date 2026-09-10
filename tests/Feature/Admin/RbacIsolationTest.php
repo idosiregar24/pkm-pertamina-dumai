@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Umkm;
 use App\Models\User;
@@ -18,6 +19,7 @@ class RbacIsolationTest extends TestCase
 
     private Umkm $umkmA;
     private Umkm $umkmB;
+    private Category $category;
     private User $csr;
     private User $adminA;
     private User $adminB;
@@ -34,16 +36,19 @@ class RbacIsolationTest extends TestCase
         $this->umkmB = Umkm::create([
             'name' => 'Kelompok B', 'owner_name' => 'Owner B', 'district' => 'Dumai Barat', 'members_count' => 5,
         ]);
+        $this->category = Category::create(['name' => 'Umum', 'slug' => 'umum']);
 
         $this->csr = User::factory()->create();
         $this->adminA = User::factory()->adminKelompok($this->umkmA)->create();
         $this->adminB = User::factory()->adminKelompok($this->umkmB)->create();
 
         $this->productA = Product::create([
-            'umkm_id' => $this->umkmA->id, 'name' => 'Produk A', 'price' => 10000, 'unit' => 'pcs', 'category' => 'Umum',
+            'umkm_id' => $this->umkmA->id, 'category_id' => $this->category->id,
+            'name' => 'Produk A', 'price' => 10000, 'unit' => 'pcs', 'category' => 'Umum',
         ]);
         $this->productB = Product::create([
-            'umkm_id' => $this->umkmB->id, 'name' => 'Produk B', 'price' => 20000, 'unit' => 'pcs', 'category' => 'Umum',
+            'umkm_id' => $this->umkmB->id, 'category_id' => $this->category->id,
+            'name' => 'Produk B', 'price' => 20000, 'unit' => 'pcs', 'category' => 'Umum',
         ]);
     }
 
@@ -143,7 +148,7 @@ class RbacIsolationTest extends TestCase
             'name' => 'Produk Titipan',
             'price' => 15000,
             'unit' => 'pcs',
-            'category' => 'Umum',
+            'category_id' => $this->category->id,
         ])->assertRedirect(route('admin.produk.index'));
 
         $this->assertDatabaseHas('products', [

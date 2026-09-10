@@ -3,17 +3,7 @@ import { Link, useForm, usePage } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import { ChevronLeft, Upload, X, ImageIcon } from 'lucide-react';
 
-const CATEGORIES = [
-    'Olahan Nanas & Kuliner',
-    'Madu Hutan & Herbal',
-    'Kerajinan & Kriya',
-    'Batik & Tenun',
-    'Kuliner Pesisir',
-    'Olahan Kelapa',
-    'Umum',
-];
-
-export default function ProductEdit({ product, umkms }) {
+export default function ProductEdit({ product, umkms, categories }) {
     const { auth } = usePage().props;
     const isAdminCsr = auth?.user?.role === 'admin_csr';
 
@@ -27,7 +17,7 @@ export default function ProductEdit({ product, umkms }) {
         name:        product?.name        ?? '',
         price:       product?.price       ?? '',
         unit:        product?.unit        ?? '',
-        category:    product?.category    ?? '',
+        category_id: product?.category_id ? String(product.category_id) : '',
         description: product?.description ?? '',
         shopee_url:  product?.shopee_url  ?? '',
         is_featured: product?.is_featured ? true : false,
@@ -151,23 +141,37 @@ export default function ProductEdit({ product, umkms }) {
                                 )}
                             </div>
 
-                            {/* Kategori */}
+                            {/* Kategori — dipilih dari tabel categories yang dikurasi Admin CSR
+                                lewat /admin/kategori. Riwayat bug: <select> tertutup lama membatasi
+                                ke 7 opsi hardcoded yang tidak mencakup kategori lain di database —
+                                setiap kali produk dengan kategori "asing" dibuka & disimpan ulang,
+                                dropdown diam-diam jatuh ke opsi pertama dan MENIMPA kategori aslinya
+                                secara permanen. Sekarang category_id WAJIB merujuk baris nyata di
+                                tabel categories (FK), jadi kelas bug itu tidak mungkin terjadi lagi. */}
                             <div className="mb-4">
-                                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">
-                                    Kategori <span className="text-slate-800">*</span>
-                                </label>
+                                <div className="flex items-center justify-between mb-1.5">
+                                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                                        Kategori <span className="text-slate-800">*</span>
+                                    </label>
+                                    {isAdminCsr && (
+                                        <Link href={route('admin.kategori.create')} target="_blank"
+                                            className="text-[11px] font-semibold text-[#005BAC] hover:underline">
+                                            + Kategori baru
+                                        </Link>
+                                    )}
+                                </div>
                                 <select
-                                    value={data.category}
-                                    onChange={(e) => setData('category', e.target.value)}
-                                    className={errors.category ? fieldError : fieldNormal}
+                                    value={data.category_id}
+                                    onChange={(e) => setData('category_id', e.target.value)}
+                                    className={errors.category_id ? fieldError : fieldNormal}
                                 >
                                     <option value="">— Pilih Kategori —</option>
-                                    {CATEGORIES.map((c) => (
-                                        <option key={c} value={c}>{c}</option>
+                                    {(categories ?? []).map((c) => (
+                                        <option key={c.id} value={c.id}>{c.name}</option>
                                     ))}
                                 </select>
-                                {errors.category && (
-                                    <p className="mt-1 text-xs text-slate-600">{errors.category}</p>
+                                {errors.category_id && (
+                                    <p className="mt-1 text-xs text-slate-600">{errors.category_id}</p>
                                 )}
                             </div>
 

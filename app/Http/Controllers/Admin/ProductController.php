@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreProductRequest;
 use App\Http\Requests\Admin\UpdateProductRequest;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Umkm;
 use Illuminate\Http\Request;
@@ -46,6 +47,11 @@ class ProductController extends Controller
 
         return Inertia::render('Admin/Products/Create', [
             'umkms' => $umkms,
+            // Sumber kebenaran kategori sekarang tabel `categories`, dikurasi
+            // Admin CSR lewat /admin/kategori — bukan lagi daftar hardcoded
+            // atau string bebas per-produk (lihat riwayat bug: <select> tertutup
+            // pernah diam-diam menimpa kategori yang tidak ada di opsinya).
+            'categories' => Category::select('id', 'name')->orderBy('name')->get(),
         ]);
     }
 
@@ -54,13 +60,10 @@ class ProductController extends Controller
         $validated = $request->validated();
         $validated['umkm_id'] = $request->resolvedUmkmId(); // paksa server-side, abaikan payload client
 
-        // shopee_url sudah tervalidasi & aman lewat ValidShopeeUrl di StoreProductRequest —
-        // tidak perlu disanitasi ulang di sini (dulu ada re-check longgar yang malah
-        // menghapus paksa URL toko polos seperti "https://shopee.co.id").
+        // shopee_url sudah tervalidasi & aman lewat ValidShopeeUrl di StoreProductRequest.
+        // category/category_slug di-sync otomatis dari category_id lewat Product::booted().
         $validated['is_featured'] = filter_var($request->input('is_featured', false), FILTER_VALIDATE_BOOLEAN);
-
         $validated['slug'] = Str::slug($validated['name']) . '-' . Str::random(5);
-        $validated['category_slug'] = Str::slug($validated['category']);
 
         if ($request->hasFile('image')) {
             $validated['image_url'] = '/storage/' . $request->file('image')->store('products', 'public');
@@ -85,6 +88,7 @@ class ProductController extends Controller
         return Inertia::render('Admin/Products/Edit', [
             'product' => $produk->load('umkm:id,name,district'),
             'umkms' => $umkms,
+            'categories' => Category::select('id', 'name')->orderBy('name')->get(),
         ]);
     }
 
@@ -94,9 +98,8 @@ class ProductController extends Controller
         $validated['umkm_id'] = $request->resolvedUmkmId($produk->umkm_id);
 
         // shopee_url sudah tervalidasi & aman lewat ValidShopeeUrl di UpdateProductRequest.
+        // category/category_slug di-sync otomatis dari category_id lewat Product::booted().
         $validated['is_featured'] = filter_var($request->input('is_featured', false), FILTER_VALIDATE_BOOLEAN);
-
-        $validated['category_slug'] = Str::slug($validated['category']);
 
         if ($request->hasFile('image')) {
             if ($produk->image_url && str_starts_with($produk->image_url, '/storage/')) {

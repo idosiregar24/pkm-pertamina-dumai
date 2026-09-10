@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { Head } from '@inertiajs/react';
 import {
-    LayoutDashboard, Package, Store, Users,
+    LayoutDashboard, Package, Store, Users, Tag,
     LogOut, Menu, X, ChevronRight, ExternalLink
 } from 'lucide-react';
 import FlashAlert from '@/Components/FlashAlert';
@@ -25,6 +25,7 @@ function buildNavItems(user) {
     if (isAdminCsr) {
         items.push(
             { label: 'UMKM Mitra',        routeName: 'admin.umkm.index',           icon: Store, id: 'umkm' },
+            { label: 'Kategori',          routeName: 'admin.kategori.index',       icon: Tag,   id: 'kategori' },
             { label: 'Akun Admin Kelompok', routeName: 'admin.kelompok-admin.index', icon: Users, id: 'kelompok-admin' },
         );
     } else if (user.umkm_id) {
