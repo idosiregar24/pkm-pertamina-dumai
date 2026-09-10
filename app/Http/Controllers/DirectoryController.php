@@ -15,14 +15,14 @@ class DirectoryController extends Controller
             ->with([
                 'products' => function ($query) {
                     $query->select('id', 'umkm_id', 'name', 'slug', 'price', 'unit', 'image_url', 'category', 'category_slug', 'is_featured')
-                        ->latest();
+                        ->orderByDesc('id');
                 }
             ])
-            ->orderBy('name')
+            ->orderByDesc('id')
             ->get();
 
         $products = Product::with('umkm:id,name,district,phone')
-            ->latest()
+            ->orderByDesc('id')
             ->get();
 
         return Inertia::render('Directory', [

@@ -3,7 +3,9 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
+use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
@@ -40,6 +42,16 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertGuest();
+    }
+
+    public function test_database_seeder_creates_default_admin_account(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $user = User::where('email', 'admin@pertamina-dumai.id')->first();
+
+        $this->assertNotNull($user);
+        $this->assertTrue(Hash::check('password', $user->password));
     }
 
     public function test_users_can_logout(): void

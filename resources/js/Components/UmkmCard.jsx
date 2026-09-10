@@ -13,7 +13,9 @@ export default function UmkmCard({ umkm, onSelectUmkm }) {
     return (
         <div
             onClick={() => onSelectUmkm && onSelectUmkm(umkm)}
-            className="group flex flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-5 shadow-subtle transition-all duration-300 hover:border-slate-300 hover:shadow-subtle-hover cursor-pointer"
+            className={`group flex flex-col justify-between rounded-2xl border p-5 shadow-subtle transition-all duration-300 hover:border-slate-300 hover:shadow-subtle-hover cursor-pointer ${
+                umkm.is_highlighted ? 'border-pertamina-blue bg-blue-50/40 ring-1 ring-pertamina-blue/20' : 'border-slate-200/90 bg-white'
+            }`}
         >
             <div>
                 {/* Header: Foto Banner / Cover + Badge CSR */}
@@ -34,13 +36,19 @@ export default function UmkmCard({ umkm, onSelectUmkm }) {
                         <BadgeCsr size="xs" />
                     </div>
 
-                    {umkm.csr_batch_year && (
-                        <div className="absolute top-3 right-3">
+                    <div className="absolute top-3 right-3 flex items-center gap-1.5">
+                        {umkm.is_highlighted && (
+                            <span className="rounded-lg bg-pertamina-red px-2 py-0.5 text-[10px] font-bold text-white shadow-xs">
+                                Highlight
+                            </span>
+                        )}
+
+                        {umkm.csr_batch_year && (
                             <span className="rounded-lg bg-black/40 backdrop-blur-md px-2 py-0.5 text-[10px] font-semibold text-white border border-white/20">
                                 Angkatan {umkm.csr_batch_year}
                             </span>
-                        </div>
-                    )}
+                        )}
+                    </div>
 
                     <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
                         <div className="flex items-center gap-1.5 text-xs font-medium drop-shadow-sm">

@@ -13,7 +13,7 @@ class CatalogController extends Controller
     public function index(): Response
     {
         $products = Product::with('umkm:id,name,district,phone,shopee_shop_url')
-            ->latest()
+            ->orderByDesc('id')
             ->get();
 
         $totalCount = $products->count();

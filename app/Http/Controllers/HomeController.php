@@ -16,7 +16,7 @@ class HomeController extends Controller
         // Ambil produk unggulan (is_featured = true), jika kurang dari 6 lengkapi dengan produk terbaru
         $featuredProducts = Product::with('umkm:id,name,district,phone,shopee_shop_url')
             ->where('is_featured', true)
-            ->latest()
+            ->orderByDesc('id')
             ->take(6)
             ->get();
 
