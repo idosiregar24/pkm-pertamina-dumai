@@ -37,7 +37,6 @@ export default function CsrProgram() {
                     </nav>
 
                     <div className="max-w-3xl">
-                        <BadgeCsr size="default" />
                         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mt-3 leading-tight">
                             Pemberdayaan Berkelanjutan Menuju Kemandirian UMKM Kota Dumai
                         </h1>

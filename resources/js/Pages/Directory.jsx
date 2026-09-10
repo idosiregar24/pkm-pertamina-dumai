@@ -23,31 +23,50 @@ import BadgeCsr from '@/Components/BadgeCsr';
 import { formatWhatsAppNumber, formatRupiah } from '@/Utils/phone';
 import { INITIAL_UMKMS, INITIAL_PRODUCTS, DISTRICTS } from '@/data/mockData';
 
-export default function Directory() {
+export default function Directory({ umkms: dbUmkms = [], products: dbProducts = [] }) {
     const [selectedDistrict, setSelectedDistrict] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedUmkm, setSelectedUmkm] = useState(null);
 
+    // Data UMKM dari database (dengan fallback ke mockData jika kosong)
+    const baseUmkms = useMemo(() => {
+        if (dbUmkms && dbUmkms.length > 0) {
+            return dbUmkms;
+        }
+        return INITIAL_UMKMS;
+    }, [dbUmkms]);
+
+    // Data Produk dari database (dengan fallback)
+    const baseProducts = useMemo(() => {
+        if (dbProducts && dbProducts.length > 0) {
+            return dbProducts;
+        }
+        return INITIAL_PRODUCTS;
+    }, [dbProducts]);
+
     // Filter UMKM
     const filteredUmkms = useMemo(() => {
-        return INITIAL_UMKMS.filter((umkm) => {
+        return baseUmkms.filter((umkm) => {
             const matchesDistrict =
-                selectedDistrict === 'all' || umkm.district.toLowerCase().includes(selectedDistrict.toLowerCase());
+                selectedDistrict === 'all' || (umkm.district && umkm.district.toLowerCase().includes(selectedDistrict.toLowerCase()));
             const matchesSearch =
                 !searchQuery.trim() ||
-                umkm.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                umkm.owner_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                umkm.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                umkm.district.toLowerCase().includes(searchQuery.toLowerCase());
+                (umkm.name && umkm.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                (umkm.owner_name && umkm.owner_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                (umkm.description && umkm.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                (umkm.district && umkm.district.toLowerCase().includes(searchQuery.toLowerCase()));
             return matchesDistrict && matchesSearch;
         });
-    }, [selectedDistrict, searchQuery]);
+    }, [baseUmkms, selectedDistrict, searchQuery]);
 
     // Products of the selected UMKM in modal
     const umkmProducts = useMemo(() => {
         if (!selectedUmkm) return [];
-        return INITIAL_PRODUCTS.filter((p) => p.umkm_id === selectedUmkm.id);
-    }, [selectedUmkm]);
+        if (selectedUmkm.products && Array.isArray(selectedUmkm.products) && selectedUmkm.products.length > 0) {
+            return selectedUmkm.products;
+        }
+        return baseProducts.filter((p) => p.umkm_id === selectedUmkm.id);
+    }, [selectedUmkm, baseProducts]);
 
     return (
         <PublicLayout title="Direktori Mitra Binaan UMKM" activeMenu="directory">
@@ -196,9 +215,6 @@ export default function Directory() {
                                 className="w-full h-full object-cover"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/30 to-transparent" />
-                            <div className="absolute top-3 left-3">
-                                <BadgeCsr size="default" />
-                            </div>
                             <div className="absolute bottom-3 left-3 right-3 text-white">
                                 <h2 className="text-xl font-extrabold drop-shadow-sm leading-snug">
                                     {selectedUmkm.name}

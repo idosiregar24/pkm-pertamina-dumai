@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { Eye, EyeOff, LogIn, Shield, Lock } from 'lucide-react';
+import { Eye, EyeOff, LogIn, Lock } from 'lucide-react';
+import { getAssetUrl } from '@/Utils/phone';
 
 export default function Login({ status, canResetPassword }) {
     const [showPassword, setShowPassword] = useState(false);
@@ -15,7 +16,7 @@ export default function Login({ status, canResetPassword }) {
         post(route('login'), { onFinish: () => reset('password') });
     };
 
-    const logoSrc = '/pkm-pertamina-dumai/public/asset/logo/logo-pertamina-patra-niaga.png';
+    const logoSrc = getAssetUrl('/asset/logo/logo-pertamina-patra-niaga.png');
 
     return (
         <>
@@ -23,82 +24,50 @@ export default function Login({ status, canResetPassword }) {
 
             <div className="min-h-screen bg-slate-50 flex flex-col lg:flex-row">
 
-                {/* ─── LEFT: Branding Panel ─── */}
-                <div className="hidden lg:flex lg:w-[480px] xl:w-[540px] flex-shrink-0 flex-col bg-[#005BAC] relative overflow-hidden">
-
-                    {/* Texture overlay */}
-                    <div className="absolute inset-0 opacity-[0.06]"
-                        style={{
-                            backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-                            backgroundSize: '28px 28px'
-                        }} />
-
-                    {/* Top gradient accent */}
-                    <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ED1C24] via-[#ED1C24] to-[#005BAC]" />
-
-                    {/* Bottom corner decoration */}
-                    <div className="absolute bottom-0 right-0 w-64 h-64 rounded-tl-full opacity-10 bg-white" />
-                    <div className="absolute bottom-8 right-8 w-40 h-40 rounded-full opacity-5 bg-white" />
+                {/* ─── LEFT: Branding Panel (Putih Bersih) ─── */}
+                <div className="hidden lg:flex lg:w-[480px] xl:w-[540px] flex-shrink-0 flex-col bg-white border-r border-slate-200/80 relative overflow-hidden">
 
                     {/* Content */}
-                    <div className="relative z-10 flex flex-col h-full p-10">
+                    <div className="relative z-10 flex flex-col h-full p-10 xl:p-12">
 
-                        {/* Logo */}
-                        <div className="flex items-center gap-3 mb-auto">
-                            <div className="bg-white rounded-xl px-3 py-2 shadow-sm">
-                                <img
-                                    src={logoSrc}
-                                    alt="Pertamina Patra Niaga"
-                                    className="h-9 w-auto object-contain"
-                                    onError={(e) => { e.target.style.display = 'none'; }}
-                                />
-                            </div>
-                            <div>
-                                <p className="text-[10px] font-extrabold text-blue-200 uppercase tracking-widest leading-none mb-0.5">
-                                    Pertamina Patra Niaga
-                                </p>
-                                <p className="text-xs font-medium text-white/60">
-                                    Unit Dumai · Program CSR
-                                </p>
-                            </div>
+                        {/* Logo Pertamina */}
+                        <div className="flex items-center gap-3.5 mb-auto">
+                            <img
+                                src={logoSrc}
+                                alt="Logo Pertamina Patra Niaga"
+                                className="h-10 sm:h-12 w-auto object-contain"
+                            />
                         </div>
 
-                        {/* Main headline */}
+                        {/* Main headline (Tanpa "Panel Pengelola Resmi") */}
                         <div className="py-12">
-                            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1.5 mb-6">
-                                <Shield className="w-3.5 h-3.5 text-blue-200" />
-                                <span className="text-[11px] font-semibold text-blue-100 uppercase tracking-wider">
-                                    Panel Pengelola Resmi
-                                </span>
-                            </div>
-
-                            <h1 className="text-4xl xl:text-5xl font-extrabold text-white leading-[1.1] tracking-tight mb-5">
+                            <h1 className="text-3xl xl:text-4xl font-extrabold text-slate-900 leading-[1.2] tracking-tight mb-4">
                                 Kelola Portal<br />
-                                <span className="text-[#ED1C24]">UMKM</span> Binaan<br />
-                                CSR Pertamina
+                                <span className="text-pertamina-red">UMKM</span> Binaan<br />
+                                <span className="text-pertamina-blue">CSR Pertamina</span>
                             </h1>
 
-                            <p className="text-sm text-blue-100/70 leading-relaxed max-w-xs">
-                                Manajemen terpusat untuk data produk, profil UMKM mitra, dan konten program pemberdayaan CSR Kota Dumai.
+                            <p className="text-sm text-slate-600 leading-relaxed max-w-sm">
+                                Manajemen terpusat untuk data produk, profil UMKM mitra binaan, dan konten program pemberdayaan CSR Kota Dumai.
                             </p>
                         </div>
 
                         {/* Feature list */}
-                        <div className="space-y-3 mb-10">
+                        <div className="space-y-3.5 mb-10">
                             {[
-                                { label: 'Tambah & edit produk UMKM binaan', dot: 'bg-[#ED1C24]' },
-                                { label: 'Kelola foto & profil kelompok usaha', dot: 'bg-[#00A651]' },
-                                { label: 'Pantau statistik & data program CSR', dot: 'bg-blue-300' },
+                                { label: 'Tambah & edit produk UMKM binaan', dot: 'bg-pertamina-red' },
+                                { label: 'Kelola foto & profil kelompok usaha', dot: 'bg-pertamina-green' },
+                                { label: 'Pantau statistik & data program CSR', dot: 'bg-pertamina-blue' },
                             ].map((f) => (
                                 <div key={f.label} className="flex items-center gap-3">
-                                    <span className={`w-2 h-2 rounded-full flex-shrink-0 ${f.dot}`} />
-                                    <span className="text-sm text-blue-100/80 font-medium">{f.label}</span>
+                                    <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${f.dot}`} />
+                                    <span className="text-sm text-slate-700 font-medium">{f.label}</span>
                                 </div>
                             ))}
                         </div>
 
                         {/* Footer */}
-                        <p className="text-[11px] text-white/25 border-t border-white/10 pt-5">
+                        <p className="text-[11px] text-slate-400 border-t border-slate-100 pt-5">
                             © {new Date().getFullYear()} Program CSR TJSL · PT Pertamina Patra Niaga · Unit Dumai
                         </p>
                     </div>
@@ -110,24 +79,17 @@ export default function Login({ status, canResetPassword }) {
 
                         {/* Mobile logo */}
                         <div className="flex items-center gap-3 mb-8 lg:hidden">
-                            <div className="bg-white rounded-xl px-2.5 py-1.5 border border-slate-200 shadow-sm">
-                                <img
-                                    src={logoSrc}
-                                    alt="Pertamina Patra Niaga"
-                                    className="h-8 w-auto object-contain"
-                                    onError={(e) => { e.target.style.display = 'none'; }}
-                                />
-                            </div>
-                            <div>
-                                <p className="text-[10px] font-extrabold text-[#005BAC] uppercase tracking-widest leading-none mb-0.5">Pertamina Patra Niaga</p>
-                                <p className="text-xs text-slate-500">Unit Dumai · Panel Admin</p>
-                            </div>
+                            <img
+                                src={logoSrc}
+                                alt="Logo Pertamina Patra Niaga"
+                                className="h-10 w-auto object-contain"
+                            />
                         </div>
 
                         {/* Header */}
                         <div className="mb-8">
-                            <div className="w-11 h-11 bg-[#005BAC]/10 rounded-2xl flex items-center justify-center mb-4 border border-[#005BAC]/15">
-                                <Lock className="w-5 h-5 text-[#005BAC]" />
+                            <div className="w-11 h-11 bg-pertamina-blue/10 rounded-2xl flex items-center justify-center mb-4 border border-pertamina-blue/15">
+                                <Lock className="w-5 h-5 text-pertamina-blue" />
                             </div>
                             <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
                                 Masuk ke Panel Admin
@@ -140,7 +102,7 @@ export default function Login({ status, canResetPassword }) {
                         {/* Status */}
                         {status && (
                             <div className="mb-5 flex items-center gap-2 bg-green-50 border border-green-200 text-green-700 text-sm font-medium rounded-xl px-4 py-3">
-                                <span className="w-2 h-2 rounded-full bg-[#00A651]" />
+                                <span className="w-2 h-2 rounded-full bg-pertamina-green" />
                                 {status}
                             </div>
                         )}
@@ -168,7 +130,7 @@ export default function Login({ status, canResetPassword }) {
                                     className={`w-full px-4 py-3 rounded-xl border text-sm text-slate-900 bg-white placeholder-slate-400 outline-none transition-all
                                         ${errors.email
                                             ? 'border-red-400 ring-1 ring-red-200'
-                                            : 'border-slate-300 focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/15'
+                                            : 'border-slate-300 focus:border-pertamina-blue focus:ring-2 focus:ring-pertamina-blue/15'
                                         }`}
                                 />
                                 {errors.email && (
@@ -196,7 +158,7 @@ export default function Login({ status, canResetPassword }) {
                                         className={`w-full px-4 py-3 pr-11 rounded-xl border text-sm text-slate-900 bg-white placeholder-slate-400 outline-none transition-all
                                             ${errors.password
                                                 ? 'border-red-400 ring-1 ring-red-200'
-                                                : 'border-slate-300 focus:border-[#005BAC] focus:ring-2 focus:ring-[#005BAC]/15'
+                                                : 'border-slate-300 focus:border-pertamina-blue focus:ring-2 focus:ring-pertamina-blue/15'
                                             }`}
                                     />
                                     <button
@@ -221,14 +183,14 @@ export default function Login({ status, canResetPassword }) {
                                         name="remember"
                                         checked={data.remember}
                                         onChange={(e) => setData('remember', e.target.checked)}
-                                        className="w-4 h-4 rounded border-slate-300 accent-[#005BAC] cursor-pointer"
+                                        className="w-4 h-4 rounded border-slate-300 text-pertamina-blue focus:ring-pertamina-blue cursor-pointer"
                                     />
                                     <span className="text-sm text-slate-600">Ingat perangkat ini</span>
                                 </label>
                                 {canResetPassword && (
                                     <Link
                                         href={route('password.request')}
-                                        className="text-sm font-semibold text-[#005BAC] hover:text-[#004994] transition-colors"
+                                        className="text-sm font-semibold text-pertamina-blue hover:text-pertamina-blue-dark transition-colors"
                                     >
                                         Lupa sandi?
                                     </Link>
@@ -240,7 +202,7 @@ export default function Login({ status, canResetPassword }) {
                                 type="submit"
                                 id="login-submit-btn"
                                 disabled={processing}
-                                className="w-full flex items-center justify-center gap-2.5 bg-[#ED1C24] hover:bg-[#c9141b] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold text-sm py-3.5 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 mt-2"
+                                className="w-full flex items-center justify-center gap-2.5 bg-pertamina-red hover:bg-pertamina-red-dark active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold text-sm py-3.5 rounded-xl shadow-xs hover:shadow transition-all duration-200 mt-2"
                             >
                                 {processing ? (
                                     <>
@@ -280,8 +242,8 @@ export default function Login({ status, canResetPassword }) {
                         </Link>
 
                         {/* Credential hint */}
-                        <div className="mt-6 bg-blue-50 border border-blue-100 rounded-xl px-4 py-3">
-                            <p className="text-[11px] text-[#005BAC] font-semibold mb-1">
+                        <div className="mt-6 bg-slate-100/80 border border-slate-200/90 rounded-xl px-4 py-3">
+                            <p className="text-[11px] text-slate-700 font-bold mb-1">
                                 🔐 Akun Demo Admin
                             </p>
                             <p className="text-[11px] text-slate-500 font-mono">

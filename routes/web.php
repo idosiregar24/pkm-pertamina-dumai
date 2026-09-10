@@ -2,28 +2,18 @@
 
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\UmkmController as AdminUmkmController;
+use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\DirectoryController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // ── Public Routes ──
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin'      => Route::has('login'),
-        'canRegister'   => Route::has('register'),
-        'laravelVersion'=> Application::VERSION,
-        'phpVersion'    => PHP_VERSION,
-    ]);
-})->name('home');
-
-Route::get('/katalog', function () {
-    return Inertia::render('Catalog');
-})->name('catalog');
-
-Route::get('/direktori', function () {
-    return Inertia::render('Directory');
-})->name('directory');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/katalog', [CatalogController::class, 'index'])->name('catalog');
+Route::get('/direktori', [DirectoryController::class, 'index'])->name('directory');
 
 Route::get('/program-csr', function () {
     return Inertia::render('CsrProgram');

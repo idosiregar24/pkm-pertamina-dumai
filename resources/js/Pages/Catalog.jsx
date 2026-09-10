@@ -23,8 +23,39 @@ import { useCart } from '@/Contexts/CartContext';
 import { formatRupiah, formatWhatsAppNumber, generateWhatsAppOrderUrl } from '@/Utils/phone';
 import { INITIAL_PRODUCTS, CATEGORIES, DISTRICTS, PRICE_RANGES, INITIAL_UMKMS } from '@/data/mockData';
 
-export default function Catalog() {
+export default function Catalog({ products: dbProducts = [], categories: dbCategories = [] }) {
     const { addToCart } = useCart();
+
+    // Data produk dari database (dengan fallback ke mockData jika kosong)
+    const baseProducts = useMemo(() => {
+        if (dbProducts && dbProducts.length > 0) {
+            return dbProducts;
+        }
+        return INITIAL_PRODUCTS;
+    }, [dbProducts]);
+
+    // Kategori dinamis dari database (dengan fallback)
+    const categoriesList = useMemo(() => {
+        if (dbCategories && dbCategories.length > 0) {
+            return dbCategories;
+        }
+        // Fallback: hitung dari produk yang ada
+        const map = new Map();
+        baseProducts.forEach((p) => {
+            const name = typeof p.category === 'object' ? p.category?.name : p.category;
+            const slug = typeof p.category === 'object' ? p.category?.slug : (p.category_slug || (name ? name.toLowerCase().replace(/[^a-z0-9]+/g, '-') : ''));
+            if (name && slug) {
+                if (!map.has(slug)) {
+                    map.set(slug, { name, slug, count: 0 });
+                }
+                map.get(slug).count += 1;
+            }
+        });
+        return [
+            { name: 'Semua Kategori', slug: 'all', count: baseProducts.length },
+            ...Array.from(map.values()),
+        ];
+    }, [dbCategories, baseProducts]);
 
     // Filter states
     const [searchQuery, setSearchQuery] = useState('');
@@ -44,7 +75,7 @@ export default function Catalog() {
 
     // Filter logic
     const filteredProducts = useMemo(() => {
-        let list = [...INITIAL_PRODUCTS];
+        let list = [...baseProducts];
 
         // 1. Search Query
         if (searchQuery.trim()) {
@@ -52,15 +83,26 @@ export default function Catalog() {
             list = list.filter(
                 (p) =>
                     p.name.toLowerCase().includes(q) ||
-                    p.description.toLowerCase().includes(q) ||
-                    p.umkm?.name.toLowerCase().includes(q) ||
-                    p.umkm?.district.toLowerCase().includes(q)
+                    (p.description && p.description.toLowerCase().includes(q)) ||
+                    (p.umkm?.name && p.umkm.name.toLowerCase().includes(q)) ||
+                    (p.umkm?.district && p.umkm.district.toLowerCase().includes(q))
             );
         }
 
         // 2. Category
         if (selectedCategory !== 'all') {
-            list = list.filter((p) => p.category?.slug === selectedCategory);
+            list = list.filter((p) => {
+                const pSlug = p.category_slug || (typeof p.category === 'string' ? p.category.toLowerCase().replace(/[^a-z0-9]+/g, '-') : '');
+                const pName = typeof p.category === 'object' ? p.category?.name : p.category;
+                const pCatSlug = typeof p.category === 'object' ? p.category?.slug : null;
+
+                return (
+                    pSlug === selectedCategory ||
+                    pCatSlug === selectedCategory ||
+                    (pName && pName.toLowerCase() === selectedCategory.toLowerCase()) ||
+                    (pSlug && selectedCategory && (pSlug.includes(selectedCategory) || selectedCategory.includes(pSlug)))
+                );
+            });
         }
 
         // 3. District
@@ -163,7 +205,7 @@ export default function Catalog() {
                     Kategori Produk
                 </label>
                 <div className="space-y-1">
-                    {CATEGORIES.map((cat) => {
+                    {categoriesList.map((cat) => {
                         const isSelected = selectedCategory === cat.slug;
                         return (
                             <button
@@ -309,7 +351,7 @@ export default function Catalog() {
                         <div className="flex items-center gap-3 bg-white border border-slate-200/80 rounded-2xl p-2.5 sm:p-3 shadow-xs">
                             <div className="text-center px-2">
                                 <span className="block text-base sm:text-lg font-black text-pertamina-blue">
-                                    {INITIAL_PRODUCTS.length}
+                                    {baseProducts.length}
                                 </span>
                                 <span className="text-[10px] text-slate-400 font-semibold uppercase">Total Produk</span>
                             </div>
@@ -415,7 +457,7 @@ export default function Catalog() {
 
                                 {selectedCategory !== 'all' && (
                                     <span className="inline-flex items-center gap-1.5 rounded-lg bg-pertamina-blue-light border border-pertamina-blue/20 px-2.5 py-1 text-xs text-pertamina-blue font-semibold">
-                                        <span>Kategori: {CATEGORIES.find((c) => c.slug === selectedCategory)?.name}</span>
+                                        <span>Kategori: {categoriesList.find((c) => c.slug === selectedCategory)?.name || selectedCategory}</span>
                                         <button type="button" onClick={() => setSelectedCategory('all')} className="hover:text-pertamina-red">
                                             <X className="w-3 h-3" />
                                         </button>
@@ -591,7 +633,7 @@ export default function Catalog() {
                             <div className="space-y-4">
                                 <div>
                                     <span className="inline-block px-2.5 py-1 rounded-lg bg-pertamina-blue-light text-pertamina-blue text-[11px] font-bold">
-                                        {selectedProduct.category?.name}
+                                        {typeof selectedProduct.category === 'object' ? selectedProduct.category?.name : selectedProduct.category}
                                     </span>
                                     <h2 className="text-xl font-extrabold text-slate-900 mt-2 leading-snug">
                                         {selectedProduct.name}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Head, Link } from '@inertiajs/react';
-import { ShoppingBag, Menu, X, MapPin, Phone, Mail, Award, ExternalLink, Shield } from 'lucide-react';
+import { ShoppingBag, Menu, X, MapPin, Phone, Mail, Award, ExternalLink, LogIn } from 'lucide-react';
 import { CartProvider, useCart } from '@/Contexts/CartContext';
 import CartDrawer from '@/Components/CartDrawer';
 import BadgeCsr from '@/Components/BadgeCsr';
@@ -65,18 +65,9 @@ function NavbarContent({ activeMenu }) {
                         })}
                     </nav>
 
-                    {/* Aksi Sisi Kanan: Keranjang, Login Admin & Menu Mobile */}
+                    {/* Aksi Sisi Kanan: Keranjang, Login & Menu Mobile */}
                     <div className="flex items-center gap-2.5">
-                        {/* Login Admin Button */}
-                        <Link
-                            href="/login"
-                            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#005BAC]/25 bg-[#005BAC]/5 text-[#005BAC] hover:bg-[#005BAC]/10 hover:border-[#005BAC]/40 text-xs font-bold transition-all"
-                            aria-label="Masuk ke Panel Admin"
-                        >
-                            <Shield className="w-3.5 h-3.5" />
-                            <span>Admin</span>
-                        </Link>
-
+                        {/* Tombol Keranjang Belanja */}
                         <button
                             type="button"
                             onClick={() => setIsCartOpen(true)}
@@ -93,6 +84,18 @@ function NavbarContent({ activeMenu }) {
                                 </span>
                             )}
                         </button>
+
+                        {/* Tombol Login (di sebelah kanan) */}
+                        <Link
+                            href="/login"
+                            className="hidden sm:inline-flex items-center gap-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/90 px-3.5 py-2 text-slate-700 transition-all active:scale-95 shadow-xs text-xs font-bold"
+                            aria-label="Masuk ke Akun / Panel Admin"
+                        >
+                            <LogIn className="w-5 h-5 text-pertamina-blue" />
+                            <span className="text-xs font-bold text-slate-800">
+                                Login
+                            </span>
+                        </Link>
 
                         {/* Hamburger Button untuk Mobile */}
                         <button
@@ -126,15 +129,15 @@ function NavbarContent({ activeMenu }) {
                             </Link>
                         );
                     })}
-                    {/* Admin Link on Mobile */}
+                    {/* Login Link on Mobile */}
                     <div className="pt-2 border-t border-slate-100">
                         <Link
                             href="/login"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-bold text-[#005BAC] bg-[#005BAC]/5 hover:bg-[#005BAC]/10 transition-colors"
+                            className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 transition-colors"
                         >
-                            <Shield className="w-4 h-4" />
-                            Panel Admin
+                            <LogIn className="w-4 h-4 text-pertamina-blue" />
+                            <span>Login</span>
                         </Link>
                     </div>
                 </div>

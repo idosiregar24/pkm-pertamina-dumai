@@ -1,4 +1,4 @@
-﻿﻿import React, { useState, useMemo } from 'react';
+﻿import React, { useState, useMemo } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import {
     ShoppingBag,
@@ -26,16 +26,21 @@ import { useCart } from '@/Contexts/CartContext';
 import { formatRupiah, formatWhatsAppNumber, generateWhatsAppOrderUrl } from '@/Utils/phone';
 import { INITIAL_PRODUCTS, CATEGORIES } from '@/data/mockData';
 
-export default function Welcome() {
+export default function Welcome({ featuredProducts: dbFeaturedProducts = [], totalProducts = 0, stats = {} }) {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [modalQty, setModalQty] = useState(1);
 
     const { addToCart } = useCart();
 
-    // Top 6 Featured Products for Homepage Showcase
+    // Top 6 Featured Products for Homepage Showcase (dari database, fallback ke mockData jika kosong)
     const featuredProducts = useMemo(() => {
+        if (dbFeaturedProducts && dbFeaturedProducts.length > 0) {
+            return dbFeaturedProducts.slice(0, 6);
+        }
         return INITIAL_PRODUCTS.slice(0, 6);
-    }, []);
+    }, [dbFeaturedProducts]);
+
+    const countAllProducts = totalProducts || (dbFeaturedProducts?.length > 0 ? dbFeaturedProducts.length : INITIAL_PRODUCTS.length);
 
     // Handle modal direct whatsapp
     const handleDirectWhatsApp = () => {
@@ -71,9 +76,6 @@ export default function Welcome() {
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                         {/* Kolom Teks Hero (7 Kolom di Desktop) */}
                         <div className="lg:col-span-7 space-y-6">
-                            {/* Badge Resmi Pertamina CSR */}
-                            <BadgeCsr size="default" />
-
                             <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] xl:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.18]">
                                 Pusat Informasi &amp; Direktori{' '}
                                 <span className="text-pertamina-blue">UMKM Mitra Binaan TJSL</span>{' '}
@@ -268,7 +270,7 @@ export default function Welcome() {
                             href="/katalog"
                             className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 px-6 py-3.5 text-xs font-bold text-slate-700 shadow-xs hover:border-slate-300 transition-all"
                         >
-                            <span>Lihat Semua {INITIAL_PRODUCTS.length} Produk di Halaman E-Katalog</span>
+                            <span>Lihat Semua {countAllProducts} Produk di Halaman E-Katalog</span>
                             <ArrowRight className="w-4 h-4 text-pertamina-blue" />
                         </Link>
                     </div>
@@ -304,7 +306,7 @@ export default function Welcome() {
                             <div className="space-y-4">
                                 <div>
                                     <span className="inline-block px-2.5 py-1 rounded-lg bg-pertamina-blue-light text-pertamina-blue text-[11px] font-bold">
-                                        {selectedProduct.category?.name}
+                                        {typeof selectedProduct.category === 'object' ? selectedProduct.category?.name : selectedProduct.category}
                                     </span>
                                     <h2 className="text-xl font-extrabold text-slate-900 mt-2 leading-snug">
                                         {selectedProduct.name}
