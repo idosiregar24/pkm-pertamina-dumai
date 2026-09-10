@@ -7,16 +7,13 @@ use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
+// Catatan RBAC: registrasi publik sengaja DITIADAKAN. Akun Admin Kelompok hanya
+// boleh dibuat oleh Admin CSR lewat /admin/kelompok-admin (lihat routes/web.php),
+// bukan self-service — sesuai batasan arsitektur multi-tenancy proyek ini.
 Route::middleware('guest')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])
-        ->name('register');
-
-    Route::post('register', [RegisteredUserController::class, 'store']);
-
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 

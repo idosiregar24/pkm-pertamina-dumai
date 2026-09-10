@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\KelompokAdminController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\UmkmController as AdminUmkmController;
 use App\Http\Controllers\CatalogController;
@@ -32,43 +34,55 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// ── Admin Panel (Protected) ──
+// ── Admin Panel (Protected + RBAC) ──
+// Semua route di bawah ini wajib login DAN aktif (dicek middleware `role`).
+// Isolasi data antar-UMKM ditegakkan di lapisan Policy (UmkmPolicy/ProductPolicy)
+// dan query scope (visibleTo), bukan cuma di sini — lihat .claude/rules untuk detail arsitektur.
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    // Dashboard
-    Route::get('/', function () {
-        $stats = [
-            'total_products' => \App\Models\Product::count(),
-            'total_umkms'    => \App\Models\Umkm::count(),
-            'featured_count' => \App\Models\Product::where('is_featured', true)->count(),
-            'total_sold'     => \App\Models\Product::sum('sold_count'),
-        ];
-        $recent_products = \App\Models\Product::with('umkm:id,name,district')->latest()->take(5)->get();
-        $recent_umkms    = \App\Models\Umkm::latest()->take(5)->get();
 
-        return Inertia::render('Admin/Dashboard', compact('stats', 'recent_products', 'recent_umkms'));
-    })->name('dashboard');
+    // Dashboard: satu route untuk kedua role, isinya sudah otomatis terisolasi
+    // per-tenant di dalam AdminDashboardController.
+    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-    // Produk CRUD
-    Route::resource('produk', AdminProductController::class)->names([
-        'index'   => 'produk.index',
-        'create'  => 'produk.create',
-        'store'   => 'produk.store',
-        'show'    => 'produk.show',
-        'edit'    => 'produk.edit',
-        'update'  => 'produk.update',
-        'destroy' => 'produk.destroy',
-    ]);
+    // Admin CSR & Admin Kelompok — Produk. Isolasi antar-tenant ditegakkan oleh
+    // ProductPolicy (per-object) dan visibleTo() scope (listing), bukan di sini.
+    Route::middleware('role:admin_csr,admin_kelompok')->group(function () {
+        Route::resource('produk', AdminProductController::class)->names([
+            'index'   => 'produk.index',
+            'create'  => 'produk.create',
+            'store'   => 'produk.store',
+            'show'    => 'produk.show',
+            'edit'    => 'produk.edit',
+            'update'  => 'produk.update',
+            'destroy' => 'produk.destroy',
+        ]);
 
-    // UMKM CRUD
-    Route::resource('umkm', AdminUmkmController::class)->names([
-        'index'   => 'umkm.index',
-        'create'  => 'umkm.create',
-        'store'   => 'umkm.store',
-        'show'    => 'umkm.show',
-        'edit'    => 'umkm.edit',
-        'update'  => 'umkm.update',
-        'destroy' => 'umkm.destroy',
-    ]);
+        // UMKM: Admin CSR mengelola seluruh kelompok (index/create/destroy dijamin
+        // UmkmPolicy khusus admin_csr). Admin Kelompok memakai route edit/update
+        // yang sama persis untuk mengelola profil kelompoknya sendiri —
+        // UmkmPolicy::update menolak jika umkm_id bukan miliknya.
+        Route::resource('umkm', AdminUmkmController::class)->names([
+            'index'   => 'umkm.index',
+            'create'  => 'umkm.create',
+            'store'   => 'umkm.store',
+            'show'    => 'umkm.show',
+            'edit'    => 'umkm.edit',
+            'update'  => 'umkm.update',
+            'destroy' => 'umkm.destroy',
+        ]);
+    });
+
+    // Khusus Admin CSR — mendaftarkan & mengelola akun Admin Kelompok.
+    Route::middleware('role:admin_csr')->group(function () {
+        Route::resource('kelompok-admin', KelompokAdminController::class)->names([
+            'index'   => 'kelompok-admin.index',
+            'create'  => 'kelompok-admin.create',
+            'store'   => 'kelompok-admin.store',
+            'edit'    => 'kelompok-admin.edit',
+            'update'  => 'kelompok-admin.update',
+            'destroy' => 'kelompok-admin.destroy',
+        ]);
+    });
 });
 
 require __DIR__ . '/auth.php';

@@ -28,4 +28,10 @@ class Umkm extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    /** Akun Admin Kelompok yang terhubung ke UMKM ini. */
+    public function admins()
+    {
+        return $this->hasMany(User::class);
+    }
 }

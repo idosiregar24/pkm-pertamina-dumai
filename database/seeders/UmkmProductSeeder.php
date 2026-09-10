@@ -21,7 +21,7 @@ class UmkmProductSeeder extends Seeder
                 'csr_batch_year' => 2021,
                 'banner_url' => 'https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=1200&q=80',
                 'logo_url' => 'https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=400&q=80',
-                'shopee_shop_url' => 'https://shopee.co.id',
+                'shopee_shop_url' => 'https://shopee.co.id/tokonanasmajumandiri',
                 'description' => 'Kelompok tani binaan CSR Pertamina Patra Niaga Dumai yang mengolah nanas madu khas Bukit Kapur menjadi produk olahan berkualitas dan siap dipasarkan.',
                 'members_count' => 24,
                 'certification' => 'P-IRT, Halal MUI, Binaan CSR TJSL',
@@ -41,7 +41,7 @@ class UmkmProductSeeder extends Seeder
                 'csr_batch_year' => 2022,
                 'banner_url' => 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=1200&q=80',
                 'logo_url' => 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=400&q=80',
-                'shopee_shop_url' => 'https://shopee.co.id',
+                'shopee_shop_url' => 'https://shopee.co.id/rumahkriyamangrovelestari',
                 'description' => 'Kelompok pengrajin di Dumai Barat yang memanfaatkan serat alam dan ranting mangrove menjadi produk kerajinan unik dan ramah lingkungan.',
                 'members_count' => 18,
                 'certification' => 'Ecolabel Indonesia, Binaan CSR TJSL',
@@ -61,7 +61,7 @@ class UmkmProductSeeder extends Seeder
                 'csr_batch_year' => 2023,
                 'banner_url' => 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80',
                 'logo_url' => 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80',
-                'shopee_shop_url' => 'https://shopee.co.id',
+                'shopee_shop_url' => 'https://shopee.co.id/batiktenundumaiberkah',
                 'description' => 'Pusat tenun dan batik khas Dumai yang menonjolkan motif pesisir, warna alam, dan sentuhan lokal berkelas.',
                 'members_count' => 15,
                 'certification' => 'HAKI Motif Dumai, Binaan CSR TJSL',
@@ -81,7 +81,7 @@ class UmkmProductSeeder extends Seeder
                 'csr_batch_year' => 2020,
                 'banner_url' => 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=1200&q=80',
                 'logo_url' => 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=400&q=80',
-                'shopee_shop_url' => 'https://shopee.co.id',
+                'shopee_shop_url' => 'https://shopee.co.id/maduhutandumaisejahtera',
                 'description' => 'Kelompok peternak dan pengolah madu hutan asal Medang Kampai yang fokus pada produk herbal dan kesehatan alami.',
                 'members_count' => 20,
                 'certification' => 'Uji Laboratorium Kemurnian, P-IRT, Halal',
@@ -101,7 +101,7 @@ class UmkmProductSeeder extends Seeder
                 'csr_batch_year' => 2024,
                 'banner_url' => 'https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=1200&q=80',
                 'logo_url' => 'https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=400&q=80',
-                'shopee_shop_url' => 'https://shopee.co.id',
+                'shopee_shop_url' => 'https://shopee.co.id/pesisirsegardumainusantara',
                 'description' => 'Kelompok usaha hasil laut dari Dumai Timur yang mengolah ikan dan produk pesisir menjadi makanan siap jual dengan kualitas higienis.',
                 'members_count' => 22,
                 'certification' => 'BPOM, Halal MUI, Binaan CSR TJSL',
@@ -121,7 +121,7 @@ class UmkmProductSeeder extends Seeder
                 'csr_batch_year' => 2024,
                 'banner_url' => 'https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1200&q=80',
                 'logo_url' => 'https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=400&q=80',
-                'shopee_shop_url' => 'https://shopee.co.id',
+                'shopee_shop_url' => 'https://shopee.co.id/wiranirejosari',
                 'description' => 'UMKM Wirani Rejosari adalah usaha rumahan di Sungai Sembilan yang mengolah produk olahan lokal seperti singkong, nanas, dan rempah khas Dumai menjadi makanan siap jual dengan cita rasa tradisional.',
                 'members_count' => 12,
                 'certification' => 'P-IRT, Halal MUI, Binaan CSR TJSL',
@@ -136,7 +136,7 @@ class UmkmProductSeeder extends Seeder
         ];
 
         foreach ($umkms as $umkmData) {
-            $umkm = Umkm::firstOrCreate(
+            $umkm = Umkm::updateOrCreate(
                 ['name' => $umkmData['name']],
                 [
                     'owner_name' => $umkmData['owner_name'],

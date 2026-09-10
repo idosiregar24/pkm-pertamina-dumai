@@ -4,11 +4,31 @@ namespace Tests\Feature;
 
 use App\Models\Product;
 use App\Models\Umkm;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class PublicPortalTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Data minimal supaya halaman publik (katalog/direktori) punya sesuatu untuk ditampilkan —
+        // tidak lagi bergantung pada data seeder sungguhan di database dev.
+        $umkm = Umkm::create([
+            'name' => 'Kelompok Contoh', 'owner_name' => 'Pemilik Contoh',
+            'district' => 'Dumai Kota', 'members_count' => 5,
+        ]);
+
+        Product::create([
+            'umkm_id' => $umkm->id, 'name' => 'Produk Contoh', 'price' => 15000,
+            'unit' => 'pcs', 'category' => 'Umum', 'is_featured' => true,
+        ]);
+    }
+
     public function test_welcome_page_renders_with_database_products(): void
     {
         $response = $this->get('/');

@@ -2,19 +2,47 @@ import { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { Head } from '@inertiajs/react';
 import {
-    LayoutDashboard, Package, Store,
+    LayoutDashboard, Package, Store, Users,
     LogOut, Menu, X, ChevronRight, ExternalLink
 } from 'lucide-react';
 
-const navItems = [
-    { label: 'Dashboard',  routeName: 'admin.dashboard',   icon: LayoutDashboard, id: 'dashboard' },
-    { label: 'Produk',     routeName: 'admin.produk.index', icon: Package,         id: 'produk'    },
-    { label: 'UMKM Mitra', routeName: 'admin.umkm.index',  icon: Store,           id: 'umkm'      },
-];
+/**
+ * Menu sidebar disesuaikan per-role (UI-level saja — otorisasi sesungguhnya
+ * tetap ditegakkan server-side lewat middleware `role` & Policy). Admin CSR
+ * melihat seluruh menu; Admin Kelompok hanya melihat produk & profil miliknya.
+ */
+function buildNavItems(user) {
+    if (!user) return [];
+
+    const isAdminCsr = user.role === 'admin_csr';
+
+    const items = [
+        { label: 'Dashboard', routeName: 'admin.dashboard', icon: LayoutDashboard, id: 'dashboard' },
+        { label: 'Produk',    routeName: 'admin.produk.index', icon: Package,      id: 'produk'    },
+    ];
+
+    if (isAdminCsr) {
+        items.push(
+            { label: 'UMKM Mitra',        routeName: 'admin.umkm.index',           icon: Store, id: 'umkm' },
+            { label: 'Akun Admin Kelompok', routeName: 'admin.kelompok-admin.index', icon: Users, id: 'kelompok-admin' },
+        );
+    } else if (user.umkm_id) {
+        // Admin Kelompok tidak punya listing UMKM — langsung ke edit profilnya sendiri.
+        items.push({
+            label: 'Profil Kelompok Saya',
+            href: route('admin.umkm.edit', user.umkm_id),
+            icon: Store,
+            id: 'umkm',
+        });
+    }
+
+    return items;
+}
 
 export default function AdminLayout({ title, activeNav = 'dashboard', children }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const { auth } = usePage().props;
+    const navItems = buildNavItems(auth?.user);
 
     // Resolve logo path — handle Laragon subfolder and direct domain
     const logoPath = (() => {
@@ -91,7 +119,9 @@ export default function AdminLayout({ title, activeNav = 'dashboard', children }
                             </div>
                             <div className="min-w-0">
                                 <p className="text-xs font-bold text-slate-800 truncate">{auth.user.name}</p>
-                                <p className="text-[10px] text-slate-400">Administrator</p>
+                                <p className="text-[10px] text-slate-400">
+                                    {auth.user.role === 'admin_csr' ? 'Admin CSR · Super Admin' : 'Admin Kelompok UMKM'}
+                                </p>
                             </div>
                         </div>
                     )}
@@ -106,7 +136,7 @@ export default function AdminLayout({ title, activeNav = 'dashboard', children }
                             return (
                                 <Link
                                     key={item.id}
-                                    href={route(item.routeName)}
+                                    href={item.href ?? route(item.routeName)}
                                     onClick={() => setSidebarOpen(false)}
                                     className={`
                                         flex items-center gap-2.5 px-3 py-2.5 rounded-xl mb-0.5

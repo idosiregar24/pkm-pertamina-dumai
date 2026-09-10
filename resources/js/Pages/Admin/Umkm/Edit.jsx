@@ -1,5 +1,5 @@
 ﻿import { useState, useRef } from 'react';
-import { Link, useForm } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import { ChevronLeft, Upload, X, MapPin } from 'lucide-react';
 
@@ -9,6 +9,11 @@ const DISTRICTS = [
 ];
 
 export default function UmkmEdit({ umkm }) {
+    const { auth } = usePage().props;
+    // Admin Kelompok tidak punya akses ke listing /admin/umkm (khusus Admin CSR) —
+    // "kembali" untuk mereka mengarah ke Dashboard, bukan ke halaman yang akan 403.
+    const backHref = auth?.user?.role === 'admin_csr' ? route('admin.umkm.index') : route('admin.dashboard');
+
     const [bannerPreview, setBannerPreview] = useState(null);
     const [logoPreview, setLogoPreview] = useState(null);
     const bannerRef = useRef(null);
@@ -50,12 +55,14 @@ export default function UmkmEdit({ umkm }) {
         <AdminLayout title="Edit UMKM" activeNav="umkm">
             <div className="mb-6 flex items-center gap-3">
                 <Link
-                    href="/admin/umkm"
+                    href={backHref}
                     className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-colors"
                 >
                     <ChevronLeft className="w-4 h-4" /> Kembali
                 </Link>
-                <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">Edit Data UMKM</h1>
+                <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">
+                    {auth?.user?.role === 'admin_csr' ? 'Edit Data UMKM' : 'Profil Kelompok Saya'}
+                </h1>
             </div>
 
             <form onSubmit={submit} encType="multipart/form-data">
@@ -142,7 +149,7 @@ export default function UmkmEdit({ umkm }) {
                         </div>
 
                         <div className="flex gap-3 justify-end">
-                            <Link href="/admin/umkm" className="px-5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors">
+                            <Link href={backHref} className="px-5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors">
                                 Batal
                             </Link>
                             <button type="submit" disabled={processing}

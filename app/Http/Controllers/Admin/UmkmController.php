@@ -3,14 +3,26 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreUmkmRequest;
+use App\Http\Requests\Admin\UpdateUmkmRequest;
 use App\Models\Umkm;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class UmkmController extends Controller
 {
+    public function __construct()
+    {
+        // Setiap action resource otomatis dicek ke UmkmPolicy berdasarkan model
+        // yang di-resolve dari route model binding {umkm}. Admin CSR lolos semua
+        // lewat Gate::before; Admin Kelompok hanya boleh sentuh profilnya sendiri.
+        $this->authorizeResource(Umkm::class, 'umkm');
+    }
+
+    /**
+     * Khusus Admin CSR (dijamin oleh authorizeResource -> UmkmPolicy::viewAny).
+     */
     public function index()
     {
         $umkms = Umkm::withCount('products')->latest()->get();
@@ -20,36 +32,24 @@ class UmkmController extends Controller
         ]);
     }
 
+    /**
+     * Khusus Admin CSR (dijamin oleh authorizeResource -> UmkmPolicy::create).
+     */
     public function create()
     {
         return Inertia::render('Admin/Umkm/Create');
     }
 
-    public function store(Request $request)
+    public function store(StoreUmkmRequest $request)
     {
-        $validated = $request->validate([
-            'name'             => 'required|string|max:255',
-            'owner_name'       => 'required|string|max:255',
-            'district'         => 'required|string|max:100',
-            'phone'            => 'nullable|string|max:30',
-            'established_year' => 'nullable|integer|min:1990|max:' . now()->year,
-            'csr_batch_year'   => 'nullable|integer|min:2010|max:' . now()->year,
-            'shopee_shop_url'  => 'nullable|string|max:512',
-            'certification'    => 'nullable|string|max:255',
-            'members_count'    => 'nullable|integer|min:1',
-            'description'      => 'nullable|string',
-            'banner'           => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
-            'logo'             => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('banner')) {
-            $path = $request->file('banner')->store('umkm/banners', 'public');
-            $validated['banner_url'] = '/storage/' . $path;
+            $validated['banner_url'] = '/storage/' . $request->file('banner')->store('umkm/banners', 'public');
         }
 
         if ($request->hasFile('logo')) {
-            $path = $request->file('logo')->store('umkm/logos', 'public');
-            $validated['logo_url'] = '/storage/' . $path;
+            $validated['logo_url'] = '/storage/' . $request->file('logo')->store('umkm/logos', 'public');
         }
 
         Umkm::create($validated);
@@ -58,6 +58,10 @@ class UmkmController extends Controller
             ->with('success', 'Data UMKM berhasil ditambahkan.');
     }
 
+    /**
+     * Admin CSR bisa mengedit kelompok manapun; Admin Kelompok hanya profilnya sendiri
+     * (dijamin oleh authorizeResource -> UmkmPolicy::update sebelum method ini jalan).
+     */
     public function edit(Umkm $umkm)
     {
         return Inertia::render('Admin/Umkm/Edit', [
@@ -65,45 +69,40 @@ class UmkmController extends Controller
         ]);
     }
 
-    public function update(Request $request, Umkm $umkm)
+    public function update(UpdateUmkmRequest $request, Umkm $umkm)
     {
-        $validated = $request->validate([
-            'name'             => 'required|string|max:255',
-            'owner_name'       => 'required|string|max:255',
-            'district'         => 'required|string|max:100',
-            'phone'            => 'nullable|string|max:30',
-            'established_year' => 'nullable|integer|min:1990|max:' . now()->year,
-            'csr_batch_year'   => 'nullable|integer|min:2010|max:' . now()->year,
-            'shopee_shop_url'  => 'nullable|string|max:512',
-            'certification'    => 'nullable|string|max:255',
-            'members_count'    => 'nullable|integer|min:1',
-            'description'      => 'nullable|string',
-            'banner'           => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
-            'logo'             => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('banner')) {
             if ($umkm->banner_url && Str::startsWith($umkm->banner_url, '/storage/')) {
                 Storage::disk('public')->delete(str_replace('/storage/', '', $umkm->banner_url));
             }
-            $path = $request->file('banner')->store('umkm/banners', 'public');
-            $validated['banner_url'] = '/storage/' . $path;
+            $validated['banner_url'] = '/storage/' . $request->file('banner')->store('umkm/banners', 'public');
         }
 
         if ($request->hasFile('logo')) {
             if ($umkm->logo_url && Str::startsWith($umkm->logo_url, '/storage/')) {
                 Storage::disk('public')->delete(str_replace('/storage/', '', $umkm->logo_url));
             }
-            $path = $request->file('logo')->store('umkm/logos', 'public');
-            $validated['logo_url'] = '/storage/' . $path;
+            $validated['logo_url'] = '/storage/' . $request->file('logo')->store('umkm/logos', 'public');
         }
 
         $umkm->update($validated);
 
-        return redirect()->route('admin.umkm.index')
-            ->with('success', 'Data UMKM berhasil diperbarui.');
+        // Admin Kelompok tidak berhak melihat listing /admin/umkm (UmkmPolicy::viewAny
+        // selalu false untuk mereka) — redirect ke index akan 403 tepat setelah berhasil
+        // menyimpan. Kembalikan mereka ke halaman profil kelompoknya sendiri; hanya
+        // Admin CSR yang diarahkan ke listing seperti biasa.
+        $redirect = $request->user()->isAdminCsr()
+            ? redirect()->route('admin.umkm.index')
+            : redirect()->route('admin.umkm.edit', $umkm);
+
+        return $redirect->with('success', 'Data UMKM berhasil diperbarui.');
     }
 
+    /**
+     * Khusus Admin CSR (dijamin oleh authorizeResource -> UmkmPolicy::delete).
+     */
     public function destroy(Umkm $umkm)
     {
         if ($umkm->banner_url && Str::startsWith($umkm->banner_url, '/storage/')) {

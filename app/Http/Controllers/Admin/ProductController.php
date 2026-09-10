@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreProductRequest;
+use App\Http\Requests\Admin\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\Umkm;
 use Illuminate\Http\Request;
@@ -12,53 +14,56 @@ use Inertia\Inertia;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function __construct()
     {
-        $products = Product::with('umkm:id,name,district')->latest()->get();
+        // Setiap action resource otomatis dicek ke ProductPolicy berdasarkan model
+        // yang di-resolve dari route model binding {produk}. Admin CSR lolos semua
+        // lewat Gate::before; Admin Kelompok hanya boleh sentuh produk miliknya sendiri.
+        $this->authorizeResource(Product::class, 'produk');
+    }
+
+    public function index(Request $request)
+    {
+        $products = Product::query()
+            ->visibleTo($request->user())
+            ->with('umkm:id,name,district')
+            ->latest()
+            ->get();
 
         return Inertia::render('Admin/Products/Index', [
             'products' => $products,
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $umkms = Umkm::select('id', 'name', 'district')->orderBy('name')->get();
+        // Admin Kelompok tidak perlu (dan tidak boleh) memilih UMKM — form-nya
+        // disembunyikan di React berdasarkan auth.user.role, dan server tetap
+        // memaksa umkm_id dari sesi terlepas dari apa yang dikirim client.
+        $umkms = $request->user()->isAdminCsr()
+            ? Umkm::select('id', 'name', 'district')->orderBy('name')->get()
+            : [];
 
         return Inertia::render('Admin/Products/Create', [
             'umkms' => $umkms,
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        $validated = $request->validate([
-            'umkm_id'     => 'required|exists:umkms,id',
-            'name'        => 'required|string|max:255',
-            'price'       => 'required|numeric|min:0',
-            'unit'        => 'required|string|max:100',
-            'category'    => 'required|string|max:100',
-            'description' => 'nullable|string',
-            'shopee_url'  => 'nullable|string|max:512',
-            'is_featured' => 'sometimes',
-            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
-        ]);
+        $validated = $request->validated();
+        $validated['umkm_id'] = $request->resolvedUmkmId(); // paksa server-side, abaikan payload client
 
-        // Multipart form mengirim boolean sebagai string — cast manual
+        // shopee_url sudah tervalidasi & aman lewat ValidShopeeUrl di StoreProductRequest —
+        // tidak perlu disanitasi ulang di sini (dulu ada re-check longgar yang malah
+        // menghapus paksa URL toko polos seperti "https://shopee.co.id").
         $validated['is_featured'] = filter_var($request->input('is_featured', false), FILTER_VALIDATE_BOOLEAN);
 
-        // Bersihkan URL Shopee
-        $shopeeUrl = trim($request->input('shopee_url', ''));
-        $validated['shopee_url'] = ($shopeeUrl && str_starts_with($shopeeUrl, 'https://shopee.co.id/'))
-            ? $shopeeUrl
-            : null;
-
-        $validated['slug']          = Str::slug($validated['name']) . '-' . Str::random(5);
+        $validated['slug'] = Str::slug($validated['name']) . '-' . Str::random(5);
         $validated['category_slug'] = Str::slug($validated['category']);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('products', 'public');
-            $validated['image_url'] = '/storage/' . $path;
+            $validated['image_url'] = '/storage/' . $request->file('image')->store('products', 'public');
         }
 
         Product::create($validated);
@@ -71,50 +76,33 @@ class ProductController extends Controller
      * Nama parameter HARUS cocok dengan route parameter {produk}
      * untuk Laravel implicit route model binding bekerja dengan benar.
      */
-    public function edit(Product $produk)
+    public function edit(Request $request, Product $produk)
     {
-        $umkms = Umkm::select('id', 'name', 'district')->orderBy('name')->get();
+        $umkms = $request->user()->isAdminCsr()
+            ? Umkm::select('id', 'name', 'district')->orderBy('name')->get()
+            : [];
 
         return Inertia::render('Admin/Products/Edit', [
             'product' => $produk->load('umkm:id,name,district'),
-            'umkms'   => $umkms,
+            'umkms' => $umkms,
         ]);
     }
 
-    public function update(Request $request, Product $produk)
+    public function update(UpdateProductRequest $request, Product $produk)
     {
-        $validated = $request->validate([
-            'umkm_id'     => 'required|exists:umkms,id',
-            'name'        => 'required|string|max:255',
-            'price'       => 'required|numeric|min:0',
-            'unit'        => 'required|string|max:100',
-            'category'    => 'required|string|max:100',
-            'description' => 'nullable|string',
-            'shopee_url'  => 'nullable|string|max:512',
-            'is_featured' => 'sometimes',
-            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
-        ]);
+        $validated = $request->validated();
+        $validated['umkm_id'] = $request->resolvedUmkmId($produk->umkm_id);
 
-        // Cast boolean dari multipart string
+        // shopee_url sudah tervalidasi & aman lewat ValidShopeeUrl di UpdateProductRequest.
         $validated['is_featured'] = filter_var($request->input('is_featured', false), FILTER_VALIDATE_BOOLEAN);
 
-        // Bersihkan URL Shopee kosong
-        $shopeeUrl = trim($request->input('shopee_url', ''));
-        $validated['shopee_url'] = ($shopeeUrl && str_starts_with($shopeeUrl, 'https://shopee.co.id/'))
-            ? $shopeeUrl
-            : null;
-
-        // Update category slug
         $validated['category_slug'] = Str::slug($validated['category']);
 
-        // Upload foto baru jika ada
         if ($request->hasFile('image')) {
-            // Hapus foto lama
             if ($produk->image_url && str_starts_with($produk->image_url, '/storage/')) {
                 Storage::disk('public')->delete(str_replace('/storage/', '', $produk->image_url));
             }
-            $path = $request->file('image')->store('products', 'public');
-            $validated['image_url'] = '/storage/' . $path;
+            $validated['image_url'] = '/storage/' . $request->file('image')->store('products', 'public');
         }
 
         $produk->update($validated);

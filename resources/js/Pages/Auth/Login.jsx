@@ -240,16 +240,6 @@ export default function Login({ status, canResetPassword }) {
                             </svg>
                             Kembali ke Portal Publik
                         </Link>
-
-                        {/* Credential hint */}
-                        <div className="mt-6 bg-slate-100/80 border border-slate-200/90 rounded-xl px-4 py-3">
-                            <p className="text-[11px] text-slate-700 font-bold mb-1">
-                                🔐 Akun Demo Admin
-                            </p>
-                            <p className="text-[11px] text-slate-500 font-mono">
-                                admin@pertamina.com / admin123
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Link, useForm } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import { ChevronLeft, Upload, X, ImageIcon } from 'lucide-react';
 
@@ -14,6 +14,9 @@ const CATEGORIES = [
 ];
 
 export default function ProductEdit({ product, umkms }) {
+    const { auth } = usePage().props;
+    const isAdminCsr = auth?.user?.role === 'admin_csr';
+
     const [previewUrl, setPreviewUrl] = useState(null);
     const fileRef = useRef(null);
 
@@ -100,27 +103,36 @@ export default function ProductEdit({ product, umkms }) {
                                 Informasi Produk
                             </h3>
 
-                            {/* UMKM Pemilik */}
-                            <div className="mb-4">
-                                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">
-                                    UMKM Pemilik <span className="text-slate-800">*</span>
-                                </label>
-                                <select
-                                    value={data.umkm_id}
-                                    onChange={(e) => setData('umkm_id', e.target.value)}
-                                    className={errors.umkm_id ? fieldError : fieldNormal}
-                                >
-                                    <option value="">— Pilih UMKM —</option>
-                                    {umkms.map((u) => (
-                                        <option key={u.id} value={String(u.id)}>
-                                            {u.name} ({u.district})
-                                        </option>
-                                    ))}
-                                </select>
-                                {errors.umkm_id && (
-                                    <p className="mt-1 text-xs text-slate-600">{errors.umkm_id}</p>
-                                )}
-                            </div>
+                            {/* UMKM Pemilik — hanya Admin CSR yang boleh memindahkan produk
+                                antar-kelompok. Admin Kelompok tidak bisa mengubah kepemilikan
+                                produknya sendiri (dipaksa server-side lewat resolvedUmkmId()). */}
+                            {isAdminCsr ? (
+                                <div className="mb-4">
+                                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">
+                                        UMKM Pemilik <span className="text-slate-800">*</span>
+                                    </label>
+                                    <select
+                                        value={data.umkm_id}
+                                        onChange={(e) => setData('umkm_id', e.target.value)}
+                                        className={errors.umkm_id ? fieldError : fieldNormal}
+                                    >
+                                        <option value="">— Pilih UMKM —</option>
+                                        {umkms.map((u) => (
+                                            <option key={u.id} value={String(u.id)}>
+                                                {u.name} ({u.district})
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {errors.umkm_id && (
+                                        <p className="mt-1 text-xs text-slate-600">{errors.umkm_id}</p>
+                                    )}
+                                </div>
+                            ) : (
+                                <div className="mb-4 flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-blue-50 border border-blue-100 text-xs font-semibold text-[#005BAC]">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#005BAC]" />
+                                    Produk ini milik kelompok Anda: {product.umkm?.name ?? '—'}
+                                </div>
+                            )}
 
                             {/* Nama Produk */}
                             <div className="mb-4">
