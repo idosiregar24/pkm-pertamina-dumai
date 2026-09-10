@@ -30,23 +30,20 @@ export default function ProductCard({ product, onSelectProduct }) {
                         loading="lazy"
                     />
 
-                    {/* Category Pill */}
-                    {product.category && (
-                        <div className="absolute left-2.5 top-2.5">
-                            <span className="rounded-lg bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-slate-700 shadow-sm backdrop-blur-xs border border-slate-100">
+                    {/* Badges Container (Category & District) */}
+                    <div className="absolute top-2.5 inset-x-2.5 flex items-start justify-between gap-1.5 pointer-events-none z-10">
+                        {product.category && (
+                            <span className="rounded-lg bg-white/95 px-2 py-0.5 text-[10px] sm:text-[11px] font-semibold text-slate-700 shadow-sm backdrop-blur-xs border border-slate-100 truncate max-w-[62%]">
                                 {product.category.name}
                             </span>
-                        </div>
-                    )}
+                        )}
 
-                    {/* District Pill */}
-                    {product.umkm?.district && (
-                        <div className="absolute right-2.5 top-2.5">
-                            <span className="rounded-lg bg-pertamina-blue/90 px-2 py-0.5 text-[10px] font-medium text-white shadow-xs backdrop-blur-xs">
+                        {product.umkm?.district && (
+                            <span className="ml-auto flex-shrink-0 rounded-lg bg-pertamina-blue/90 px-2 py-0.5 text-[10px] font-medium text-white shadow-xs backdrop-blur-xs">
                                 {product.umkm.district}
                             </span>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
 
                 {/* Konten Produk */}

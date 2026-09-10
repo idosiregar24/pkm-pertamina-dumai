@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+﻿﻿import React, { useState, useMemo } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import {
     ShoppingBag,
@@ -22,22 +22,15 @@ import {
 import PublicLayout from '@/Layouts/PublicLayout';
 import BadgeCsr from '@/Components/BadgeCsr';
 import ProductCard from '@/Components/ProductCard';
-import UmkmCard from '@/Components/UmkmCard';
 import { useCart } from '@/Contexts/CartContext';
 import { formatRupiah, formatWhatsAppNumber, generateWhatsAppOrderUrl } from '@/Utils/phone';
-import { INITIAL_PRODUCTS, INITIAL_UMKMS, CATEGORIES, HERO_SHOWCASES } from '@/data/mockData';
+import { INITIAL_PRODUCTS, CATEGORIES } from '@/data/mockData';
 
 export default function Welcome() {
-    const [heroActiveTab, setHeroActiveTab] = useState('nanas');
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const [selectedUmkm, setSelectedUmkm] = useState(null);
     const [modalQty, setModalQty] = useState(1);
 
     const { addToCart } = useCart();
-
-    const activeShowcase = useMemo(() => {
-        return HERO_SHOWCASES.find((s) => s.id === heroActiveTab) || HERO_SHOWCASES[0];
-    }, [heroActiveTab]);
 
     // Top 6 Featured Products for Homepage Showcase
     const featuredProducts = useMemo(() => {
@@ -127,139 +120,6 @@ export default function Welcome() {
                             </div>
                         </div>
 
-                        {/* Kolom Visual Hero: Etalase Unggulan Terpadu (Grounded & Realistic) */}
-                        <div className="lg:col-span-5">
-                            <div className="relative mx-auto max-w-lg lg:max-w-none">
-                                <div className="rounded-2xl border border-slate-200/90 bg-white shadow-xl shadow-slate-200/60 overflow-hidden">
-                                    {/* Header Status Bar Resmi */}
-                                    <div className="flex items-center justify-between px-4 py-3 bg-slate-50/90 border-b border-slate-100">
-                                        <div className="flex items-center gap-2.5">
-                                            <div className="w-7 h-7 rounded-lg bg-pertamina-blue/10 flex items-center justify-center text-pertamina-blue font-black text-xs">
-                                                TJSL
-                                            </div>
-                                            <div>
-                                                <span className="text-[11px] font-extrabold text-slate-900 tracking-tight block leading-none">
-                                                    Etalase Unggulan Binaan Pertamina
-                                                </span>
-                                                <span className="text-[9px] text-slate-400 font-medium">
-                                                    {activeShowcase.locationDetail}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-pertamina-green-light text-pertamina-green-dark border border-pertamina-green/20">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-pertamina-green animate-pulse" />
-                                            Aktif Terbina
-                                        </span>
-                                    </div>
-
-                                    {/* Interactive Segmented Switcher Tabs */}
-                                    <div className="grid grid-cols-3 p-1.5 bg-slate-100/80 border-b border-slate-100 gap-1 text-xs">
-                                        {HERO_SHOWCASES.map((item) => {
-                                            const isActive = heroActiveTab === item.id;
-                                            return (
-                                                <button
-                                                    key={item.id}
-                                                    type="button"
-                                                    onClick={() => setHeroActiveTab(item.id)}
-                                                    className={`py-1.5 px-2 rounded-lg font-bold text-[11px] transition-all text-center ${
-                                                        isActive
-                                                            ? 'bg-white text-pertamina-blue shadow-xs border border-slate-200/90'
-                                                            : 'text-slate-500 hover:text-slate-800 hover:bg-white/40'
-                                                    }`}
-                                                >
-                                                    {item.tabLabel}
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
-
-                                    {/* Visual Spotlight Foto Produk Asli */}
-                                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100">
-                                        <img
-                                            src={activeShowcase.imageUrl}
-                                            alt={activeShowcase.imageAlt}
-                                            className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-                                        />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent" />
-
-                                        {/* Inner Meta Badges */}
-                                        <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
-                                            <span className="inline-flex items-center gap-1 rounded-lg bg-white/95 backdrop-blur-md px-2.5 py-1 text-[10px] font-bold text-slate-800 shadow-sm border border-white/60">
-                                                <MapPin className="w-3 h-3 text-pertamina-red flex-shrink-0" />
-                                                <span>{activeShowcase.district}</span>
-                                            </span>
-                                            <span className="inline-flex items-center gap-1 rounded-lg bg-slate-900/85 backdrop-blur-md px-2.5 py-1 text-[10px] font-semibold text-white border border-white/20 shadow-sm">
-                                                <ShieldCheck className="w-3 h-3 text-pertamina-green flex-shrink-0" />
-                                                <span>{activeShowcase.certTag}</span>
-                                            </span>
-                                        </div>
-
-                                        {/* Inner Bottom Info */}
-                                        <div className="absolute bottom-3 left-3 right-3">
-                                            <span className="inline-block px-2 py-0.5 rounded bg-pertamina-red text-white text-[9px] font-extrabold uppercase tracking-wider mb-1 shadow-xs">
-                                                {activeShowcase.programTag}
-                                            </span>
-                                            <h3 className="text-lg sm:text-xl font-extrabold text-white leading-tight drop-shadow-sm">
-                                                {activeShowcase.title}
-                                            </h3>
-                                            <p className="text-[11px] text-slate-200 mt-1 flex items-center gap-1.5">
-                                                <span className="font-semibold text-white">{activeShowcase.producer}</span>
-                                                <span className="text-slate-400">•</span>
-                                                <span className="text-pertamina-green font-medium">{activeShowcase.csrBadge}</span>
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    {/* Mini Preview Produk Binaan */}
-                                    <div className="p-3.5 bg-white">
-                                        <div className="flex items-center justify-between mb-2.5">
-                                            <p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
-                                                Sample Produk Binaan Siap Pesan
-                                            </p>
-                                            <span className="text-[10px] font-bold text-pertamina-blue">
-                                                Harga Petani Langsung
-                                            </span>
-                                        </div>
-
-                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                                            {activeShowcase.sampleProducts.map((prod, idx) => (
-                                                <div
-                                                    key={idx}
-                                                    className="rounded-xl border border-slate-100 bg-slate-50/80 p-2.5 text-left hover:border-slate-300 hover:bg-white hover:shadow-xs transition-all"
-                                                >
-                                                    <p className="text-[11px] font-bold text-slate-800 line-clamp-1 leading-snug">
-                                                        {prod.name}
-                                                    </p>
-                                                    <div className="flex items-baseline justify-between mt-1.5">
-                                                        <span className="text-xs font-extrabold text-pertamina-red">
-                                                            {formatRupiah(prod.price)}
-                                                        </span>
-                                                        <span className="text-[9px] text-slate-400 font-medium">
-                                                            /{prod.unit}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    {/* Bottom Action & Navigasi Terpadu */}
-                                    <div className="px-4 py-3 bg-slate-50/90 border-t border-slate-100 flex items-center justify-between gap-3">
-                                        <div className="flex items-center gap-1.5 text-[10px] text-slate-500 font-medium">
-                                            <CheckCircle2 className="w-3.5 h-3.5 text-pertamina-green flex-shrink-0" />
-                                            <span>Pesan instan langsung ke WA UMKM</span>
-                                        </div>
-                                        <Link
-                                            href="/katalog"
-                                            className="inline-flex items-center gap-1.5 text-xs font-bold text-pertamina-blue hover:text-pertamina-blue-dark transition-colors group flex-shrink-0"
-                                        >
-                                            <span>Buka Katalog Lengkap</span>
-                                            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -415,45 +275,6 @@ export default function Welcome() {
                 </div>
             </section>
 
-            {/* ========================================================================= */}
-            {/* 4. PREVIEW DIREKTORI UMKM (DENGAN LINK KE /direktori)                      */}
-            {/* ========================================================================= */}
-            <section className="py-16 sm:py-20 bg-white border-t border-slate-200/70">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
-                        <div>
-                            <span className="text-xs font-extrabold uppercase tracking-wider text-pertamina-blue">
-                                Mitra Binaan Terverifikasi
-                            </span>
-                            <h2 className="mt-1 text-2xl sm:text-3xl font-bold text-slate-900">
-                                Direktori Kelompok Usaha Lokal
-                            </h2>
-                            <p className="mt-1 text-xs sm:text-sm text-slate-500">
-                                Berdayakan ekonomi masyarakat lokal dengan berbelanja langsung dari kelompok petani dan pengrajin Dumai.
-                            </p>
-                        </div>
-
-                        <Link
-                            href="/direktori"
-                            className="inline-flex items-center gap-1.5 text-xs font-bold text-pertamina-blue hover:text-pertamina-blue-dark transition-colors self-start md:self-end"
-                        >
-                            <span>Lihat Seluruh Direktori ({INITIAL_UMKMS.length} Kelompok)</span>
-                            <ArrowRight className="w-4 h-4" />
-                        </Link>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {INITIAL_UMKMS.map((umkm) => (
-                            <UmkmCard
-                                key={umkm.id}
-                                umkm={umkm}
-                                onSelectUmkm={(u) => setSelectedUmkm(u)}
-                            />
-                        ))}
-                    </div>
-                </div>
-            </section>
-
             {/* Modal Detail Produk */}
             {selectedProduct && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -507,7 +328,7 @@ export default function Welcome() {
                                             <span>{selectedProduct.umkm.name}</span>
                                         </div>
                                         <p className="text-slate-500 text-[11px]">
-                                            Ketua: {selectedProduct.umkm.owner_name} • {selectedProduct.umkm.district}
+                                            Ketua: {selectedProduct.umkm.owner_name} â€¢ {selectedProduct.umkm.district}
                                         </p>
                                     </div>
                                 )}
