@@ -34,6 +34,13 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            // Sebelumnya TIDAK dibagikan sama sekali — controller sudah flash
+            // ->with('success', ...) sejak awal tapi frontend (flash?.success)
+            // tidak pernah benar-benar menerimanya, sehingga alert tidak pernah muncul.
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
+            ],
         ];
     }
 }

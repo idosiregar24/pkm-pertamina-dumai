@@ -5,6 +5,7 @@ import {
     LayoutDashboard, Package, Store, Users,
     LogOut, Menu, X, ChevronRight, ExternalLink
 } from 'lucide-react';
+import FlashAlert from '@/Components/FlashAlert';
 
 /**
  * Menu sidebar disesuaikan per-role (UI-level saja — otorisasi sesungguhnya
@@ -59,6 +60,8 @@ export default function AdminLayout({ title, activeNav = 'dashboard', children }
                 ? `${title} — Admin CSR Pertamina Dumai`
                 : 'Panel Admin — CSR Pertamina Dumai'
             } />
+
+            <FlashAlert />
 
             <div className="min-h-screen bg-slate-100 flex">
 

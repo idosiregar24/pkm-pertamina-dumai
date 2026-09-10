@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, router, usePage } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import { Plus, Pencil, Trash2, Search, ShieldCheck, ShieldOff } from 'lucide-react';
 
@@ -32,7 +32,6 @@ function ConfirmModal({ admin, onConfirm, onCancel }) {
 export default function KelompokAdminIndex({ admins }) {
     const [search, setSearch] = useState('');
     const [deleteTarget, setDeleteTarget] = useState(null);
-    const { flash } = usePage().props;
 
     const filtered = (admins ?? []).filter((a) =>
         a.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -49,13 +48,6 @@ export default function KelompokAdminIndex({ admins }) {
 
     return (
         <AdminLayout title="Akun Admin Kelompok" activeNav="kelompok-admin">
-
-            {flash?.success && (
-                <div className="mb-4 flex items-center gap-2 bg-slate-800 text-white text-sm font-semibold rounded-xl px-4 py-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
-                    {flash.success}
-                </div>
-            )}
 
             {/* Header */}
             <div className="flex items-start justify-between gap-3 mb-5 flex-wrap">
