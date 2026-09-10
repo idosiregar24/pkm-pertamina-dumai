@@ -14,6 +14,7 @@ use Inertia\Inertia;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/katalog', [CatalogController::class, 'index'])->name('catalog');
 Route::get('/direktori', [DirectoryController::class, 'index'])->name('directory');
+Route::get('/direktori/{umkm}', [DirectoryController::class, 'show'])->name('directory.show');
 
 Route::get('/program-csr', function () {
     return Inertia::render('CsrProgram');

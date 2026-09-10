@@ -79,11 +79,11 @@ export default function Welcome({ featuredProducts: dbFeaturedProducts = [], tot
                             <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] xl:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.18]">
                                 Pusat Informasi &amp; Direktori{' '}
                                 <span className="text-pertamina-blue">UMKM Mitra Binaan TJSL</span>{' '}
-                                <span className="text-pertamina-red">PT Pertamina Patra Niaga Regional Dumai</span>
+                                <span className="text-pertamina-red">PT Pertamina Patra Niaga Refinery Unit Dumai</span>
                             </h1>
 
                             <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl font-normal">
-                                Platform resmi program pemberdayaan kelompok usaha lokal Kota Dumai melalui literasi digital, standardisasi mutu kemasan, e-katalog produk terpadu, dan pemesanan instan langsung ke WhatsApp pemilik UMKM.
+                                Platform resmi program pemberdayaan kelompok usaha lokal Kota Dumai yang didukung oleh PT Pertamina Patra Niaga Refinery Unit Dumai melalui literasi digital, standardisasi mutu kemasan, e-katalog produk terpadu, dan pemesanan instan langsung ke WhatsApp pemilik UMKM.
                             </p>
 
                             {/* Dual Call to Action Buttons */}

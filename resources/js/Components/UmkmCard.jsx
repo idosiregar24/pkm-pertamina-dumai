@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from '@inertiajs/react';
 import { MapPin, User, ArrowRight, MessageCircle, ExternalLink, Package } from 'lucide-react';
 import BadgeCsr from '@/Components/BadgeCsr';
 import { formatWhatsAppNumber } from '@/Utils/phone';
@@ -11,8 +12,8 @@ export default function UmkmCard({ umkm, onSelectUmkm }) {
         : null;
 
     return (
-        <div
-            onClick={() => onSelectUmkm && onSelectUmkm(umkm)}
+        <Link
+            href={route('directory.show', umkm.id)}
             className={`group flex flex-col justify-between rounded-2xl border p-5 shadow-subtle transition-all duration-300 hover:border-slate-300 hover:shadow-subtle-hover cursor-pointer ${
                 umkm.is_highlighted ? 'border-pertamina-blue bg-blue-50/40 ring-1 ring-pertamina-blue/20' : 'border-slate-200/90 bg-white'
             }`}
@@ -121,6 +122,6 @@ export default function UmkmCard({ umkm, onSelectUmkm }) {
                     <ArrowRight className="w-3.5 h-3.5" />
                 </span>
             </div>
-        </div>
+        </Link>
     );
 }

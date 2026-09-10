@@ -30,4 +30,29 @@ class DirectoryController extends Controller
             'products' => $products,
         ]);
     }
+
+    public function show(Umkm $umkm): Response
+    {
+        $umkm->load([
+            'products' => function ($query) {
+                $query->orderByDesc('id');
+            },
+        ]);
+
+        $products = $umkm->products->map(function ($product) use ($umkm) {
+            return array_merge($product->toArray(), [
+                'umkm' => [
+                    'id' => $umkm->id,
+                    'name' => $umkm->name,
+                    'district' => $umkm->district,
+                    'phone' => $umkm->phone,
+                ],
+            ]);
+        })->values();
+
+        return Inertia::render('DirectoryShow', [
+            'umkm' => $umkm,
+            'products' => $products,
+        ]);
+    }
 }
