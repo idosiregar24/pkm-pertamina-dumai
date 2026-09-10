@@ -3,37 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-    @font-face {
-        font-family: 'Noir Pro';
-        src: local('Noir Pro Semi Bold'),
-             local('Noir Pro SemiBold'),
-             local('NoirPro-SemiBold'),
-             local('Noir Pro Bold'),
-             local('Noir Pro Medium'),
-             local('Noir Pro'),
-             url('/fonts/NoirPro-SemiBold.woff2') format('woff2'),
-             url('/fonts/NoirPro-SemiBold.woff') format('woff'),
-             url('/fonts/NoirPro-SemiBold.otf') format('opentype');
-        font-weight: 600;
-        font-style: normal;
-        font-display: swap;
-    }
-
-    @font-face {
-        font-family: 'Noir Pro';
-        src: local('Noir Pro Regular'),
-             local('NoirPro-Regular'),
-             local('Noir Pro'),
-             url('/fonts/NoirPro-Regular.woff2') format('woff2'),
-             url('/fonts/NoirPro-Regular.woff') format('woff'),
-             url('/fonts/NoirPro-Regular.otf') format('opentype');
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap;
-    }
-
     body {
-        font-family: 'Noir Pro', 'Noir Pro Semi Bold', 'NoirPro-SemiBold', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         color: #0F172A;
         background-color: #FFFFFF;
         -webkit-font-smoothing: antialiased;
@@ -41,7 +12,7 @@
     }
 
     h1, h2, h3, h4, h5, h6 {
-        font-family: 'Noir Pro', 'Noir Pro Semi Bold', sans-serif;
-        font-weight: 600;
+        font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+        letter-spacing: -0.02em;
     }
 }

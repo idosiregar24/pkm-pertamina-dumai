@@ -106,3 +106,19 @@ export function generateWhatsAppOrderUrl({ umkmPhone, umkmName, items = [], cust
     const encodedText = encodeURIComponent(messageLines.join('\n'));
     return `https://wa.me/${targetPhone}?text=${encodedText}`;
 }
+
+/**
+ * Resolves static asset paths accurately across virtual hosts and subdirectory deployments
+ * @param {string} path
+ * @returns {string}
+ */
+export function getAssetUrl(path) {
+    if (!path) return '';
+    if (path.startsWith('http://') || path.startsWith('https://')) return path;
+    const cleanPath = path.startsWith('/') ? path : `/${path}`;
+    if (typeof window !== 'undefined' && window.location.pathname.includes('/pkm-pertamina-dumai/public')) {
+        return `/pkm-pertamina-dumai/public${cleanPath}`;
+    }
+    return cleanPath;
+}
+

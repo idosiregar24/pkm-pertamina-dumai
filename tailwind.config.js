@@ -14,17 +14,14 @@ export default {
         extend: {
             fontFamily: {
                 sans: [
-                    '"Noir Pro"',
-                    '"Noir Pro Semi Bold"',
-                    '"NoirPro-SemiBold"',
-                    '"NoirPro"',
+                    '"Plus Jakarta Sans"',
+                    'Inter',
                     'Figtree',
                     ...defaultTheme.fontFamily.sans,
                 ],
-                noir: [
-                    '"Noir Pro"',
-                    '"Noir Pro Semi Bold"',
-                    '"NoirPro-SemiBold"',
+                heading: [
+                    '"Plus Jakarta Sans"',
+                    'Inter',
                     'sans-serif',
                 ],
             },
