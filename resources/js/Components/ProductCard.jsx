@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import { ShoppingBag, ShoppingCart, ExternalLink } from 'lucide-react';
+import { ShoppingCart, ExternalLink, MapPin, Store } from 'lucide-react';
 import { useCart } from '@/Contexts/CartContext';
 import { formatRupiah } from '@/Utils/phone';
 
@@ -11,14 +11,17 @@ export default function ProductCard({ product, onSelectProduct, compact = false 
         addToCart(product, 1);
     };
 
+    const categoryName = typeof product.category === 'object' ? product.category?.name : product.category;
+    const district = product.umkm?.district;
+
     return (
         <div
             onClick={() => onSelectProduct && onSelectProduct(product)}
-            className={`group flex flex-col justify-between rounded-2xl border border-slate-200/90 bg-white ${compact ? 'p-2.5 shadow-sm' : 'p-3.5 shadow-subtle'} transition-all duration-300 hover:border-slate-300 hover:shadow-subtle-hover cursor-pointer`}
+            className={`group flex flex-col justify-between rounded-xl border border-slate-200 bg-white shadow-subtle transition-colors duration-200 hover:border-pertamina-green/40 ${compact ? 'p-2.5' : 'p-3'} ${onSelectProduct ? 'cursor-pointer' : ''}`}
         >
             <div>
-                {/* Area Gambar */}
-                <div className={`relative ${compact ? 'aspect-[4/3]' : 'aspect-square'} w-full overflow-hidden rounded-xl bg-slate-100`}>
+                {/* Foto produk — dibiarkan bersih tanpa overlay agar produk jadi fokus utama */}
+                <div className={`relative ${compact ? 'aspect-[4/3]' : 'aspect-square'} w-full overflow-hidden rounded-lg bg-slate-100`}>
                     <img
                         src={product.image_url || '/asset/placeholder-product.webp'}
                         alt={product.name}
@@ -26,85 +29,82 @@ export default function ProductCard({ product, onSelectProduct, compact = false 
                             e.target.onerror = null;
                             e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=60';
                         }}
-                        className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                        className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                         loading="lazy"
                     />
+                </div>
 
-                    {/* Badges Container (Category & District) */}
-                    <div className={`absolute ${compact ? 'top-2 inset-x-2' : 'top-2.5 inset-x-2.5'} flex items-start justify-between gap-1.5 pointer-events-none z-10`}>
-                        {product.category && (
-                            <span className="rounded-lg bg-pertamina-green-light px-2 py-0.5 text-[10px] sm:text-[11px] font-semibold text-pertamina-green shadow-sm backdrop-blur-xs border border-pertamina-green/10 truncate max-w-[62%]">
-                                {typeof product.category === 'object' ? product.category.name : product.category}
+                {/* Label asal: kategori + kecamatan, gaya tag kemasan (bukan badge notifikasi) */}
+                {(categoryName || district) && (
+                    <div className={`flex items-center gap-1.5 flex-wrap ${compact ? 'mt-2' : 'mt-2.5'}`}>
+                        {categoryName && (
+                            <span className="inline-flex items-center rounded border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-slate-500">
+                                {categoryName}
                             </span>
                         )}
-
-                        {product.umkm?.district && (
-                            <span className="ml-auto flex-shrink-0 rounded-lg bg-pertamina-red-light px-2 py-0.5 text-[10px] font-medium text-pertamina-red shadow-xs backdrop-blur-xs border border-pertamina-red/10">
-                                {product.umkm.district}
+                        {district && (
+                            <span className="inline-flex items-center gap-0.5 text-[10px] font-medium text-slate-400">
+                                <MapPin className="w-2.5 h-2.5 flex-shrink-0" />
+                                {district}
                             </span>
                         )}
                     </div>
-                </div>
+                )}
 
-                {/* Konten Produk */}
-                <div className={`${compact ? 'mt-2.5' : 'mt-3.5'}`}>
-                    <div className={`flex items-center gap-1.5 ${compact ? 'text-[10px]' : 'text-xs'} text-slate-500`}>
-                        <span className="font-medium text-pertamina-green truncate">
-                            {product.umkm?.name || 'UMKM Binaan Pertamina'}
-                        </span>
-                    </div>
+                {/* Nama produk */}
+                <h3 className={`${compact ? 'mt-1 text-sm' : 'mt-1.5 text-[15px]'} font-bold text-slate-900 line-clamp-2 leading-snug`}>
+                    {product.name}
+                </h3>
 
-                    <h3 className={`mt-1 ${compact ? 'text-sm' : 'text-[15px]'} font-bold text-slate-900 line-clamp-2 leading-snug group-hover:text-pertamina-green transition-colors`}>
-                        {product.name}
-                    </h3>
-
-                    {product.description && (
-                        <p className={`mt-1 ${compact ? 'text-[11px]' : 'text-xs'} text-slate-500 line-clamp-2 leading-relaxed`}>
-                            {product.description}
-                        </p>
-                    )}
-                </div>
+                {/* Byline pemilik UMKM */}
+                <p className={`mt-1 flex items-center gap-1 ${compact ? 'text-[10px]' : 'text-xs'} text-slate-500`}>
+                    <Store className="w-3 h-3 text-slate-400 flex-shrink-0" />
+                    <span className="truncate">{product.umkm?.name || 'UMKM Binaan Pertamina'}</span>
+                </p>
             </div>
 
-            {/* Footer Kartu: Harga & Tombol Aksi */}
-            <div className={`${compact ? 'mt-3 pt-2' : 'mt-4 pt-3'} border-t border-slate-100`}>
-                <div className={`flex items-baseline justify-between ${compact ? 'mb-2' : 'mb-3'}`}>
-                    <span className={`text-slate-400 font-medium ${compact ? 'text-[10px]' : 'text-xs'}`}>Harga</span>
-                    <div className="text-right">
-                        <span className={`${compact ? 'text-sm' : 'text-base'} font-extrabold text-pertamina-red`}>
-                            {formatRupiah(product.price)}
-                        </span>
-                        {product.unit && (
-                            <span className={`font-normal text-slate-400 ml-1 ${compact ? 'text-[10px]' : 'text-xs'}`}>
-                                /{product.unit}
-                            </span>
-                        )}
+            {/* Footer Kartu: Harga & Aksi */}
+            <div className={`${compact ? 'mt-2.5 pt-2' : 'mt-3 pt-2.5'} border-t border-slate-100 flex items-end justify-between gap-2`}>
+                <div className="min-w-0">
+                    <div className={`${compact ? 'text-sm' : 'text-base'} font-extrabold text-pertamina-red leading-none`}>
+                        {formatRupiah(product.price)}
                     </div>
+                    {product.unit && (
+                        <div className={`mt-1 text-slate-400 ${compact ? 'text-[9px]' : 'text-[10px]'}`}>
+                            per {product.unit}
+                        </div>
+                    )}
                 </div>
 
-                <div className={`flex items-center ${compact ? 'gap-1.5' : 'gap-2'}`}>
-                    <button
-                        type="button"
-                        onClick={handleAddToCart}
-                        className={`flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-pertamina-red hover:bg-pertamina-red-dark text-white font-semibold shadow-xs active:scale-[0.98] transition-all ${compact ? 'text-[10px] py-2 px-2' : 'text-xs py-2.5 px-3'}`}
-                    >
-                        <ShoppingCart className={`${compact ? 'w-3 h-3' : 'w-3.5 h-3.5'}`} />
-                        <span>+ Keranjang</span>
-                    </button>
-
+                <div className="flex items-center gap-1.5 flex-shrink-0">
                     {product.shopee_url && (
                         <a
                             href={product.shopee_url}
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className={`inline-flex items-center justify-center rounded-xl border border-shopee/20 bg-[#FFF4F0] hover:bg-shopee hover:text-white text-[#EE4D2D] transition-all shadow-xs ${compact ? 'p-2' : 'p-2.5'}`}
+                            className={`inline-flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:border-shopee hover:text-shopee transition-colors ${compact ? 'w-8 h-8' : 'w-9 h-9'}`}
                             title="Beli di Toko Shopee Resmi"
+                            aria-label="Beli di Toko Shopee Resmi"
                         >
-                            <span className={`${compact ? 'text-[10px]' : 'text-[11px]'} font-bold mr-1`}>Shopee</span>
-                            <ExternalLink className="w-3 h-3" />
+                            <ExternalLink className={compact ? 'w-3.5 h-3.5' : 'w-4 h-4'} />
                         </a>
                     )}
+
+                    <button
+                        type="button"
+                        onClick={handleAddToCart}
+                        title="Tambah ke Keranjang"
+                        aria-label="Tambah ke Keranjang"
+                        className={
+                            compact
+                                ? 'inline-flex items-center justify-center w-8 h-8 rounded-lg bg-pertamina-red hover:bg-pertamina-red-dark text-white active:scale-[0.98] transition-all'
+                                : 'inline-flex items-center justify-center gap-1.5 h-9 px-3 rounded-lg bg-pertamina-red hover:bg-pertamina-red-dark text-white text-xs font-semibold active:scale-[0.98] transition-all'
+                        }
+                    >
+                        <ShoppingCart className={compact ? 'w-3.5 h-3.5' : 'w-3.5 h-3.5'} />
+                        {!compact && <span>Tambah</span>}
+                    </button>
                 </div>
             </div>
         </div>
