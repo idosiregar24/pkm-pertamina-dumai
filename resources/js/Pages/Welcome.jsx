@@ -23,6 +23,7 @@ import PublicLayout from '@/Layouts/PublicLayout';
 import BadgeCsr from '@/Components/BadgeCsr';
 import ProductCard from '@/Components/ProductCard';
 import { useCart } from '@/Contexts/CartContext';
+import { useLightbox } from '@/Contexts/LightboxContext';
 import { formatRupiah, formatWhatsAppNumber, generateWhatsAppOrderUrl } from '@/Utils/phone';
 import { INITIAL_PRODUCTS, CATEGORIES } from '@/data/mockData';
 
@@ -31,6 +32,7 @@ export default function Welcome({ featuredProducts: dbFeaturedProducts = [], tot
     const [modalQty, setModalQty] = useState(1);
 
     const { addToCart } = useCart();
+    const { openLightbox } = useLightbox();
 
     // Top 6 Featured Products for Homepage Showcase (dari database, fallback ke mockData jika kosong)
     const featuredProducts = useMemo(() => {
@@ -301,7 +303,8 @@ export default function Welcome({ featuredProducts: dbFeaturedProducts = [], tot
                                 <img
                                     src={selectedProduct.image_url}
                                     alt={selectedProduct.name}
-                                    className="w-full h-full object-cover"
+                                    onClick={() => openLightbox(selectedProduct.image_url, selectedProduct.name)}
+                                    className="w-full h-full object-cover cursor-zoom-in"
                                 />
                             </div>
 

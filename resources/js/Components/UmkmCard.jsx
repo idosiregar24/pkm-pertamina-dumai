@@ -1,10 +1,22 @@
 ﻿import React from 'react';
 import { Link } from '@inertiajs/react';
-import { MapPin, User, ArrowRight, MessageCircle, ExternalLink, Package } from 'lucide-react';
+import { MapPin, User, ArrowRight, MessageCircle, ExternalLink, Package, Expand } from 'lucide-react';
 import BadgeCsr from '@/Components/BadgeCsr';
+import { useLightbox } from '@/Contexts/LightboxContext';
 import { formatWhatsAppNumber } from '@/Utils/phone';
 
 export default function UmkmCard({ umkm, onSelectUmkm }) {
+    const { openLightbox } = useLightbox();
+
+    const handleZoomImage = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        openLightbox(
+            umkm.banner_url || umkm.logo_url || 'https://images.unsplash.com/photo-1556740738-b6a63e27c4df?w=800&auto=format&fit=crop&q=60',
+            umkm.name
+        );
+    };
+
     const waUrl = umkm.phone
         ? `https://wa.me/${formatWhatsAppNumber(umkm.phone)}?text=${encodeURIComponent(
               `Halo *${umkm.name}*, saya mengetahui kelompok usaha Anda melalui Portal Binaan CSR Pertamina Patra Niaga Dumai.`
@@ -38,6 +50,17 @@ export default function UmkmCard({ umkm, onSelectUmkm }) {
                     </div>
 
                     <div className="absolute top-3 right-3 flex items-center gap-1.5">
+                        {/* Tombol zoom foto — selalu terlihat agar tetap bisa dipakai di layar sentuh */}
+                        <button
+                            type="button"
+                            onClick={handleZoomImage}
+                            title="Perbesar Foto UMKM"
+                            aria-label="Perbesar Foto UMKM"
+                            className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-900/50 hover:bg-slate-900/70 text-white backdrop-blur-sm transition-colors"
+                        >
+                            <Expand className="w-3.5 h-3.5" />
+                        </button>
+
                         {umkm.is_highlighted && (
                             <span className="rounded-lg bg-pertamina-red px-2 py-0.5 text-[10px] font-bold text-white shadow-xs">
                                 Highlight

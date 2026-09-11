@@ -1,5 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
+import { useLightbox } from '@/Contexts/LightboxContext';
 import { Package, Store, Star, TrendingUp, Plus, ArrowRight, Pencil } from 'lucide-react';
 
 function formatRupiah(n) {
@@ -8,6 +9,7 @@ function formatRupiah(n) {
 
 export default function AdminDashboard({ stats, recent_products, recent_umkms }) {
     const { auth } = usePage().props;
+    const { openLightbox } = useLightbox();
     const isAdminCsr = auth?.user?.role === 'admin_csr';
     // Admin Kelompok tidak punya listing /admin/umkm (khusus CSR) — kartu "Mitra UMKM"
     // untuk mereka mengarah ke halaman edit profil kelompoknya sendiri.
@@ -131,7 +133,8 @@ export default function AdminDashboard({ stats, recent_products, recent_umkms })
                                         <img
                                             src={p.image_url}
                                             alt={p.name}
-                                            className="w-full h-full object-cover"
+                                            onClick={() => openLightbox(p.image_url, p.name)}
+                                            className="w-full h-full object-cover cursor-zoom-in"
                                             onError={(e) => { e.target.style.display = 'none'; }}
                                         />
                                     ) : null}

@@ -1,6 +1,7 @@
 ﻿import { useState, useRef } from 'react';
 import { Link, useForm } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
+import { useLightbox } from '@/Contexts/LightboxContext';
 import { ChevronLeft, Upload, X, MapPin } from 'lucide-react';
 
 const DISTRICTS = [
@@ -14,6 +15,7 @@ const DISTRICTS = [
 ];
 
 export default function UmkmCreate() {
+    const { openLightbox } = useLightbox();
     const [bannerPreview, setBannerPreview] = useState(null);
     const [logoPreview, setLogoPreview] = useState(null);
     const bannerRef = useRef(null);
@@ -245,7 +247,12 @@ export default function UmkmCreate() {
                             >
                                 {bannerPreview ? (
                                     <div className="relative">
-                                        <img src={bannerPreview} alt="Banner preview" className="w-full h-40 object-cover" />
+                                        <img
+                                            src={bannerPreview}
+                                            alt="Banner preview"
+                                            onClick={(e) => { e.stopPropagation(); openLightbox(bannerPreview, 'Preview Banner UMKM'); }}
+                                            className="w-full h-40 object-cover cursor-zoom-in"
+                                        />
                                         <button
                                             type="button"
                                             onClick={(e) => { e.stopPropagation(); setBannerPreview(null); setData('banner', null); bannerRef.current.value = ''; }}
@@ -280,7 +287,12 @@ export default function UmkmCreate() {
                             >
                                 {logoPreview ? (
                                     <div className="relative">
-                                        <img src={logoPreview} alt="Logo preview" className="w-full h-32 object-cover" />
+                                        <img
+                                            src={logoPreview}
+                                            alt="Logo preview"
+                                            onClick={(e) => { e.stopPropagation(); openLightbox(logoPreview, 'Preview Logo UMKM'); }}
+                                            className="w-full h-32 object-cover cursor-zoom-in"
+                                        />
                                         <button
                                             type="button"
                                             onClick={(e) => { e.stopPropagation(); setLogoPreview(null); setData('logo', null); logoRef.current.value = ''; }}

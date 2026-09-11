@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, router } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
+import { useLightbox } from '@/Contexts/LightboxContext';
 import { Plus, Pencil, Trash2, Star, Search } from 'lucide-react';
 
 function formatRupiah(n) {
@@ -36,6 +37,7 @@ function ConfirmModal({ product, onConfirm, onCancel }) {
 }
 
 export default function ProductsIndex({ products }) {
+    const { openLightbox } = useLightbox();
     const [search, setSearch] = useState('');
     const [deleteTarget, setDeleteTarget] = useState(null);
 
@@ -114,7 +116,8 @@ export default function ProductsIndex({ products }) {
                                                 <img
                                                     src={p.image_url || ''}
                                                     alt={p.name}
-                                                    className="w-full h-full object-cover"
+                                                    onClick={() => p.image_url && openLightbox(p.image_url, p.name)}
+                                                    className="w-full h-full object-cover cursor-zoom-in"
                                                     onError={(e) => {
                                                         e.target.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center text-slate-300"><svg xmlns=\'http://www.w3.org/2000/svg\' width=\'18\' height=\'18\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21,15 16,10 5,21\'/></svg></div>';
                                                     }}

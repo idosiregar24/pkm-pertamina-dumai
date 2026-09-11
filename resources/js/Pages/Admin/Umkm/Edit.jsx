@@ -1,6 +1,7 @@
 ﻿import { useState, useRef } from 'react';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
+import { useLightbox } from '@/Contexts/LightboxContext';
 import { ChevronLeft, Upload, X, MapPin } from 'lucide-react';
 
 const DISTRICTS = [
@@ -10,6 +11,7 @@ const DISTRICTS = [
 
 export default function UmkmEdit({ umkm }) {
     const { auth } = usePage().props;
+    const { openLightbox } = useLightbox();
     // Admin Kelompok tidak punya akses ke listing /admin/umkm (khusus Admin CSR) —
     // "kembali" untuk mereka mengarah ke Dashboard, bukan ke halaman yang akan 403.
     const backHref = auth?.user?.role === 'admin_csr' ? route('admin.umkm.index') : route('admin.dashboard');
@@ -170,7 +172,13 @@ export default function UmkmEdit({ umkm }) {
                             >
                                 {currentBanner ? (
                                     <div className="relative">
-                                        <img src={currentBanner} alt="Banner" className="w-full h-40 object-cover" onError={(e) => { e.target.src = 'https://via.placeholder.com/400x160'; }} />
+                                        <img
+                                            src={currentBanner}
+                                            alt="Banner"
+                                            onClick={(e) => { e.stopPropagation(); openLightbox(currentBanner, 'Banner ' + (umkm?.name || 'UMKM')); }}
+                                            className="w-full h-40 object-cover cursor-zoom-in"
+                                            onError={(e) => { e.target.src = 'https://via.placeholder.com/400x160'; }}
+                                        />
                                         {bannerPreview && (
                                             <button type="button" onClick={(e) => { e.stopPropagation(); setBannerPreview(null); setData('banner', null); }} className="absolute top-2 right-2 w-7 h-7 bg-white/90 rounded-full flex items-center justify-center shadow-sm border border-slate-200 text-slate-600 hover:text-red-600 transition-colors">
                                                 <X className="w-3.5 h-3.5" />
@@ -200,7 +208,13 @@ export default function UmkmEdit({ umkm }) {
                             >
                                 {currentLogo ? (
                                     <div className="relative">
-                                        <img src={currentLogo} alt="Logo" className="w-full h-32 object-cover" onError={(e) => { e.target.src = 'https://via.placeholder.com/200x128'; }} />
+                                        <img
+                                            src={currentLogo}
+                                            alt="Logo"
+                                            onClick={(e) => { e.stopPropagation(); openLightbox(currentLogo, 'Logo ' + (umkm?.name || 'UMKM')); }}
+                                            className="w-full h-32 object-cover cursor-zoom-in"
+                                            onError={(e) => { e.target.src = 'https://via.placeholder.com/200x128'; }}
+                                        />
                                         {logoPreview && (
                                             <button type="button" onClick={(e) => { e.stopPropagation(); setLogoPreview(null); setData('logo', null); }} className="absolute top-2 right-2 w-7 h-7 bg-white/90 rounded-full flex items-center justify-center shadow-sm border border-slate-200 text-slate-600 hover:text-red-600 transition-colors">
                                                 <X className="w-3.5 h-3.5" />

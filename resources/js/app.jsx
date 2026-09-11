@@ -6,6 +6,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 
 import { CartProvider } from '@/Contexts/CartContext';
+import { LightboxProvider } from '@/Contexts/LightboxContext';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -21,7 +22,9 @@ createInertiaApp({
 
         root.render(
             <CartProvider>
-                <App {...props} />
+                <LightboxProvider>
+                    <App {...props} />
+                </LightboxProvider>
             </CartProvider>
         );
     },

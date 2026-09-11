@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
+import { useLightbox } from '@/Contexts/LightboxContext';
 import { ChevronLeft, Upload, X, ImageIcon } from 'lucide-react';
 
 const fieldBase = 'w-full px-3.5 py-2.5 rounded-xl border text-sm bg-slate-50 text-slate-900 placeholder-slate-400 outline-none transition-all focus:bg-white';
@@ -10,6 +11,7 @@ const fieldError  = `${fieldBase} border-red-300 ring-1 ring-red-100`;
 export default function ProductCreate({ umkms, categories }) {
     const { auth } = usePage().props;
     const isAdminCsr = auth?.user?.role === 'admin_csr';
+    const { openLightbox } = useLightbox();
 
     const [previewUrl, setPreviewUrl] = useState(null);
     const fileRef = useRef(null);
@@ -213,7 +215,12 @@ export default function ProductCreate({ umkms, categories }) {
 
                             {previewUrl ? (
                                 <div className="relative rounded-xl overflow-hidden border border-slate-200 mb-3">
-                                    <img src={previewUrl} alt="Preview" className="w-full h-52 object-cover block" />
+                                    <img
+                                        src={previewUrl}
+                                        alt="Preview"
+                                        onClick={() => openLightbox(previewUrl, 'Preview Foto Produk')}
+                                        className="w-full h-52 object-cover block cursor-zoom-in"
+                                    />
                                     <button type="button" onClick={removeImage}
                                         className="absolute top-2 right-2 w-7 h-7 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow border border-slate-200 text-slate-500 hover:text-slate-800 transition-colors">
                                         <X className="w-3.5 h-3.5" />

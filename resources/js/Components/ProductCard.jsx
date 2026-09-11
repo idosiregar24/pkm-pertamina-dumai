@@ -1,10 +1,17 @@
 ﻿import React from 'react';
-import { ShoppingCart, ExternalLink, MapPin, Store } from 'lucide-react';
+import { ShoppingCart, ExternalLink, MapPin, Store, Expand } from 'lucide-react';
 import { useCart } from '@/Contexts/CartContext';
+import { useLightbox } from '@/Contexts/LightboxContext';
 import { formatRupiah } from '@/Utils/phone';
 
 export default function ProductCard({ product, onSelectProduct, compact = false }) {
     const { addToCart } = useCart();
+    const { openLightbox } = useLightbox();
+
+    const handleZoomImage = (e) => {
+        e.stopPropagation();
+        openLightbox(product.image_url || '/asset/placeholder-product.webp', product.name);
+    };
 
     const handleAddToCart = (e) => {
         e.stopPropagation();
@@ -32,6 +39,17 @@ export default function ProductCard({ product, onSelectProduct, compact = false 
                         className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                         loading="lazy"
                     />
+
+                    {/* Tombol zoom foto — selalu terlihat (bukan hanya hover) agar tetap bisa dipakai di layar sentuh */}
+                    <button
+                        type="button"
+                        onClick={handleZoomImage}
+                        title="Perbesar Foto Produk"
+                        aria-label="Perbesar Foto Produk"
+                        className={`absolute bottom-1.5 right-1.5 inline-flex items-center justify-center rounded-lg bg-slate-900/50 hover:bg-slate-900/70 text-white backdrop-blur-sm transition-colors ${compact ? 'w-6 h-6' : 'w-7 h-7'}`}
+                    >
+                        <Expand className={compact ? 'w-3 h-3' : 'w-3.5 h-3.5'} />
+                    </button>
                 </div>
 
                 {/* Label asal: kategori + kecamatan, gaya tag kemasan (bukan badge notifikasi) */}

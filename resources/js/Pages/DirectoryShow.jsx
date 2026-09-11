@@ -14,9 +14,11 @@ import {
 } from 'lucide-react';
 import PublicLayout from '@/Layouts/PublicLayout';
 import ProductCard from '@/Components/ProductCard';
+import { useLightbox } from '@/Contexts/LightboxContext';
 import { formatWhatsAppNumber, formatRupiah } from '@/Utils/phone';
 
 export default function DirectoryShow({ umkm, products = [] }) {
+    const { openLightbox } = useLightbox();
     const showcaseProducts = products && products.length > 0 ? products : umkm?.products ?? [];
 
     return (
@@ -39,9 +41,11 @@ export default function DirectoryShow({ umkm, products = [] }) {
                         <img
                             src={umkm?.banner_url || umkm?.logo_url}
                             alt={umkm?.name}
-                            className="h-full w-full object-cover"
+                            onClick={() => openLightbox(umkm?.banner_url || umkm?.logo_url, umkm?.name)}
+                            className="h-full w-full object-cover cursor-zoom-in"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/30 to-transparent" />
+                        {/* pointer-events-none — overlay ini murni dekoratif, jangan sampai menutupi klik zoom pada foto di baliknya */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/30 to-transparent pointer-events-none" />
 
                         <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
                             <div className="flex items-center justify-between gap-4 flex-wrap">

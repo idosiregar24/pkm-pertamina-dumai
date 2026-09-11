@@ -20,11 +20,13 @@ import {
 import PublicLayout from '@/Layouts/PublicLayout';
 import ProductCard from '@/Components/ProductCard';
 import { useCart } from '@/Contexts/CartContext';
+import { useLightbox } from '@/Contexts/LightboxContext';
 import { formatRupiah, formatWhatsAppNumber, generateWhatsAppOrderUrl } from '@/Utils/phone';
 import { INITIAL_PRODUCTS, CATEGORIES, DISTRICTS, PRICE_RANGES, INITIAL_UMKMS } from '@/data/mockData';
 
 export default function Catalog({ products: dbProducts = [], categories: dbCategories = [] }) {
     const { addToCart } = useCart();
+    const { openLightbox } = useLightbox();
 
     // Data produk dari database (dengan fallback ke mockData jika kosong)
     const baseProducts = useMemo(() => {
@@ -651,7 +653,8 @@ export default function Catalog({ products: dbProducts = [], categories: dbCateg
                                 <img
                                     src={selectedProduct.image_url}
                                     alt={selectedProduct.name}
-                                    className="w-full h-full object-cover"
+                                    onClick={() => openLightbox(selectedProduct.image_url, selectedProduct.name)}
+                                    className="w-full h-full object-cover cursor-zoom-in"
                                 />
                             </div>
 

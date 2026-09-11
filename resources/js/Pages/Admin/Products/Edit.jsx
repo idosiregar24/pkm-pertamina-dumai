@@ -1,11 +1,13 @@
 import { useState, useRef } from 'react';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
+import { useLightbox } from '@/Contexts/LightboxContext';
 import { ChevronLeft, Upload, X, ImageIcon } from 'lucide-react';
 
 export default function ProductEdit({ product, umkms, categories }) {
     const { auth } = usePage().props;
     const isAdminCsr = auth?.user?.role === 'admin_csr';
+    const { openLightbox } = useLightbox();
 
     const [previewUrl, setPreviewUrl] = useState(null);
     const fileRef = useRef(null);
@@ -303,7 +305,8 @@ export default function ProductEdit({ product, umkms, categories }) {
                                     <img
                                         src={displayImage}
                                         alt="Foto produk"
-                                        className="w-full h-52 object-cover block bg-slate-100"
+                                        onClick={() => openLightbox(displayImage, product?.name || 'Foto produk')}
+                                        className="w-full h-52 object-cover block bg-slate-100 cursor-zoom-in"
                                         onError={(e) => {
                                             e.target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="208" fill="%23f1f5f9"><rect width="300" height="208"/><text x="150" y="110" text-anchor="middle" fill="%2394a3b8" font-size="13" font-family="sans-serif">Gambar tidak tersedia</text></svg>';
                                         }}

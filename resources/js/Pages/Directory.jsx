@@ -20,10 +20,12 @@ import PublicLayout from '@/Layouts/PublicLayout';
 import UmkmCard from '@/Components/UmkmCard';
 import ProductCard from '@/Components/ProductCard';
 import BadgeCsr from '@/Components/BadgeCsr';
+import { useLightbox } from '@/Contexts/LightboxContext';
 import { formatWhatsAppNumber, formatRupiah } from '@/Utils/phone';
 import { INITIAL_UMKMS, INITIAL_PRODUCTS, DISTRICTS } from '@/data/mockData';
 
 export default function Directory({ umkms: dbUmkms = [], products: dbProducts = [] }) {
+    const { openLightbox } = useLightbox();
     const [selectedDistrict, setSelectedDistrict] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedUmkm, setSelectedUmkm] = useState(null);
@@ -223,9 +225,11 @@ export default function Directory({ umkms: dbUmkms = [], products: dbProducts = 
                             <img
                                 src={selectedUmkm.banner_url || selectedUmkm.logo_url}
                                 alt={selectedUmkm.name}
-                                className="w-full h-full object-cover"
+                                onClick={() => openLightbox(selectedUmkm.banner_url || selectedUmkm.logo_url, selectedUmkm.name)}
+                                className="w-full h-full object-cover cursor-zoom-in"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/30 to-transparent" />
+                            {/* pointer-events-none — overlay ini murni dekoratif, jangan sampai menutupi klik zoom pada foto di baliknya */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/30 to-transparent pointer-events-none" />
                             <div className="absolute bottom-3 left-3 right-3 text-white">
                                 <h2 className="text-xl font-extrabold drop-shadow-sm leading-snug">
                                     {selectedUmkm.name}
@@ -288,7 +292,8 @@ export default function Directory({ umkms: dbUmkms = [], products: dbProducts = 
                                             <img
                                                 src={p.image_url}
                                                 alt={p.name}
-                                                className="w-12 h-12 rounded-lg object-cover bg-slate-100 flex-shrink-0"
+                                                onClick={() => openLightbox(p.image_url, p.name)}
+                                                className="w-12 h-12 rounded-lg object-cover bg-slate-100 flex-shrink-0 cursor-zoom-in"
                                             />
                                             <div className="min-w-0 flex-1">
                                                 <p className="text-xs font-bold text-slate-800 truncate">{p.name}</p>
