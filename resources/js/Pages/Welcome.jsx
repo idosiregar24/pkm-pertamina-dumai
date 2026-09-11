@@ -66,7 +66,7 @@ export default function Welcome({ featuredProducts: dbFeaturedProducts = [], tot
             {/* 1. HERO SECTION — Full-Screen Background Kilang Pertamina RU II Dumai     */}
             {/* ========================================================================= */}
             <section
-                className="relative flex items-center justify-center min-h-screen overflow-hidden"
+                className="relative flex flex-col min-h-screen overflow-hidden"
                 style={{
                     backgroundImage: `url('/asset/logo/Bg/Kilang_Minyak_Pertamina_RU_II_Dumai.jpg')`,
                     backgroundSize: 'cover',
@@ -77,8 +77,9 @@ export default function Welcome({ featuredProducts: dbFeaturedProducts = [], tot
                 {/* Overlay gelap agar teks tetap terbaca */}
                 <div className="absolute inset-0 bg-gradient-to-b from-slate-900/75 via-slate-900/60 to-slate-900/80" />
 
-                {/* Konten Hero — Center */}
-                <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-32 flex flex-col items-center text-center">
+                {/* Konten Hero — Center, tumbuh mengisi ruang sisa agar tidak menimpa strip statistik. */}
+                {/* pt lebih besar dari pb: navbar fixed (h-20) menutupi bagian atas section, jadi konten perlu didorong turun agar tidak mepet navbar */}
+                <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-[117px] pb-10 sm:pt-[133px] sm:pb-16 flex-1 flex flex-col items-center justify-center text-center">
 
                     <h1 className="text-xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-wide text-white leading-[1.25] mb-5">
                         Pusat Informasi &amp; Direktori{' '}
@@ -126,8 +127,8 @@ export default function Welcome({ featuredProducts: dbFeaturedProducts = [], tot
                     </div>
                 </div>
 
-                {/* Strip Statistik — di bawah hero, sticky ke bottom section */}
-                <div className="absolute bottom-0 left-0 right-0 bg-white/10 backdrop-blur-md border-t border-white/10">
+                {/* Strip Statistik — bagian normal-flow di bawah konten hero, bukan absolute, agar tidak pernah menimpa konten di layar pendek */}
+                <div className="relative z-10 bg-white/10 backdrop-blur-md border-t border-white/10">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                             <div>
