@@ -23,6 +23,7 @@ class CategorySeeder extends Seeder
             ['name' => 'Olahan Singkong & Cemilan', 'icon_name' => 'Cookie'],
             ['name' => 'Minuman Herbal', 'icon_name' => 'CupSoda'],
             ['name' => 'Kue Kering & Tradisional', 'icon_name' => 'Cake'],
+            ['name' => 'Pertanian & Pangan Lokal', 'icon_name' => 'Sprout'],
         ];
 
         foreach ($categories as $category) {

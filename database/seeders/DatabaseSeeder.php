@@ -49,6 +49,24 @@ class DatabaseSeeder extends Seeder
             );
         }
 
+        // Akun Admin Kelompok khusus untuk Kelompok Barter Jaya — langsung dibuat
+        // begitu UMKM-nya ada, supaya kelompok ini bisa langsung login mengelola
+        // profil & produknya sendiri tanpa menunggu didaftarkan manual oleh Admin CSR.
+        $barterJaya = Umkm::where('name', 'Kelompok Barter Jaya')->first();
+
+        if ($barterJaya) {
+            User::updateOrCreate(
+                ['email' => 'barterjaya@pertamina-dumai.id'],
+                [
+                    'name' => 'Admin ' . $barterJaya->name,
+                    'role' => UserRole::ADMIN_KELOMPOK,
+                    'umkm_id' => $barterJaya->id,
+                    'email_verified_at' => now(),
+                    'password' => Hash::make('password'),
+                ]
+            );
+        }
+
         // Akun bawaan Breeze yang tidak relevan dengan RBAC proyek ini (bukan
         // admin_csr maupun terhubung ke UMKM manapun) — dibersihkan agar tidak
         // tersangkut invariant role/umkm_id.

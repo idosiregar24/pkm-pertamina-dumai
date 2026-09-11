@@ -120,6 +120,23 @@ class UmkmProductSeeder extends Seeder
                 ],
             ],
             [
+                'name' => 'Kelompok Barter Jaya',
+                'owner_name' => 'Bapak Joko Prasetyo',
+                'district' => 'Dumai Selatan',
+                'phone' => '081376655221',
+                'established_year' => 2022,
+                'csr_batch_year' => 2024,
+                'banner_url' => 'https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?auto=format&fit=crop&w=1200&q=80',
+                'logo_url' => 'https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?auto=format&fit=crop&w=400&q=80',
+                'shopee_shop_url' => 'https://shopee.co.id/barterjayadumai',
+                'description' => 'Kelompok tani binaan CSR Pertamina Patra Niaga Dumai di Dumai Selatan yang memproduksi pupuk organik cair dari limbah pertanian dan peternakan lokal untuk mendukung pertanian ramah lingkungan di Dumai.',
+                'members_count' => 16,
+                'certification' => 'Izin Edar Pupuk Organik, Binaan CSR TJSL',
+                'products' => [
+                    ['name' => 'Pupuk Organik Cair Boster', 'price' => 45000, 'unit' => 'botol 1 liter', 'category' => 'Pertanian & Pangan Lokal', 'image_url' => 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=900&q=80', 'description' => 'Pupuk organik cair penyubur tanaman berbahan dasar limbah organik lokal, membantu mempercepat pertumbuhan dan menyuburkan hasil panen secara alami.', 'is_featured' => true, 'rating' => 4.8, 'sold_count' => 60],
+                ],
+            ],
+            [
                 'name' => 'Wirani Rejosari',
                 'owner_name' => 'Ibu Wira Ningsih',
                 'district' => 'Sungai Sembilan',
@@ -138,6 +155,13 @@ class UmkmProductSeeder extends Seeder
                     ['name' => 'Sirup Jahe Rejosari Segar', 'price' => 26000, 'unit' => 'botol 500ml', 'category' => 'Minuman Herbal', 'image_url' => 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=900&q=80', 'description' => 'Sirup jahe tradisional dengan aroma rempah hangat dan rasa yang menyehatkan.', 'is_featured' => false, 'rating' => 4.7, 'sold_count' => 142],
                     ['name' => 'Kue Kacang Rejosari', 'price' => 20000, 'unit' => 'kemasan 200g', 'category' => 'Kue Kering & Tradisional', 'image_url' => 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=900&q=80', 'description' => 'Kue kacang renyah buatan rumah yang cocok untuk oleh-oleh khas Dumai.', 'is_featured' => false, 'rating' => 4.8, 'sold_count' => 168],
                     ['name' => 'Sorju Rejosari Original', 'price' => 24000, 'unit' => 'botol 350ml', 'category' => 'Minuman Herbal', 'image_url' => 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=900&q=80', 'description' => 'Sorju khas Rejosari dengan rasa segar dan rempah alami, cocok untuk minuman sehari-hari.', 'is_featured' => true, 'rating' => 4.8, 'sold_count' => 175],
+                    ['name' => 'Keripik Sorgum', 'price' => 20000, 'unit' => 'kemasan 150g', 'category' => 'Olahan Singkong & Cemilan', 'image_url' => 'https://images.unsplash.com/photo-1621447504864-d8686f12c84a?auto=format&fit=crop&w=900&q=80', 'description' => 'Keripik renyah berbahan dasar sorgum lokal Rejosari, camilan sehat rendah gluten dengan rasa gurih khas Dumai.', 'is_featured' => false, 'rating' => 4.7, 'sold_count' => 90],
+                    // Produk terbaru — sengaja ditempatkan PALING TERAKHIR di array ini
+                    // (dan Wirani Rejosari adalah blok UMKM paling terakhir di atas) supaya
+                    // menjadi baris dengan id tertinggi. DirectoryController & CatalogController
+                    // mengurutkan produk dengan orderByDesc('id'), jadi produk ini otomatis
+                    // tampil PALING ATAS baik di halaman profil Wirani Rejosari maupun katalog.
+                    ['name' => 'Sorgum Rejosari', 'price' => 35000, 'unit' => 'kemasan 1kg', 'category' => 'Pertanian & Pangan Lokal', 'image_url' => 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=900&q=80', 'description' => 'Beras sorgum hasil budidaya petani binaan Rejosari, alternatif pangan lokal kaya serat dan rendah indeks glikemik sebagai pengganti nasi sehari-hari.', 'is_featured' => true, 'rating' => 4.9, 'sold_count' => 150],
                 ],
             ],
         ];
