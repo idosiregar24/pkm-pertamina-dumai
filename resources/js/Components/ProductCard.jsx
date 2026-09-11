@@ -1,7 +1,8 @@
 ﻿import React from 'react';
-import { ShoppingCart, ExternalLink, MapPin, Store, Expand } from 'lucide-react';
+import { ShoppingCart, MapPin, Store, Expand } from 'lucide-react';
 import { useCart } from '@/Contexts/CartContext';
 import { useLightbox } from '@/Contexts/LightboxContext';
+import ShopeeIcon from '@/Components/ShopeeIcon';
 import { formatRupiah } from '@/Utils/phone';
 
 export default function ProductCard({ product, onSelectProduct, compact = false }) {
@@ -24,7 +25,7 @@ export default function ProductCard({ product, onSelectProduct, compact = false 
     return (
         <div
             onClick={() => onSelectProduct && onSelectProduct(product)}
-            className={`group flex flex-col justify-between rounded-xl border border-slate-200 bg-white shadow-subtle transition-colors duration-200 hover:border-pertamina-green/40 ${compact ? 'p-2.5' : 'p-3'} ${onSelectProduct ? 'cursor-pointer' : ''}`}
+            className={`group flex flex-col justify-between rounded-xl border border-slate-100 bg-white shadow-subtle transition-colors duration-200 hover:border-pertamina-green/40 ${compact ? 'p-2.5' : 'p-3'} ${onSelectProduct ? 'cursor-pointer' : ''}`}
         >
             <div>
                 {/* Foto produk — dibiarkan bersih tanpa overlay agar produk jadi fokus utama */}
@@ -105,7 +106,7 @@ export default function ProductCard({ product, onSelectProduct, compact = false 
                             title="Beli di Toko Shopee Resmi"
                             aria-label="Beli di Toko Shopee Resmi"
                         >
-                            <ExternalLink className={compact ? 'w-3.5 h-3.5' : 'w-4 h-4'} />
+                            <ShopeeIcon className="w-3.5 h-3.5" />
                         </a>
                     )}
 
