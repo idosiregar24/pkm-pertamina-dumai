@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Head, Link } from '@inertiajs/react';
-import { ShoppingBag, Menu, X, MapPin, Phone, Mail, Award, ExternalLink, LogIn } from 'lucide-react';
+import { Head, Link, usePage } from '@inertiajs/react';
+import { ShoppingBag, Menu, X, MapPin, Phone, Mail, Award, ExternalLink, LogIn, LayoutDashboard, LogOut, ChevronDown } from 'lucide-react';
 import { CartProvider, useCart } from '@/Contexts/CartContext';
 import CartDrawer from '@/Components/CartDrawer';
 import BadgeCsr from '@/Components/BadgeCsr';
@@ -8,7 +8,10 @@ import { getAssetUrl } from '@/Utils/phone';
 
 function NavbarContent({ activeMenu, transparentNav = false }) {
     const { totalCount, setIsCartOpen } = useCart();
+    const { auth } = usePage().props;
+    const user = auth?.user;
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [profileMenuOpen, setProfileMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
@@ -122,21 +125,80 @@ function NavbarContent({ activeMenu, transparentNav = false }) {
                             )}
                         </button>
 
-                        {/* Tombol Login (di sebelah kanan) */}
-                        <Link
-                            href="/login"
-                            className={`hidden sm:inline-flex items-center gap-2 px-2 py-1.5 transition-all active:scale-95 text-xs font-bold ${
-                                isTransparent
-                                    ? 'text-white hover:text-white/75'
-                                    : 'text-slate-700 hover:text-slate-900'
-                            }`}
-                            aria-label="Masuk ke Akun / Panel Admin"
-                        >
-                            <LogIn className={`w-5 h-5 ${isTransparent ? 'text-white' : 'text-pertamina-green'}`} />
-                            <span className={`text-xs font-bold ${isTransparent ? 'text-white' : 'text-slate-800'}`}>
-                                Login
-                            </span>
-                        </Link>
+                        {/* Tombol Login, atau Dropdown Profil bila sudah login (di sebelah kanan) */}
+                        {user ? (
+                            <div className="relative hidden sm:block">
+                                <button
+                                    type="button"
+                                    onClick={() => setProfileMenuOpen((prev) => !prev)}
+                                    className={`flex items-center gap-2 pl-1 pr-2 py-1 rounded-xl transition-all active:scale-95 ${
+                                        isTransparent
+                                            ? 'text-white hover:bg-white/10'
+                                            : 'text-slate-700 hover:bg-slate-100'
+                                    }`}
+                                    aria-haspopup="true"
+                                    aria-expanded={profileMenuOpen}
+                                    aria-label="Menu Akun Pengguna"
+                                >
+                                    <span className="w-7 h-7 rounded-full bg-pertamina-red flex items-center justify-center flex-shrink-0">
+                                        <span className="text-[11px] font-bold text-white">
+                                            {user.name.charAt(0).toUpperCase()}
+                                        </span>
+                                    </span>
+                                    <span className={`hidden md:inline text-xs font-bold max-w-[120px] truncate ${isTransparent ? 'text-white' : 'text-slate-800'}`}>
+                                        {user.name}
+                                    </span>
+                                    <ChevronDown className={`w-3.5 h-3.5 flex-shrink-0 transition-transform ${profileMenuOpen ? 'rotate-180' : ''} ${isTransparent ? 'text-white/80' : 'text-slate-500'}`} />
+                                </button>
+
+                                {profileMenuOpen && (
+                                    <>
+                                        <div className="fixed inset-0 z-40" onClick={() => setProfileMenuOpen(false)} />
+                                        <div className="absolute right-0 top-full mt-2 w-64 rounded-xl border border-slate-200 bg-white shadow-lg z-50 overflow-hidden">
+                                            <div className="px-4 py-3 border-b border-slate-100 bg-slate-50">
+                                                <p className="text-sm font-bold text-slate-900 truncate">{user.name}</p>
+                                                <p className="text-xs text-slate-500 truncate">{user.email}</p>
+                                            </div>
+                                            <div className="p-1.5">
+                                                <Link
+                                                    href={route('admin.dashboard')}
+                                                    onClick={() => setProfileMenuOpen(false)}
+                                                    className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                                                >
+                                                    <LayoutDashboard className="w-4 h-4 text-pertamina-blue" />
+                                                    Masuk ke Panel Admin
+                                                </Link>
+                                                <Link
+                                                    href={route('logout')}
+                                                    method="post"
+                                                    as="button"
+                                                    onClick={() => setProfileMenuOpen(false)}
+                                                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-semibold text-pertamina-red hover:bg-red-50 transition-colors text-left"
+                                                >
+                                                    <LogOut className="w-4 h-4" />
+                                                    Keluar
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        ) : (
+                            <Link
+                                href="/login"
+                                className={`hidden sm:inline-flex items-center gap-2 px-2 py-1.5 transition-all active:scale-95 text-xs font-bold ${
+                                    isTransparent
+                                        ? 'text-white hover:text-white/75'
+                                        : 'text-slate-700 hover:text-slate-900'
+                                }`}
+                                aria-label="Masuk ke Akun / Panel Admin"
+                            >
+                                <LogIn className={`w-5 h-5 ${isTransparent ? 'text-white' : 'text-pertamina-green'}`} />
+                                <span className={`text-xs font-bold ${isTransparent ? 'text-white' : 'text-slate-800'}`}>
+                                    Login
+                                </span>
+                            </Link>
+                        )}
 
                         {/* Hamburger Button untuk Mobile */}
                         <button
@@ -174,16 +236,50 @@ function NavbarContent({ activeMenu, transparentNav = false }) {
                             </Link>
                         );
                     })}
-                    {/* Login Link on Mobile */}
+                    {/* Login, atau Profil & Panel Admin bila sudah login (Mobile) */}
                     <div className="pt-2 border-t border-slate-100">
-                        <Link
-                            href="/login"
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 transition-colors"
-                        >
-                            <LogIn className="w-4 h-4 text-pertamina-green" />
-                            <span>Login</span>
-                        </Link>
+                        {user ? (
+                            <div className="space-y-1.5">
+                                <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
+                                    <span className="w-8 h-8 rounded-full bg-pertamina-red flex items-center justify-center flex-shrink-0">
+                                        <span className="text-xs font-bold text-white">
+                                            {user.name.charAt(0).toUpperCase()}
+                                        </span>
+                                    </span>
+                                    <div className="min-w-0">
+                                        <p className="text-sm font-bold text-slate-900 truncate">{user.name}</p>
+                                        <p className="text-xs text-slate-500 truncate">{user.email}</p>
+                                    </div>
+                                </div>
+                                <Link
+                                    href={route('admin.dashboard')}
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 transition-colors"
+                                >
+                                    <LayoutDashboard className="w-4 h-4 text-pertamina-blue" />
+                                    <span>Panel Admin</span>
+                                </Link>
+                                <Link
+                                    href={route('logout')}
+                                    method="post"
+                                    as="button"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="w-full flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-bold text-pertamina-red bg-red-50 hover:bg-red-100 border border-red-100 transition-colors text-left"
+                                >
+                                    <LogOut className="w-4 h-4" />
+                                    <span>Keluar</span>
+                                </Link>
+                            </div>
+                        ) : (
+                            <Link
+                                href="/login"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 transition-colors"
+                            >
+                                <LogIn className="w-4 h-4 text-pertamina-green" />
+                                <span>Login</span>
+                            </Link>
+                        )}
                     </div>
                 </div>
             )}
