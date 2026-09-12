@@ -183,6 +183,48 @@ export default function DirectoryShow({ umkm, products = [] }) {
                     </div>
                 </div>
 
+                {/* Galeri Foto Produk — showcase visual murni (tanpa harga/tombol) dari seluruh
+                    foto produk milik UMKM ini, klik salah satu untuk membuka pratinjau zoom penuh. */}
+                {showcaseProducts.length > 0 && (
+                    <section className="mt-10">
+                        <div className="mb-5">
+                            <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-pertamina-green">
+                                Dokumentasi Produk
+                            </p>
+                            <h2 className="text-2xl font-extrabold text-slate-900">Galeri Foto Produk {umkm?.name}</h2>
+                            <p className="mt-1 text-sm text-slate-500">Klik salah satu foto untuk melihat tampilan penuh.</p>
+                        </div>
+
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+                            {showcaseProducts.map((product) => (
+                                <button
+                                    key={`gallery-${product.id}`}
+                                    type="button"
+                                    onClick={() => openLightbox(product.image_url || '/asset/placeholder-product.webp', product.name)}
+                                    title={`Perbesar foto ${product.name}`}
+                                    className="group relative aspect-square overflow-hidden rounded-2xl border border-slate-100 bg-slate-100 shadow-subtle transition-all hover:shadow-subtle-hover cursor-zoom-in"
+                                >
+                                    <img
+                                        src={product.image_url || '/asset/placeholder-product.webp'}
+                                        alt={`Foto produk ${product.name} dari ${umkm?.name}`}
+                                        onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=60';
+                                        }}
+                                        className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                                        loading="lazy"
+                                    />
+                                    {/* Overlay nama produk — hanya muncul saat hover, pointer-events-none supaya tidak menutupi klik zoom */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                                    <span className="absolute inset-x-2 bottom-2 text-left text-[11px] font-semibold text-white line-clamp-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                        {product.name}
+                                    </span>
+                                </button>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
                 <section className="mt-10">
                     <div className="flex items-center justify-between gap-3 mb-5">
                         <div>
